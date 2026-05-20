@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 7rem;
+  }
+
+  body {
+    @apply bg-cream text-forest-900 font-sans antialiased;
+  }
+
+  ::selection {
+    @apply bg-forest text-white;
+  }
+}
+
+@layer utilities {
+  .container-prose {
+    @apply mx-auto w-full max-w-[96rem] px-6 sm:px-10 lg:px-16;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-medical;
+  }
+
+  .heading-serif {
+    @apply font-serif font-semibold tracking-tight;
+  }
+
+  /* Reveal-on-scroll base state */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition:
+      opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Refined scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #eef2f5;
+}
+::-webkit-scrollbar-thumb {
+  background: #0a5c3e;
+  border-radius: 9999px;
+  border: 2px solid #eef2f5;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #06402b;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

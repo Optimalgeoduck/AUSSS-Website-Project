@@ -1,0 +1,14 @@
+node_modules
+dist
+.DS_Store
+*.local
+.vite
+
+# Local Netlify folder
+.netlify
+
+# Raw originals (logos, photos, PDFs, membership xlsx with PII) — never publish
+_source/
+
+# Local Claude Code settings (per-machine)
+.claude/settings.local.json
