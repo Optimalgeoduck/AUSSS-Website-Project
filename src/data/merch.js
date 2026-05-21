@@ -70,10 +70,5 @@ export const merchPages = [
     "src": "/assets/merch/page-14.jpg",
     "w": 1310,
     "h": 1852
-  },
-  {
-    "src": "/assets/merch/page-15.jpg",
-    "w": 1310,
-    "h": 1852
   }
 ]

@@ -10,13 +10,6 @@ export default function SocialPage() {
     <article className="bg-forest-950">
       <header className="relative overflow-hidden pb-16 pt-32 sm:pt-40">
         <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(55% 70% at 50% 0%, rgba(91,141,184,0.32) 0%, rgba(2,28,18,0) 70%)',
-          }}
-        />
-        <div
           className="absolute inset-0 opacity-[0.05]"
           style={{
             backgroundImage:

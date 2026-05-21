@@ -81,15 +81,6 @@ export default function CommitteePage() {
       {/* Brand hero */}
       <header className="relative overflow-hidden pb-20 pt-32 sm:pt-40">
         <div
-          className="absolute inset-0"
-          style={{
-            background: `radial-gradient(60% 80% at 50% 0%, ${rgba(
-              c.color,
-              0.4,
-            )} 0%, rgba(2,28,18,0) 70%)`,
-          }}
-        />
-        <div
           className="absolute inset-0 opacity-[0.05]"
           style={{
             backgroundImage:

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import ThemeToggle from './ThemeToggle.jsx'
+import CartButton from './CartButton.jsx'
 
 // `to` may be a route ("/ifmsa") or a home-section hash ("/#about").
 const LINKS = [
@@ -8,6 +10,7 @@ const LINKS = [
   { to: '/#officials', label: 'Committees' },
   { to: '/exchange', label: 'Exchange' },
   { to: '/activities', label: 'Activities' },
+  { to: '/gallery', label: 'Gallery' },
   { to: '/ifmsa', label: 'IFMSA' },
   { to: '/merch', label: 'Merch' },
   { to: '/social', label: 'Social' },
@@ -53,20 +56,27 @@ export default function Navbar() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
         solid
-          ? 'border-b border-forest-600/20 bg-cream/90 shadow-sm backdrop-blur-md'
+          ? 'border-b border-forest-600/20 bg-cream shadow-sm dark:border-white/10 dark:bg-forest-950'
           : 'border-b border-transparent bg-transparent'
       }`}
     >
       <nav className="container-prose flex h-24 items-center justify-between">
         <Link to="/" className="group flex items-center" aria-label="AUSSS home">
+          {/* Black logo only when bar is solid AND light mode; white otherwise. */}
           <img
-            src={
-              solid
-                ? '/assets/brand/ausss-icon-black.png'
-                : '/assets/brand/ausss-icon-white.png'
-            }
+            src="/assets/brand/ausss-icon-black.png"
             alt="AUSSS, Ain Shams University Students' Scientific Society"
-            className="h-14 w-auto transition-opacity sm:h-16"
+            className={`h-14 w-auto transition-opacity sm:h-16 ${
+              solid ? 'block dark:hidden' : 'hidden'
+            }`}
+          />
+          <img
+            src="/assets/brand/ausss-icon-white.png"
+            alt=""
+            aria-hidden="true"
+            className={`h-14 w-auto transition-opacity sm:h-16 ${
+              solid ? 'hidden dark:block' : 'block'
+            }`}
           />
         </Link>
 
@@ -77,8 +87,8 @@ export default function Navbar() {
                 to={parseTo(l.to)}
                 className={`group relative text-sm font-medium transition-colors ${
                   solid
-                    ? 'text-forest-900/80 hover:text-forest'
-                    : 'text-white/80 hover:text-white'
+                    ? 'text-forest-900 hover:text-forest dark:text-white dark:hover:text-white'
+                    : 'text-white hover:text-white'
                 }`}
               >
                 {l.label}
@@ -91,18 +101,27 @@ export default function Navbar() {
               to="/members"
               className={`rounded-full px-5 py-2 text-sm font-semibold transition-all duration-300 ${
                 solid
-                  ? 'bg-forest text-white hover:bg-forest-600'
+                  ? 'bg-forest text-white hover:bg-forest-600 dark:bg-medical dark:text-forest-950 dark:hover:bg-medical-light'
                   : 'bg-white text-forest hover:bg-silver-light'
               }`}
             >
               Members
             </Link>
           </li>
+          <li>
+            <CartButton tone={solid ? 'solid' : 'transparent'} />
+          </li>
+          <li>
+            <ThemeToggle tone={solid ? 'solid' : 'transparent'} />
+          </li>
         </ul>
 
+        <div className="flex items-center gap-2 md:hidden">
+          <CartButton tone={solid ? 'solid' : 'transparent'} className="h-9 w-9" />
+          <ThemeToggle tone={solid ? 'solid' : 'transparent'} className="h-9 w-9" />
         <button
           onClick={() => setOpen((v) => !v)}
-          className={`md:hidden ${solid ? 'text-forest' : 'text-white'}`}
+          className={solid ? 'text-forest dark:text-silver' : 'text-white'}
           aria-label="Toggle menu"
           aria-expanded={open}
         >
@@ -114,11 +133,12 @@ export default function Navbar() {
             )}
           </svg>
         </button>
+        </div>
       </nav>
 
       {/* Mobile drawer */}
       <div
-        className={`overflow-hidden border-t border-forest-600/10 bg-cream transition-[max-height] duration-500 md:hidden ${
+        className={`overflow-hidden border-t border-forest-600/10 bg-cream transition-[max-height] duration-500 md:hidden dark:border-white/10 dark:bg-forest-950 ${
           open ? 'max-h-[calc(100dvh-6rem)]' : 'max-h-0'
         }`}
       >
@@ -127,7 +147,7 @@ export default function Navbar() {
             <li key={l.to}>
               <Link
                 to={parseTo(l.to)}
-                className="block w-full border-b border-forest-600/10 py-4 text-left text-base font-medium text-forest-900"
+                className="block w-full border-b border-forest-600/10 py-4 text-left text-base font-medium text-forest-900 dark:border-white/10 dark:text-silver"
               >
                 {l.label}
               </Link>
@@ -136,7 +156,7 @@ export default function Navbar() {
           <li className="pt-4">
             <Link
               to="/members"
-              className="block w-full rounded-full bg-forest py-3 text-center text-sm font-semibold text-white"
+              className="block w-full rounded-full bg-forest py-3 text-center text-sm font-semibold text-white dark:bg-medical dark:text-forest-950"
             >
               Members
             </Link>

@@ -36,7 +36,7 @@ function Member({ m, size = 'md' }) {
       } ${
         m.tier === 'lead'
           ? 'border-white/15 bg-forest-800 text-white hover:shadow-2xl hover:shadow-forest-950/40'
-          : 'border-forest-600/10 bg-white text-forest-900 hover:border-medical/40 hover:shadow-xl hover:shadow-forest-900/5'
+          : 'border-forest-600/10 bg-white text-forest-900 hover:border-medical/40 hover:shadow-xl hover:shadow-forest-900/5 dark:border-white/10 dark:bg-forest-900 dark:text-silver dark:hover:border-medical/40'
       }`}
     >
       <div
@@ -55,7 +55,7 @@ function Member({ m, size = 'md' }) {
       </div>
       <h3
         className={`heading-serif mt-5 text-xl ${
-          m.tier === 'lead' ? 'text-white' : 'text-forest'
+          m.tier === 'lead' ? 'text-white' : 'text-forest dark:text-medical-light'
         }`}
       >
         {m.name}
@@ -69,7 +69,7 @@ function Member({ m, size = 'md' }) {
       </p>
       <p
         className={`mt-4 text-sm leading-relaxed ${
-          m.tier === 'lead' ? 'text-silver/80' : 'text-forest-900/60'
+          m.tier === 'lead' ? 'text-silver/80' : 'text-forest-900/60 dark:text-silver/65'
         }`}
       >
         {m.blurb}

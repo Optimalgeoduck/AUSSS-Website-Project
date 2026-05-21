@@ -9,11 +9,24 @@
   }
 
   body {
-    @apply bg-cream text-forest-900 font-sans antialiased;
+    @apply bg-cream text-forest-900 font-sans antialiased transition-colors duration-300;
+    /* Force lining + tabular figures across the site. Cormorant Garamond
+       defaults to oldstyle figures (3, 4, 5, 7, 9 sit below baseline) and
+       proportional widths, which makes counts and animated counters jiggle.
+       This keeps every digit on the same baseline at equal width. */
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  .dark body {
+    @apply bg-forest-950 text-silver;
   }
 
   ::selection {
     @apply bg-forest text-white;
+  }
+
+  .dark ::selection {
+    @apply bg-medical text-forest-950;
   }
 }
 
@@ -60,6 +73,16 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #06402b;
+}
+.dark ::-webkit-scrollbar-track {
+  background: #042518;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #5b8db8;
+  border: 2px solid #042518;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #8fb4d4;
 }
 
 @media (prefers-reduced-motion: reduce) {

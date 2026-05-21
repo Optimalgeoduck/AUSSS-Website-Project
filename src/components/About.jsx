@@ -37,7 +37,7 @@ const PILLARS = [
 
 export default function About() {
   return (
-    <section id="about" className="relative bg-cream py-28 sm:py-36">
+    <section id="about" className="relative bg-cream py-28 sm:py-36 dark:bg-forest-950">
       <div className="container-prose">
         <div className="grid items-start gap-16 lg:grid-cols-12">
           <div className="reveal lg:col-span-5">
@@ -45,14 +45,14 @@ export default function About() {
               <span className="h-px w-8 bg-medical" />
               About the Society
             </span>
-            <h2 className="heading-serif mt-5 text-4xl text-forest sm:text-5xl">
+            <h2 className="heading-serif mt-5 text-4xl text-forest sm:text-5xl dark:text-medical-light">
               Where clinical practice meets scientific inquiry.
             </h2>
           </div>
 
-          <div className="reveal space-y-6 text-lg leading-relaxed text-forest-900/75 lg:col-span-7">
+          <div className="reveal space-y-6 text-lg leading-relaxed text-forest-900/75 lg:col-span-7 dark:text-silver/75">
             <p>
-              The <strong className="text-forest">Ain Shams University
+              The <strong className="text-forest dark:text-medical-light">Ain Shams University
               Students&rsquo; Scientific Society (AUSSS)</strong> is an
               independent, non-profit, non-political and non-religious student
               society within the Faculty of Medicine, Ain Shams University, and
@@ -65,7 +65,7 @@ export default function About() {
               to discuss health, education, and science with peers across Egypt
               and around the world.
             </p>
-            <blockquote className="border-l-2 border-medical pl-6 font-serif text-xl italic text-forest">
+            <blockquote className="border-l-2 border-medical pl-6 font-serif text-xl italic text-forest dark:text-medical-light">
               “Our mission is to offer future physicians a comprehensive
               introduction to global health issues, developing active,
               efficient and culturally sensitive students of medicine, intent on
@@ -85,7 +85,7 @@ export default function About() {
               <Wrapper
                 key={p.title}
                 {...wrapperProps}
-                className={`reveal group block rounded-2xl border border-forest-600/10 bg-white p-8 transition-all duration-500 hover:-translate-y-1.5 hover:border-medical/40 hover:shadow-xl hover:shadow-forest-900/5 ${
+                className={`reveal group block rounded-2xl border border-forest-600/10 bg-white p-8 transition-all duration-500 hover:-translate-y-1.5 hover:border-medical/40 hover:shadow-xl hover:shadow-forest-900/5 dark:border-white/10 dark:bg-forest-900 dark:hover:border-medical/40 dark:hover:shadow-black/30 ${
                   p.to ? 'cursor-pointer' : ''
                 }`}
                 style={{ transitionDelay: `${i * 90}ms` }}
@@ -101,10 +101,10 @@ export default function About() {
                     {p.icon}
                   </svg>
                 </span>
-                <h3 className="heading-serif mt-6 text-xl text-forest">
+                <h3 className="heading-serif mt-6 text-xl text-forest dark:text-medical-light">
                   {p.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-forest-900/65">
+                <p className="mt-3 text-sm leading-relaxed text-forest-900/65 dark:text-silver/65">
                   {p.body}
                 </p>
                 {p.to && (

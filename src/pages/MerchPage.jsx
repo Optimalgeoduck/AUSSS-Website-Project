@@ -1,8 +1,27 @@
 import { useState, useCallback, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import useReveal from '../hooks/useReveal.js'
 import { merchPages, merchPdf } from '../data/merch.js'
-import { society } from '../data/society.js'
+import { availableProducts } from '../data/merchProducts.js'
+import ProductCard from '../components/ProductCard.jsx'
+
+function BookletThumb({ page, idx, onOpen }) {
+  return (
+    <button
+      onClick={() => onOpen(idx)}
+      className="reveal group block w-full overflow-hidden rounded-xl ring-1 ring-white/10 transition-all duration-500 hover:ring-medical/50"
+      aria-label={`Open page ${idx + 1} full screen`}
+    >
+      <img
+        src={page.src}
+        alt={`Merch booklet page ${idx + 1}`}
+        width={page.w}
+        height={page.h}
+        loading={idx < 2 ? 'eager' : 'lazy'}
+        className="w-full transition-transform duration-700 group-hover:scale-[1.01]"
+      />
+    </button>
+  )
+}
 
 function Lightbox({ index, onClose, onPrev, onNext }) {
   useEffect(() => {
@@ -71,33 +90,65 @@ function Lightbox({ index, onClose, onPrev, onNext }) {
   )
 }
 
+function SizeChartModal({ product, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [onClose])
+
+  return (
+    <div
+      className="fixed inset-0 z-[70] flex items-center justify-center bg-forest-950/95 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <button
+        onClick={onClose}
+        aria-label="Close size chart"
+        className="absolute right-5 top-5 grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+      >
+        <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
+        </svg>
+      </button>
+      <figure className="max-h-[90vh] max-w-3xl" onClick={(e) => e.stopPropagation()}>
+        <img
+          src={product.sizeChart}
+          alt={`${product.name} size chart`}
+          className="max-h-[80vh] w-auto rounded-lg bg-white p-4 shadow-2xl"
+        />
+        <figcaption className="mt-3 text-center text-xs text-silver/70">
+          {product.name} · measurements in cm
+        </figcaption>
+      </figure>
+    </div>
+  )
+}
+
 export default function MerchPage() {
   useReveal()
-  const [open, setOpen] = useState(null)
+  const [openPage, setOpenPage] = useState(null)
+  const [chartFor, setChartFor] = useState(null)
 
-  const close = useCallback(() => setOpen(null), [])
-  const prev = useCallback(
-    () => setOpen((i) => (i <= 0 ? merchPages.length - 1 : i - 1)),
+  const closePage = useCallback(() => setOpenPage(null), [])
+  const prevPage = useCallback(
+    () => setOpenPage((i) => (i <= 0 ? merchPages.length - 1 : i - 1)),
     [],
   )
-  const next = useCallback(
-    () => setOpen((i) => (i >= merchPages.length - 1 ? 0 : i + 1)),
+  const nextPage = useCallback(
+    () => setOpenPage((i) => (i >= merchPages.length - 1 ? 0 : i + 1)),
     [],
   )
-
-  const orderHref = society.instagram || '/contact'
-  const orderExternal = Boolean(society.instagram)
 
   return (
     <article className="bg-forest-950">
-      <header className="relative overflow-hidden pb-16 pt-32 sm:pt-40">
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(55% 70% at 50% 0%, rgba(15,122,83,0.45) 0%, rgba(2,28,18,0) 70%)',
-          }}
-        />
+      <header className="relative overflow-hidden pb-12 pt-32 sm:pt-40">
         <div
           className="absolute inset-0 opacity-[0.05]"
           style={{
@@ -113,87 +164,134 @@ export default function MerchPage() {
             <span className="h-px w-8 bg-medical" />
           </span>
           <h1 className="heading-serif mt-5 text-4xl text-white sm:text-6xl">
-            Merch Catalogue
+            Merch 2025–26
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg font-light text-silver/75">
-            Our 2025–26 collection, “Life Savers, Change Makers.” Flip through
-            the booklet below, or open the full PDF.
+            Life Savers, Change Makers. Every piece in this drop is{' '}
+            <strong className="text-white">pre-order only</strong> — we collect
+            orders, then run production, then coordinate pickup. What you pay
+            for is what you get.
           </p>
-          <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
-              href={merchPdf}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-forest transition-transform hover:scale-[1.03] sm:w-auto"
-            >
-              Open full booklet (PDF)
-            </a>
-            <a
-              href={merchPdf}
-              download
-              className="w-full rounded-full border border-white/25 px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
-            >
-              Download
-            </a>
-          </div>
         </div>
       </header>
 
-      <div className="container-prose pb-20">
-        <div className="mx-auto max-w-3xl space-y-6">
-          {merchPages.map((p, idx) => (
-            <button
-              key={p.src}
-              onClick={() => setOpen(idx)}
-              className="reveal group block w-full overflow-hidden rounded-xl ring-1 ring-white/10 transition-all duration-500 hover:ring-medical/50"
-              aria-label={`Open page ${idx + 1} full screen`}
-            >
-              <img
-                src={p.src}
-                alt={`Merch booklet page ${idx + 1}`}
-                width={p.w}
-                height={p.h}
-                loading={idx < 2 ? 'eager' : 'lazy'}
-                className="w-full transition-transform duration-700 group-hover:scale-[1.01]"
+      {/* Catalogue / booklet — comes first so visitors see the story before ordering */}
+      <section className="pb-20">
+        <div className="container-prose">
+          <div className="reveal mx-auto max-w-2xl text-center">
+            <span className="eyebrow justify-center">
+              <span className="h-px w-8 bg-medical" />
+              The catalogue
+              <span className="h-px w-8 bg-medical" />
+            </span>
+            <h2 className="heading-serif mt-5 text-3xl text-white sm:text-4xl">
+              Flip through the 25–26 booklet
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-base font-light text-silver/70">
+              Designs, photoshoots, and the story behind the 55th anniversary
+              drop.
+            </p>
+            <div className="mt-7 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <a
+                href={merchPdf}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full rounded-full bg-white px-6 py-3 text-sm font-semibold text-forest transition-transform hover:scale-[1.03] sm:w-auto"
+              >
+                Open full booklet (PDF)
+              </a>
+              <a
+                href={merchPdf}
+                download
+                className="w-full rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
+              >
+                Download
+              </a>
+            </div>
+          </div>
+
+          {/* Mobile: single-column stack so reading order stays 1→14. */}
+          <div className="mx-auto mt-12 max-w-md space-y-5 sm:hidden">
+            {merchPages.map((p, idx) => (
+              <BookletThumb
+                key={p.src}
+                page={p}
+                idx={idx}
+                onOpen={setOpenPage}
               />
-            </button>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <div className="reveal mx-auto mt-16 max-w-2xl rounded-3xl border border-white/10 bg-forest-800 p-8 text-center sm:p-12">
-          <h2 className="heading-serif text-2xl text-white sm:text-3xl">
-            Want to place an order?
-          </h2>
-          <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-silver/70">
-            Reach out and our team will help you get your AUSSS merch.
-          </p>
-          {orderExternal ? (
-            <a
-              href={orderHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-7 inline-flex rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-forest transition-transform hover:scale-[1.03]"
-            >
-              Order via Instagram
-            </a>
-          ) : (
-            <Link
-              to="/contact"
-              className="mt-7 inline-flex rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-forest transition-transform hover:scale-[1.03]"
-            >
-              Contact us to order
-            </Link>
-          )}
+          {/* Desktop: two-column staggered zigzag — right column is offset
+              down by half a page height so pages weave between each other. */}
+          <div className="mx-auto mt-12 hidden max-w-4xl gap-6 sm:grid sm:grid-cols-2 lg:gap-10">
+            <div className="flex flex-col gap-6 lg:gap-10">
+              {merchPages.map((p, idx) =>
+                idx % 2 === 0 ? (
+                  <BookletThumb
+                    key={p.src}
+                    page={p}
+                    idx={idx}
+                    onOpen={setOpenPage}
+                  />
+                ) : null,
+              )}
+            </div>
+            <div className="flex flex-col gap-6 pt-20 lg:gap-10 lg:pt-28">
+              {merchPages.map((p, idx) =>
+                idx % 2 === 1 ? (
+                  <BookletThumb
+                    key={p.src}
+                    page={p}
+                    idx={idx}
+                    onOpen={setOpenPage}
+                  />
+                ) : null,
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
-      {open !== null && (
+      {/* Order cards — the real shop, at the bottom */}
+      <section className="border-t border-white/10 bg-forest-950 py-20">
+        <div className="container-prose">
+          <div className="reveal mx-auto mb-12 max-w-2xl text-center">
+            <span className="eyebrow justify-center">
+              <span className="h-px w-8 bg-medical" />
+              Place your pre-order
+              <span className="h-px w-8 bg-medical" />
+            </span>
+            <h2 className="heading-serif mt-5 text-3xl text-white sm:text-4xl">
+              Order what you love
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-base font-light text-silver/70">
+              Pick your size, drop it in the cart, and we&rsquo;ll confirm
+              pickup once production wraps.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {availableProducts.map((p) => (
+              <ProductCard
+                key={p.id}
+                product={p}
+                onOpenSizeChart={setChartFor}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {openPage !== null && (
         <Lightbox
-          index={open}
-          onClose={close}
-          onPrev={prev}
-          onNext={next}
+          index={openPage}
+          onClose={closePage}
+          onPrev={prevPage}
+          onNext={nextPage}
         />
+      )}
+      {chartFor && (
+        <SizeChartModal product={chartFor} onClose={() => setChartFor(null)} />
       )}
     </article>
   )

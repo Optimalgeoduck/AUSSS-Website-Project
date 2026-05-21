@@ -12,6 +12,8 @@ export default function Footer() {
               <img
                 src="/assets/brand/ausss-horizontal-white.png"
                 alt="AUSSS, Ain Shams University Students' Scientific Society"
+                loading="lazy"
+                decoding="async"
                 className="h-24 w-auto"
               />
             </Link>
@@ -69,6 +71,8 @@ export default function Footer() {
               <img
                 src="/assets/ifmsa/ifmsa-egypt-horizontal-white.png"
                 alt="IFMSA-Egypt"
+                loading="lazy"
+                decoding="async"
                 className="h-10 w-auto opacity-60 transition-opacity hover:opacity-100 sm:h-12"
               />
             </a>
@@ -81,6 +85,8 @@ export default function Footer() {
               <img
                 src="/assets/ifmsa/ifmsa-horizontal-white.png"
                 alt="IFMSA"
+                loading="lazy"
+                decoding="async"
                 className="h-9 w-auto opacity-60 transition-opacity hover:opacity-100 sm:h-11"
               />
             </a>

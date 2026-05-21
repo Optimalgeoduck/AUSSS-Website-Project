@@ -15,6 +15,18 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <script>
+      // No-flash theme bootstrap — runs before React mounts.
+      // Reads explicit user choice from localStorage, falls back to OS preference.
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme')
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          var isDark = saved === 'dark' || (!saved && prefersDark)
+          document.documentElement.classList.toggle('dark', isDark)
+        } catch (_) {}
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

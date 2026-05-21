@@ -35,13 +35,6 @@ export default function IFMSAPage() {
     <article className="bg-forest-950">
       <header className="relative overflow-hidden pb-16 pt-32 sm:pt-40">
         <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(55% 70% at 50% 0%, rgba(91,141,184,0.35) 0%, rgba(2,28,18,0) 70%)',
-          }}
-        />
-        <div
           className="absolute inset-0 opacity-[0.05]"
           style={{
             backgroundImage:
@@ -90,6 +83,8 @@ export default function IFMSAPage() {
             <img
               src="/assets/ifmsa/ifmsa-egypt-horizontal-white.png"
               alt="IFMSA-Egypt"
+              loading="lazy"
+              decoding="async"
               className="relative mx-auto mt-8 h-12 w-auto sm:h-14"
             />
           </div>
@@ -106,7 +101,7 @@ export default function IFMSAPage() {
           <p className="text-center text-xs font-semibold uppercase tracking-[0.24em] text-medical-light">
             Where AUSSS sits
           </p>
-          <div className="mt-8 flex flex-col items-stretch gap-4 sm:flex-row sm:items-center">
+          <div className="mt-8 flex flex-col items-stretch gap-4 sm:flex-row sm:items-stretch">
             {ifmsaScale.lineage.map((node, idx) => (
               <div key={node.name} className="flex flex-1 items-center gap-4">
                 <a
@@ -117,14 +112,20 @@ export default function IFMSAPage() {
                       ? 'noopener noreferrer'
                       : undefined
                   }
-                  className="flex flex-1 flex-col items-center rounded-2xl border border-white/10 bg-forest-800 px-6 py-7 text-center transition-colors hover:border-white/25"
+                  className="flex h-44 flex-1 flex-col items-center justify-center rounded-2xl border border-white/10 bg-forest-800 px-4 py-4 text-center transition-colors hover:border-white/25"
                 >
                   <img
                     src={node.logo}
                     alt={node.name}
-                    className="h-10 w-auto object-contain"
+                    loading="lazy"
+                    decoding="async"
+                    className={`w-auto max-w-full object-contain ${
+                      node.name === 'IFMSA-Egypt'
+                        ? 'h-16 sm:h-20'
+                        : 'h-20 sm:h-24'
+                    }`}
                   />
-                  <span className="mt-4 text-xs leading-relaxed text-silver/60">
+                  <span className="mt-3 text-xs leading-relaxed text-silver/60">
                     {node.note}
                   </span>
                 </a>

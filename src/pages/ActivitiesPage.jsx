@@ -29,13 +29,6 @@ export default function ActivitiesPage() {
   return (
     <article className="bg-forest-950">
       <header className="relative overflow-hidden pb-16 pt-32 sm:pt-40">
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(55% 70% at 50% 0%, rgba(91,141,184,0.35) 0%, rgba(2,28,18,0) 70%)',
-          }}
-        />
         <div className="container-prose relative text-center">
           <span className="eyebrow justify-center">
             <span className="h-px w-8 bg-medical" />

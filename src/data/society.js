@@ -540,6 +540,13 @@ export const socials = [
     href: 'https://www.tiktok.com/@ausss_ainshams',
     blurb: 'Campaign highlights and behind-the-scenes.',
   },
+  {
+    key: 'linktree',
+    name: 'Linktree',
+    handle: 'linktr.ee/ausss_exchange',
+    href: 'https://linktr.ee/ausss_exchange',
+    blurb: 'Every AUSSS link in one place.',
+  },
 ]
 
 // --- IFMSA page copy (editable) ----------------------------------------
