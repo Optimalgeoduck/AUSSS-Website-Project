@@ -210,16 +210,22 @@ export default function MerchPage() {
             </div>
           </div>
 
-          {/* Mobile: single-column stack so reading order stays 1→14. */}
-          <div className="mx-auto mt-12 max-w-md space-y-5 sm:hidden">
-            {merchPages.map((p, idx) => (
-              <BookletThumb
-                key={p.src}
-                page={p}
-                idx={idx}
-                onOpen={setOpenPage}
-              />
-            ))}
+          {/* Mobile: two staggered columns (zigzag), like the order cards. */}
+          <div className="mx-auto mt-12 grid max-w-md grid-cols-2 gap-3 sm:hidden">
+            <div className="flex flex-col gap-3">
+              {merchPages.map((p, idx) =>
+                idx % 2 === 0 ? (
+                  <BookletThumb key={p.src} page={p} idx={idx} onOpen={setOpenPage} />
+                ) : null,
+              )}
+            </div>
+            <div className="flex flex-col gap-3 pt-10">
+              {merchPages.map((p, idx) =>
+                idx % 2 === 1 ? (
+                  <BookletThumb key={p.src} page={p} idx={idx} onOpen={setOpenPage} />
+                ) : null,
+              )}
+            </div>
           </div>
 
           {/* Desktop: two-column staggered zigzag — right column is offset
@@ -270,7 +276,26 @@ export default function MerchPage() {
               pickup once production wraps.
             </p>
           </div>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Mobile: two staggered columns (zigzag), matching the booklet. */}
+          <div className="grid grid-cols-2 gap-3 sm:hidden">
+            <div className="flex flex-col gap-3">
+              {availableProducts.map((p, idx) =>
+                idx % 2 === 0 ? (
+                  <ProductCard key={p.id} product={p} onOpenSizeChart={setChartFor} />
+                ) : null,
+              )}
+            </div>
+            <div className="flex flex-col gap-3 pt-10">
+              {availableProducts.map((p, idx) =>
+                idx % 2 === 1 ? (
+                  <ProductCard key={p.id} product={p} onOpenSizeChart={setChartFor} />
+                ) : null,
+              )}
+            </div>
+          </div>
+
+          {/* Desktop: even grid. */}
+          <div className="hidden gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-3">
             {availableProducts.map((p) => (
               <ProductCard
                 key={p.id}

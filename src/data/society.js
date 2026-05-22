@@ -486,18 +486,6 @@ export const slugFor = (c) =>
 export const committeeBySlug = (slug) =>
   committees.find((c) => slugFor(c) === String(slug).toLowerCase())
 
-// All activities flattened, each tagged with its committee, drives the
-// aggregated /activities wall.
-export const allActivities = committees.flatMap((c) =>
-  (c.activities || []).map((a) => ({
-    ...a,
-    committee: c.abbr,
-    committeeName: c.name,
-    color: c.color,
-    slug: slugFor(c),
-  })),
-)
-
 // --- Society-wide info --------------------------------------------------
 // Paste the society's public Google Calendar address into `calendarId`
 // (e.g. "abc123@group.calendar.google.com") OR a full embed src URL.
@@ -539,13 +527,6 @@ export const socials = [
     handle: '@ausss_ainshams',
     href: 'https://www.tiktok.com/@ausss_ainshams',
     blurb: 'Campaign highlights and behind-the-scenes.',
-  },
-  {
-    key: 'linktree',
-    name: 'Linktree',
-    handle: 'linktr.ee/ausss_exchange',
-    href: 'https://linktr.ee/ausss_exchange',
-    blurb: 'Every AUSSS link in one place.',
   },
 ]
 
@@ -669,19 +650,6 @@ export const exchange = {
     { label: 'Egypt explore page', href: 'https://exchange.ifmsa.org/explore-pages/national/view/6' },
   ],
 }
-
-// --- Recurring awareness days AUSSS committees observe -----------------
-// `month`/`day` are indicative (some days are nth-weekday based, noted).
-// Drives the "upcoming" strip on /activities. Not a substitute for the
-// society calendar (society.calendarId).
-export const awarenessDays = [
-  { name: 'World TB Day', month: 3, day: 24, committee: 'SCOPH' },
-  { name: 'International AIDS Candlelight Memorial', month: 5, day: 18, committee: 'SCORA', note: 'Third Sunday of May' },
-  { name: 'World Antimicrobial Awareness Week', month: 11, day: 18, committee: 'SCOPH' },
-  { name: 'World Diabetes Day', month: 11, day: 14, committee: 'SCOPH' },
-  { name: 'World AIDS Day', month: 12, day: 1, committee: 'SCORA' },
-  { name: 'Human Rights Day', month: 12, day: 10, committee: 'SCORP' },
-]
 
 // --- Alumni / exchange testimonials ------------------------------------
 // Real quotes only, never invent. `quote` is verbatim from the student's

@@ -7,28 +7,29 @@ export const albums = [
     "title": "15th Winter Camp",
     "blurb": "Four days of skill-building, bonding, and late-night ideation.",
     "cover": "/assets/gallery/15th-winter-camp/001-thumb.jpg",
-    "count": 28,
+    "count": 40,
     "photos": [
       {
         "thumb": "/assets/gallery/15th-winter-camp/001-thumb.jpg",
         "full": "/assets/gallery/15th-winter-camp/001-full.jpg",
         "w": 4032,
         "h": 3024,
-        "faces": 10
+        "featured": true,
+        "label": "Delegation"
       },
       {
         "thumb": "/assets/gallery/15th-winter-camp/002-thumb.jpg",
         "full": "/assets/gallery/15th-winter-camp/002-full.jpg",
-        "w": 4160,
-        "h": 3120,
-        "faces": 8
+        "w": 4032,
+        "h": 3024,
+        "faces": 10
       },
       {
         "thumb": "/assets/gallery/15th-winter-camp/003-thumb.jpg",
         "full": "/assets/gallery/15th-winter-camp/003-full.jpg",
         "w": 4160,
         "h": 3120,
-        "faces": 7
+        "faces": 8
       },
       {
         "thumb": "/assets/gallery/15th-winter-camp/004-thumb.jpg",
@@ -47,57 +48,57 @@ export const albums = [
       {
         "thumb": "/assets/gallery/15th-winter-camp/006-thumb.jpg",
         "full": "/assets/gallery/15th-winter-camp/006-full.jpg",
-        "w": 4160,
-        "h": 3120,
+        "w": 4032,
+        "h": 3024,
         "faces": 5
       },
       {
         "thumb": "/assets/gallery/15th-winter-camp/007-thumb.jpg",
         "full": "/assets/gallery/15th-winter-camp/007-full.jpg",
-        "w": 4032,
-        "h": 3024,
-        "faces": 6
+        "w": 4160,
+        "h": 3120,
+        "faces": 5
       },
       {
         "thumb": "/assets/gallery/15th-winter-camp/008-thumb.jpg",
         "full": "/assets/gallery/15th-winter-camp/008-full.jpg",
         "w": 4032,
         "h": 3024,
-        "faces": 5
+        "faces": 6
       },
       {
         "thumb": "/assets/gallery/15th-winter-camp/009-thumb.jpg",
         "full": "/assets/gallery/15th-winter-camp/009-full.jpg",
-        "w": 4160,
-        "h": 3120,
-        "faces": 4
+        "w": 4032,
+        "h": 3024,
+        "faces": 5
       },
       {
         "thumb": "/assets/gallery/15th-winter-camp/010-thumb.jpg",
         "full": "/assets/gallery/15th-winter-camp/010-full.jpg",
-        "w": 4032,
-        "h": 3024,
+        "w": 4160,
+        "h": 3120,
         "faces": 4
       },
       {
         "thumb": "/assets/gallery/15th-winter-camp/011-thumb.jpg",
         "full": "/assets/gallery/15th-winter-camp/011-full.jpg",
+        "w": 4032,
+        "h": 3024,
+        "faces": 4
+      },
+      {
+        "thumb": "/assets/gallery/15th-winter-camp/012-thumb.jpg",
+        "full": "/assets/gallery/15th-winter-camp/012-full.jpg",
         "w": 3024,
         "h": 4032,
         "faces": 5
       },
       {
-        "thumb": "/assets/gallery/15th-winter-camp/012-thumb.jpg",
-        "full": "/assets/gallery/15th-winter-camp/012-full.jpg",
-        "w": 4160,
-        "h": 3120,
-        "faces": 4
-      },
-      {
         "thumb": "/assets/gallery/15th-winter-camp/013-thumb.jpg",
         "full": "/assets/gallery/15th-winter-camp/013-full.jpg",
-        "w": 4032,
-        "h": 3024,
+        "w": 4160,
+        "h": 3120,
         "faces": 4
       },
       {
@@ -110,8 +111,8 @@ export const albums = [
       {
         "thumb": "/assets/gallery/15th-winter-camp/015-thumb.jpg",
         "full": "/assets/gallery/15th-winter-camp/015-full.jpg",
-        "w": 3024,
-        "h": 4032,
+        "w": 4032,
+        "h": 3024,
         "faces": 4
       },
       {
@@ -124,37 +125,37 @@ export const albums = [
       {
         "thumb": "/assets/gallery/15th-winter-camp/017-thumb.jpg",
         "full": "/assets/gallery/15th-winter-camp/017-full.jpg",
-        "w": 4160,
-        "h": 3120,
-        "faces": 3
+        "w": 3024,
+        "h": 4032,
+        "faces": 4
       },
       {
         "thumb": "/assets/gallery/15th-winter-camp/018-thumb.jpg",
         "full": "/assets/gallery/15th-winter-camp/018-full.jpg",
         "w": 4160,
         "h": 3120,
-        "faces": 4
+        "faces": 3
       },
       {
         "thumb": "/assets/gallery/15th-winter-camp/019-thumb.jpg",
         "full": "/assets/gallery/15th-winter-camp/019-full.jpg",
+        "w": 4160,
+        "h": 3120,
+        "faces": 4
+      },
+      {
+        "thumb": "/assets/gallery/15th-winter-camp/020-thumb.jpg",
+        "full": "/assets/gallery/15th-winter-camp/020-full.jpg",
         "w": 1600,
         "h": 1200,
         "faces": 3
       },
       {
-        "thumb": "/assets/gallery/15th-winter-camp/020-thumb.jpg",
-        "full": "/assets/gallery/15th-winter-camp/020-full.jpg",
+        "thumb": "/assets/gallery/15th-winter-camp/021-thumb.jpg",
+        "full": "/assets/gallery/15th-winter-camp/021-full.jpg",
         "w": 3024,
         "h": 4032,
         "faces": 4
-      },
-      {
-        "thumb": "/assets/gallery/15th-winter-camp/021-thumb.jpg",
-        "full": "/assets/gallery/15th-winter-camp/021-full.jpg",
-        "w": 4032,
-        "h": 3024,
-        "faces": 3
       },
       {
         "thumb": "/assets/gallery/15th-winter-camp/022-thumb.jpg",
@@ -166,44 +167,128 @@ export const albums = [
       {
         "thumb": "/assets/gallery/15th-winter-camp/023-thumb.jpg",
         "full": "/assets/gallery/15th-winter-camp/023-full.jpg",
-        "w": 4160,
-        "h": 3120,
-        "faces": 3
-      },
-      {
-        "thumb": "/assets/gallery/15th-winter-camp/024-thumb.jpg",
-        "full": "/assets/gallery/15th-winter-camp/024-full.jpg",
-        "w": 1600,
-        "h": 1200,
-        "faces": 3
-      },
-      {
-        "thumb": "/assets/gallery/15th-winter-camp/025-thumb.jpg",
-        "full": "/assets/gallery/15th-winter-camp/025-full.jpg",
-        "w": 2941,
-        "h": 3762,
-        "faces": 3
-      },
-      {
-        "thumb": "/assets/gallery/15th-winter-camp/026-thumb.jpg",
-        "full": "/assets/gallery/15th-winter-camp/026-full.jpg",
         "w": 4032,
         "h": 3024,
         "faces": 3
       },
       {
+        "thumb": "/assets/gallery/15th-winter-camp/024-thumb.jpg",
+        "full": "/assets/gallery/15th-winter-camp/024-full.jpg",
+        "w": 4160,
+        "h": 3120,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/15th-winter-camp/025-thumb.jpg",
+        "full": "/assets/gallery/15th-winter-camp/025-full.jpg",
+        "w": 1600,
+        "h": 1200,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/15th-winter-camp/026-thumb.jpg",
+        "full": "/assets/gallery/15th-winter-camp/026-full.jpg",
+        "w": 2941,
+        "h": 3762,
+        "faces": 3
+      },
+      {
         "thumb": "/assets/gallery/15th-winter-camp/027-thumb.jpg",
         "full": "/assets/gallery/15th-winter-camp/027-full.jpg",
-        "w": 3120,
-        "h": 4160,
+        "w": 4032,
+        "h": 3024,
         "faces": 3
       },
       {
         "thumb": "/assets/gallery/15th-winter-camp/028-thumb.jpg",
         "full": "/assets/gallery/15th-winter-camp/028-full.jpg",
+        "w": 3120,
+        "h": 4160,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/15th-winter-camp/029-thumb.jpg",
+        "full": "/assets/gallery/15th-winter-camp/029-full.jpg",
+        "w": 3024,
+        "h": 4032,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/15th-winter-camp/030-thumb.jpg",
+        "full": "/assets/gallery/15th-winter-camp/030-full.jpg",
+        "w": 960,
+        "h": 1280,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/15th-winter-camp/031-thumb.jpg",
+        "full": "/assets/gallery/15th-winter-camp/031-full.jpg",
+        "w": 4160,
+        "h": 3120,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/15th-winter-camp/032-thumb.jpg",
+        "full": "/assets/gallery/15th-winter-camp/032-full.jpg",
+        "w": 4032,
+        "h": 3024,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/15th-winter-camp/033-thumb.jpg",
+        "full": "/assets/gallery/15th-winter-camp/033-full.jpg",
+        "w": 3024,
+        "h": 4032,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/15th-winter-camp/034-thumb.jpg",
+        "full": "/assets/gallery/15th-winter-camp/034-full.jpg",
+        "w": 3120,
+        "h": 4160,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/15th-winter-camp/035-thumb.jpg",
+        "full": "/assets/gallery/15th-winter-camp/035-full.jpg",
         "w": 3024,
         "h": 4032,
         "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/15th-winter-camp/036-thumb.jpg",
+        "full": "/assets/gallery/15th-winter-camp/036-full.jpg",
+        "w": 4032,
+        "h": 3024,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/15th-winter-camp/037-thumb.jpg",
+        "full": "/assets/gallery/15th-winter-camp/037-full.jpg",
+        "w": 4032,
+        "h": 3024,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/15th-winter-camp/038-thumb.jpg",
+        "full": "/assets/gallery/15th-winter-camp/038-full.jpg",
+        "w": 4032,
+        "h": 3024,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/15th-winter-camp/039-thumb.jpg",
+        "full": "/assets/gallery/15th-winter-camp/039-full.jpg",
+        "w": 1600,
+        "h": 900,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/15th-winter-camp/040-thumb.jpg",
+        "full": "/assets/gallery/15th-winter-camp/040-full.jpg",
+        "w": 3024,
+        "h": 4032,
+        "faces": 2
       }
     ]
   },
@@ -212,14 +297,15 @@ export const albums = [
     "title": "Aswan NGA",
     "blurb": "AUSSS at the National General Assembly in Aswan.",
     "cover": "/assets/gallery/aswan-nga/001-thumb.jpg",
-    "count": 22,
+    "count": 50,
     "photos": [
       {
         "thumb": "/assets/gallery/aswan-nga/001-thumb.jpg",
         "full": "/assets/gallery/aswan-nga/001-full.jpg",
-        "w": 4288,
-        "h": 2848,
-        "faces": 4
+        "w": 960,
+        "h": 1280,
+        "featured": true,
+        "label": "Delegation"
       },
       {
         "thumb": "/assets/gallery/aswan-nga/002-thumb.jpg",
@@ -254,7 +340,7 @@ export const albums = [
         "full": "/assets/gallery/aswan-nga/006-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 3
+        "faces": 4
       },
       {
         "thumb": "/assets/gallery/aswan-nga/007-thumb.jpg",
@@ -296,7 +382,7 @@ export const albums = [
         "full": "/assets/gallery/aswan-nga/012-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 3
+        "faces": 2
       },
       {
         "thumb": "/assets/gallery/aswan-nga/013-thumb.jpg",
@@ -310,7 +396,7 @@ export const albums = [
         "full": "/assets/gallery/aswan-nga/014-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 3
+        "faces": 2
       },
       {
         "thumb": "/assets/gallery/aswan-nga/015-thumb.jpg",
@@ -324,7 +410,7 @@ export const albums = [
         "full": "/assets/gallery/aswan-nga/016-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 3
+        "faces": 2
       },
       {
         "thumb": "/assets/gallery/aswan-nga/017-thumb.jpg",
@@ -345,7 +431,7 @@ export const albums = [
         "full": "/assets/gallery/aswan-nga/019-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 3
+        "faces": 2
       },
       {
         "thumb": "/assets/gallery/aswan-nga/020-thumb.jpg",
@@ -367,6 +453,202 @@ export const albums = [
         "w": 4288,
         "h": 2848,
         "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/023-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/023-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/024-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/024-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/025-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/025-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/026-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/026-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/027-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/027-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/028-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/028-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/029-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/029-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/030-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/030-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/031-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/031-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/032-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/032-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/033-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/033-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/034-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/034-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/035-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/035-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/036-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/036-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/037-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/037-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/038-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/038-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/039-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/039-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/040-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/040-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/041-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/041-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/042-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/042-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/043-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/043-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/044-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/044-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/045-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/045-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/046-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/046-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/047-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/047-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/048-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/048-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/049-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/049-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/aswan-nga/050-thumb.jpg",
+        "full": "/assets/gallery/aswan-nga/050-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
       }
     ]
   },
@@ -375,35 +657,36 @@ export const albums = [
     "title": "1st NGA 25-26 (MUST)",
     "blurb": "AUSSS delegation at the 1st National General Assembly of the term.",
     "cover": "/assets/gallery/1st-nga-25-26/001-thumb.jpg",
-    "count": 20,
+    "count": 40,
     "photos": [
       {
         "thumb": "/assets/gallery/1st-nga-25-26/001-thumb.jpg",
         "full": "/assets/gallery/1st-nga-25-26/001-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 12
+        "featured": true,
+        "label": "Delegation"
       },
       {
         "thumb": "/assets/gallery/1st-nga-25-26/002-thumb.jpg",
         "full": "/assets/gallery/1st-nga-25-26/002-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 8
+        "faces": 12
       },
       {
         "thumb": "/assets/gallery/1st-nga-25-26/003-thumb.jpg",
         "full": "/assets/gallery/1st-nga-25-26/003-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 7
+        "faces": 8
       },
       {
         "thumb": "/assets/gallery/1st-nga-25-26/004-thumb.jpg",
         "full": "/assets/gallery/1st-nga-25-26/004-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 6
+        "faces": 7
       },
       {
         "thumb": "/assets/gallery/1st-nga-25-26/005-thumb.jpg",
@@ -417,7 +700,7 @@ export const albums = [
         "full": "/assets/gallery/1st-nga-25-26/006-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 4
+        "faces": 6
       },
       {
         "thumb": "/assets/gallery/1st-nga-25-26/007-thumb.jpg",
@@ -466,7 +749,7 @@ export const albums = [
         "full": "/assets/gallery/1st-nga-25-26/013-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 3
+        "faces": 4
       },
       {
         "thumb": "/assets/gallery/1st-nga-25-26/014-thumb.jpg",
@@ -480,14 +763,14 @@ export const albums = [
         "full": "/assets/gallery/1st-nga-25-26/015-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 4
+        "faces": 3
       },
       {
         "thumb": "/assets/gallery/1st-nga-25-26/016-thumb.jpg",
         "full": "/assets/gallery/1st-nga-25-26/016-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 3
+        "faces": 4
       },
       {
         "thumb": "/assets/gallery/1st-nga-25-26/017-thumb.jpg",
@@ -516,6 +799,146 @@ export const albums = [
         "w": 4288,
         "h": 2848,
         "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/021-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/021-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/022-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/022-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/023-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/023-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/024-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/024-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/025-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/025-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/026-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/026-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/027-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/027-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/028-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/028-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/029-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/029-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/030-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/030-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/031-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/031-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/032-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/032-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/033-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/033-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/034-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/034-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/035-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/035-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/036-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/036-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/037-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/037-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/038-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/038-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/039-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/039-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/1st-nga-25-26/040-thumb.jpg",
+        "full": "/assets/gallery/1st-nga-25-26/040-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
       }
     ]
   },
@@ -524,7 +947,7 @@ export const albums = [
     "title": "Orientation 25-26",
     "blurb": "Welcoming the new class of Life Savers, Change Makers.",
     "cover": "/assets/gallery/orientation-25-26/001-thumb.jpg",
-    "count": 20,
+    "count": 40,
     "photos": [
       {
         "thumb": "/assets/gallery/orientation-25-26/001-thumb.jpg",
@@ -665,6 +1088,146 @@ export const albums = [
         "w": 1280,
         "h": 854,
         "faces": 4
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/021-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/021-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/022-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/022-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/023-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/023-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/024-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/024-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/025-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/025-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/026-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/026-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/027-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/027-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 4
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/028-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/028-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/029-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/029-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/030-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/030-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/031-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/031-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/032-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/032-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/033-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/033-full.jpg",
+        "w": 1280,
+        "h": 854,
+        "faces": 4
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/034-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/034-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/035-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/035-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/036-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/036-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/037-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/037-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/038-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/038-full.jpg",
+        "w": 1280,
+        "h": 854,
+        "faces": 4
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/039-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/039-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/orientation-25-26/040-thumb.jpg",
+        "full": "/assets/gallery/orientation-25-26/040-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
       }
     ]
   },
@@ -678,37 +1241,37 @@ export const albums = [
       {
         "thumb": "/assets/gallery/16doa/001-thumb.jpg",
         "full": "/assets/gallery/16doa/001-full.jpg",
-        "w": 3024,
-        "h": 4032,
+        "w": 4288,
+        "h": 2848,
         "faces": 4
       },
       {
         "thumb": "/assets/gallery/16doa/002-thumb.jpg",
         "full": "/assets/gallery/16doa/002-full.jpg",
-        "w": 4288,
-        "h": 2848,
-        "faces": 3
+        "w": 3024,
+        "h": 4032,
+        "faces": 4
       },
       {
         "thumb": "/assets/gallery/16doa/003-thumb.jpg",
         "full": "/assets/gallery/16doa/003-full.jpg",
-        "w": 1179,
-        "h": 2096,
-        "faces": 4
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
       },
       {
         "thumb": "/assets/gallery/16doa/004-thumb.jpg",
         "full": "/assets/gallery/16doa/004-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 3
+        "faces": 5
       },
       {
         "thumb": "/assets/gallery/16doa/005-thumb.jpg",
         "full": "/assets/gallery/16doa/005-full.jpg",
-        "w": 4288,
-        "h": 2848,
-        "faces": 3
+        "w": 1179,
+        "h": 2096,
+        "faces": 4
       },
       {
         "thumb": "/assets/gallery/16doa/006-thumb.jpg",
@@ -727,43 +1290,43 @@ export const albums = [
       {
         "thumb": "/assets/gallery/16doa/008-thumb.jpg",
         "full": "/assets/gallery/16doa/008-full.jpg",
-        "w": 3024,
-        "h": 4032,
+        "w": 4288,
+        "h": 2848,
         "faces": 3
       },
       {
         "thumb": "/assets/gallery/16doa/009-thumb.jpg",
         "full": "/assets/gallery/16doa/009-full.jpg",
-        "w": 1179,
-        "h": 2096,
+        "w": 3024,
+        "h": 4032,
         "faces": 3
       },
       {
         "thumb": "/assets/gallery/16doa/010-thumb.jpg",
         "full": "/assets/gallery/16doa/010-full.jpg",
-        "w": 4288,
-        "h": 2848,
+        "w": 3024,
+        "h": 4032,
         "faces": 3
       },
       {
         "thumb": "/assets/gallery/16doa/011-thumb.jpg",
         "full": "/assets/gallery/16doa/011-full.jpg",
-        "w": 4288,
-        "h": 2848,
+        "w": 1179,
+        "h": 2096,
         "faces": 3
       },
       {
         "thumb": "/assets/gallery/16doa/012-thumb.jpg",
         "full": "/assets/gallery/16doa/012-full.jpg",
-        "w": 4288,
-        "h": 2848,
+        "w": 3024,
+        "h": 4032,
         "faces": 3
       },
       {
         "thumb": "/assets/gallery/16doa/013-thumb.jpg",
         "full": "/assets/gallery/16doa/013-full.jpg",
-        "w": 4288,
-        "h": 2848,
+        "w": 3024,
+        "h": 4032,
         "faces": 3
       },
       {
@@ -822,7 +1385,7 @@ export const albums = [
     "title": "Booth 25-26",
     "blurb": "Out on campus — recruiting the next generation.",
     "cover": "/assets/gallery/booth-25-26/001-thumb.jpg",
-    "count": 20,
+    "count": 40,
     "photos": [
       {
         "thumb": "/assets/gallery/booth-25-26/001-thumb.jpg",
@@ -850,21 +1413,21 @@ export const albums = [
         "full": "/assets/gallery/booth-25-26/004-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 6
+        "faces": 4
       },
       {
         "thumb": "/assets/gallery/booth-25-26/005-thumb.jpg",
         "full": "/assets/gallery/booth-25-26/005-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 4
+        "faces": 5
       },
       {
         "thumb": "/assets/gallery/booth-25-26/006-thumb.jpg",
         "full": "/assets/gallery/booth-25-26/006-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 4
+        "faces": 6
       },
       {
         "thumb": "/assets/gallery/booth-25-26/007-thumb.jpg",
@@ -878,28 +1441,28 @@ export const albums = [
         "full": "/assets/gallery/booth-25-26/008-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 3
+        "faces": 4
       },
       {
         "thumb": "/assets/gallery/booth-25-26/009-thumb.jpg",
         "full": "/assets/gallery/booth-25-26/009-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 3
+        "faces": 4
       },
       {
         "thumb": "/assets/gallery/booth-25-26/010-thumb.jpg",
         "full": "/assets/gallery/booth-25-26/010-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 3
+        "faces": 4
       },
       {
         "thumb": "/assets/gallery/booth-25-26/011-thumb.jpg",
         "full": "/assets/gallery/booth-25-26/011-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 3
+        "faces": 4
       },
       {
         "thumb": "/assets/gallery/booth-25-26/012-thumb.jpg",
@@ -963,6 +1526,146 @@ export const albums = [
         "w": 4288,
         "h": 2848,
         "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/021-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/021-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/022-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/022-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/023-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/023-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/024-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/024-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/025-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/025-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/026-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/026-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/027-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/027-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/028-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/028-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/029-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/029-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/030-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/030-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/031-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/031-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/032-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/032-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/033-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/033-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/034-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/034-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/035-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/035-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/036-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/036-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/037-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/037-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/038-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/038-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/039-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/039-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/booth-25-26/040-thumb.jpg",
+        "full": "/assets/gallery/booth-25-26/040-full.jpg",
+        "w": 4288,
+        "h": 2848,
+        "faces": 2
       }
     ]
   },
@@ -999,14 +1702,14 @@ export const albums = [
         "full": "/assets/gallery/nye-2026/004-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 5
+        "faces": 7
       },
       {
         "thumb": "/assets/gallery/nye-2026/005-thumb.jpg",
         "full": "/assets/gallery/nye-2026/005-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 6
+        "faces": 5
       },
       {
         "thumb": "/assets/gallery/nye-2026/006-thumb.jpg",
@@ -1048,7 +1751,7 @@ export const albums = [
         "full": "/assets/gallery/nye-2026/011-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 5
+        "faces": 4
       },
       {
         "thumb": "/assets/gallery/nye-2026/012-thumb.jpg",
@@ -1069,7 +1772,7 @@ export const albums = [
         "full": "/assets/gallery/nye-2026/014-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 5
+        "faces": 4
       },
       {
         "thumb": "/assets/gallery/nye-2026/015-thumb.jpg",
@@ -1083,21 +1786,21 @@ export const albums = [
         "full": "/assets/gallery/nye-2026/016-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 4
+        "faces": 5
       },
       {
         "thumb": "/assets/gallery/nye-2026/017-thumb.jpg",
         "full": "/assets/gallery/nye-2026/017-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 4
+        "faces": 5
       },
       {
         "thumb": "/assets/gallery/nye-2026/018-thumb.jpg",
         "full": "/assets/gallery/nye-2026/018-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 5
+        "faces": 4
       },
       {
         "thumb": "/assets/gallery/nye-2026/019-thumb.jpg",
@@ -1111,7 +1814,7 @@ export const albums = [
         "full": "/assets/gallery/nye-2026/020-full.jpg",
         "w": 4288,
         "h": 2848,
-        "faces": 4
+        "faces": 3
       }
     ]
   },
@@ -1120,7 +1823,7 @@ export const albums = [
     "title": "For the Love of the Cake",
     "blurb": "AUSSS bake-off and team bonding.",
     "cover": "/assets/gallery/for-the-love-of-the-cake/001-thumb.jpg",
-    "count": 6,
+    "count": 8,
     "photos": [
       {
         "thumb": "/assets/gallery/for-the-love-of-the-cake/001-thumb.jpg",
@@ -1163,6 +1866,20 @@ export const albums = [
         "w": 960,
         "h": 1280,
         "faces": 3
+      },
+      {
+        "thumb": "/assets/gallery/for-the-love-of-the-cake/007-thumb.jpg",
+        "full": "/assets/gallery/for-the-love-of-the-cake/007-full.jpg",
+        "w": 3060,
+        "h": 4080,
+        "faces": 2
+      },
+      {
+        "thumb": "/assets/gallery/for-the-love-of-the-cake/008-thumb.jpg",
+        "full": "/assets/gallery/for-the-love-of-the-cake/008-full.jpg",
+        "w": 1200,
+        "h": 1600,
+        "faces": 2
       }
     ]
   }

@@ -35,30 +35,30 @@ export default function ProductCard({ product, onOpenSizeChart }) {
         />
       </div>
 
-      <div className="flex flex-1 flex-col p-6">
-        <h3 className="heading-serif text-xl text-white">{product.name}</h3>
+      <div className="flex flex-1 flex-col p-4 sm:p-6">
+        <h3 className="heading-serif text-base text-white sm:text-xl">{product.name}</h3>
         {product.tagline && (
-          <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-medical-light">
+          <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-medical-light sm:text-xs">
             {product.tagline}
           </p>
         )}
-        <p className="mt-3 text-sm leading-relaxed text-silver/70">
+        <p className="mt-2 line-clamp-3 text-xs leading-relaxed text-silver/70 sm:mt-3 sm:line-clamp-none sm:text-sm">
           {product.description}
         </p>
 
-        <div className="mt-5 flex items-center justify-between gap-3">
-          <span className="heading-serif text-2xl text-white">
+        <div className="mt-4 flex items-center justify-between gap-2 sm:mt-5 sm:gap-3">
+          <span className="heading-serif text-xl text-white sm:text-2xl">
             {formatEGP(product.price)}
           </span>
           {product.preorder && (
-            <span className="rounded-full border border-medical/40 bg-medical/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-medical-light">
+            <span className="hidden rounded-full border border-medical/40 bg-medical/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-medical-light sm:inline-block">
               Pre-order
             </span>
           )}
         </div>
 
         {needsSize && (
-          <div className="mt-5">
+          <div className="mt-4 sm:mt-5">
             <div className="flex items-center justify-between">
               <label className="text-xs font-semibold uppercase tracking-[0.16em] text-silver/60">
                 Size
@@ -80,7 +80,7 @@ export default function ProductCard({ product, onOpenSizeChart }) {
                   type="button"
                   onClick={() => setSize(s)}
                   aria-pressed={size === s}
-                  className={`min-w-[3rem] rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
+                  className={`min-w-[2.5rem] rounded-full border px-2.5 py-1.5 text-xs font-semibold transition-colors sm:min-w-[3rem] sm:px-3 ${
                     size === s
                       ? 'border-medical bg-medical text-forest-950'
                       : 'border-white/15 text-silver/80 hover:border-white/30 hover:text-white'
@@ -94,18 +94,20 @@ export default function ProductCard({ product, onOpenSizeChart }) {
         )}
 
         {needsDesign && (
-          <div className="mt-5">
+          <div className="mt-4 sm:mt-5">
             <label className="text-xs font-semibold uppercase tracking-[0.16em] text-silver/60">
               Design
             </label>
-            <div className="mt-2 flex flex-wrap gap-2">
+            <div className="mt-2 grid grid-cols-2 gap-2">
               {product.designs.map((d) => (
                 <button
                   key={d}
                   type="button"
                   onClick={() => setDesign(d)}
                   aria-pressed={design === d}
-                  className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
+                  className={`rounded-full border px-3 py-1.5 text-center text-xs font-semibold transition-colors ${
+                    product.wideDesigns?.includes(d) ? 'col-span-2' : ''
+                  } ${
                     design === d
                       ? 'border-medical bg-medical text-forest-950'
                       : 'border-white/15 text-silver/80 hover:border-white/30 hover:text-white'
@@ -118,11 +120,11 @@ export default function ProductCard({ product, onOpenSizeChart }) {
           </div>
         )}
 
-        <div className="mt-auto pt-6">
+        <div className="mt-auto pt-4 sm:pt-6">
           <button
             type="button"
             onClick={onAdd}
-            className="group/btn flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-forest transition-transform hover:scale-[1.02]"
+            className="group/btn flex w-full items-center justify-center gap-2 rounded-full bg-white px-4 py-2.5 text-xs font-semibold text-forest transition-transform hover:scale-[1.02] sm:px-5 sm:py-3 sm:text-sm"
           >
             {feedback || 'Add to cart'}
             {!feedback && (

@@ -54,7 +54,7 @@ function CommitteeCard({ c, i }) {
   return (
     <Link
       to={`/committees/${slugFor(c)}`}
-      className="reveal group flex h-full flex-col rounded-2xl border border-white/10 bg-forest-800 p-6 text-center transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-forest-950/40"
+      className="reveal group flex h-full flex-col rounded-2xl border border-white/10 bg-forest-800 p-3 text-center transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-forest-950/40 sm:p-6"
       style={{
         transitionDelay: `${(i % 5) * 70}ms`,
         '--brandGlow': c.color ? rgba(c.color, 0.22) : 'transparent',
@@ -66,9 +66,9 @@ function CommitteeCard({ c, i }) {
         e.currentTarget.style.borderColor = ''
       }}
     >
-      <div className="relative mx-auto flex h-20 w-full items-center justify-center">
+      <div className="relative mx-auto flex h-14 w-full items-center justify-center sm:h-20">
         <div
-          className="absolute h-20 w-20 rounded-full blur-2xl"
+          className="absolute h-16 w-16 rounded-full blur-2xl sm:h-20 sm:w-20"
           style={{ background: 'var(--brandGlow)' }}
           aria-hidden="true"
         />
@@ -77,16 +77,16 @@ function CommitteeCard({ c, i }) {
             src={c.logo}
             alt={`${c.abbr} logo`}
             loading="lazy"
-            className="relative max-h-20 w-auto object-contain drop-shadow"
+            className="relative max-h-14 w-auto object-contain drop-shadow sm:max-h-20"
           />
         ) : (
-          <span className="heading-serif relative text-3xl tracking-wide text-medical-light">
+          <span className="heading-serif relative text-2xl tracking-wide text-medical-light sm:text-3xl">
             {c.abbr}
           </span>
         )}
       </div>
 
-      <h3 className="heading-serif mt-4 text-lg leading-snug text-white">
+      <h3 className="heading-serif mt-3 text-sm leading-snug text-white sm:mt-4 sm:text-lg">
         {(() => {
           const [top, bottom] = splitName(c.name)
           return bottom ? (
@@ -112,14 +112,14 @@ function CommitteeCard({ c, i }) {
           {c.officer}
         </p>
       )}
-      <ul className="mt-4 flex flex-wrap items-start justify-center gap-x-6 gap-y-4">
+      <ul className="mt-4 flex flex-wrap items-start justify-center gap-x-3 gap-y-3 sm:gap-x-6 sm:gap-y-4">
         {people.map((o, idx) => (
           <li
             key={o.abbr || idx}
-            className="flex w-28 flex-col items-center text-center"
+            className="flex w-20 flex-col items-center text-center sm:w-28"
           >
             <div
-              className="grid h-16 w-16 place-items-center overflow-hidden rounded-full bg-forest-950 text-sm font-semibold text-silver ring-2"
+              className="grid h-12 w-12 place-items-center overflow-hidden rounded-full bg-forest-950 text-sm font-semibold text-silver ring-2 sm:h-16 sm:w-16"
               style={{ '--tw-ring-color': rgba(c.color, 0.55) }}
             >
               {o.photo ? (
@@ -152,7 +152,7 @@ function CommitteeCard({ c, i }) {
         ))}
       </ul>
       {c.description && (
-        <p className="mt-4 text-sm leading-relaxed text-silver/65">
+        <p className="mt-4 text-xs leading-relaxed text-silver/65 sm:text-sm">
           {c.description}
         </p>
       )}
@@ -216,7 +216,7 @@ export default function TeamOfficials() {
             <div className="reveal">
               <TierLabel>Standing Committees</TierLabel>
             </div>
-            <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
               {standing.map((c, i) => (
                 <CommitteeCard key={`${c.abbr}-${i}`} c={c} i={i} />
               ))}
@@ -231,7 +231,7 @@ export default function TeamOfficials() {
             <div className="reveal">
               <TierLabel>Support Divisions</TierLabel>
             </div>
-            <div className="mx-auto mt-10 grid max-w-5xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
               {support.map((c, i) => (
                 <CommitteeCard key={`${c.abbr}-${i}`} c={c} i={i} />
               ))}

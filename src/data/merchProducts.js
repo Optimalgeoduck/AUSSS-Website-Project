@@ -88,9 +88,11 @@ export const merchProducts = [
       'SCORA',
       'SCOME',
       'SCORP',
-      'Exchange (SCOPE + SCORE)',
+      'Exchange',
       'Support Divisions',
     ],
+    // Designs that get their own full-width row in the picker grid.
+    wideDesigns: ['Exchange', 'Support Divisions'],
     category: 'stationery',
     available: true,
     preorder: true,

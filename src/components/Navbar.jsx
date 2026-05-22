@@ -9,7 +9,6 @@ const LINKS = [
   { to: '/#board', label: 'Leadership' },
   { to: '/#officials', label: 'Committees' },
   { to: '/exchange', label: 'Exchange' },
-  { to: '/activities', label: 'Activities' },
   { to: '/gallery', label: 'Gallery' },
   { to: '/ifmsa', label: 'IFMSA' },
   { to: '/merch', label: 'Merch' },

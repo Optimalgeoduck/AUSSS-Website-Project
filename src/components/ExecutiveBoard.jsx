@@ -17,7 +17,12 @@ function Member({ m, size = 'md' }) {
       : m.tier === 'lead'
         ? 'ring-white/40'
         : 'ring-forest-600/30'
-  const avatar = size === 'lg' ? 'h-24 w-24 text-2xl' : 'h-20 w-20 text-xl'
+  // Cards sized ~40% larger than the base layout (avatar, padding, text and
+  // container widths all scaled by ≈1.4).
+  const avatar =
+    size === 'lg'
+      ? 'h-[8.4rem] w-[8.4rem] text-[2.1rem]'
+      : 'h-28 w-28 text-[1.75rem]'
   const Wrapper = m.candidature ? 'a' : 'article'
   const wrapperProps = m.candidature
     ? {
@@ -31,7 +36,7 @@ function Member({ m, size = 'md' }) {
   return (
     <Wrapper
       {...wrapperProps}
-      className={`reveal flex flex-col items-center rounded-2xl border p-8 text-center transition-all duration-500 hover:-translate-y-1.5 ${
+      className={`reveal flex flex-col items-center rounded-3xl border p-11 text-center transition-all duration-500 hover:-translate-y-1.5 ${
         m.candidature ? 'cursor-pointer' : ''
       } ${
         m.tier === 'lead'
@@ -54,21 +59,21 @@ function Member({ m, size = 'md' }) {
         )}
       </div>
       <h3
-        className={`heading-serif mt-5 text-xl ${
+        className={`heading-serif mt-7 text-[1.75rem] ${
           m.tier === 'lead' ? 'text-white' : 'text-forest dark:text-medical-light'
         }`}
       >
         {m.name}
       </h3>
       <p
-        className={`mt-1 text-xs font-semibold uppercase tracking-[0.18em] ${
+        className={`mt-1.5 text-[1.05rem] font-semibold uppercase tracking-[0.18em] ${
           m.tier === 'lead' ? 'text-medical-light' : 'text-medical'
         }`}
       >
         {m.role}
       </p>
       <p
-        className={`mt-4 text-sm leading-relaxed ${
+        className={`mt-6 text-[1.2rem] leading-relaxed ${
           m.tier === 'lead' ? 'text-silver/80' : 'text-forest-900/60 dark:text-silver/65'
         }`}
       >
@@ -76,14 +81,14 @@ function Member({ m, size = 'md' }) {
       </p>
       {m.candidature && (
         <span
-          className={`mt-5 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.16em] ${
+          className={`mt-7 inline-flex items-center gap-1.5 text-[1.05rem] font-semibold uppercase tracking-[0.16em] ${
             m.tier === 'lead' ? 'text-medical-light' : 'text-medical'
           }`}
         >
           View candidature
           <svg
             viewBox="0 0 24 24"
-            className="h-3.5 w-3.5"
+            className="h-5 w-5"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
@@ -139,7 +144,7 @@ export default function ExecutiveBoard() {
         {patron && (
           <>
             <div className="mt-16 flex justify-center">
-              <div className="w-full max-w-sm">
+              <div className="w-full max-w-[34rem]">
                 <Member m={patron} size="lg" />
               </div>
             </div>
@@ -150,7 +155,7 @@ export default function ExecutiveBoard() {
         {/* Tier 2, President */}
         {lead && (
           <div className={`flex justify-center ${patron ? '' : 'mt-16'}`}>
-            <div className="w-full max-w-md">
+            <div className="w-full max-w-[39rem]">
               <Member m={lead} size="lg" />
             </div>
           </div>
@@ -160,7 +165,7 @@ export default function ExecutiveBoard() {
         {officers.length > 0 && (
           <>
             <div className="mx-auto my-2 h-12 w-px bg-gradient-to-b from-silver/40 to-transparent" />
-            <div className="mx-auto flex max-w-sm flex-col gap-6">
+            <div className="mx-auto flex max-w-[34rem] flex-col gap-8">
               {officers.map((m) => (
                 <Member key={m.role} m={m} />
               ))}
@@ -172,7 +177,7 @@ export default function ExecutiveBoard() {
         {vps.length > 0 && (
           <>
             <div className="mx-auto my-2 h-12 w-px bg-gradient-to-b from-silver/40 to-transparent" />
-            <div className="mx-auto grid max-w-3xl gap-6 sm:grid-cols-2">
+            <div className="mx-auto grid max-w-[67rem] gap-8 sm:grid-cols-2">
               {vps.map((m) => (
                 <Member key={m.role} m={m} />
               ))}

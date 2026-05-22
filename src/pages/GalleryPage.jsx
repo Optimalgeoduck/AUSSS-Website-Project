@@ -4,62 +4,16 @@ import useReveal from '../hooks/useReveal.js'
 import useMediaQuery from '../hooks/useMediaQuery.js'
 import ImageTrail from '../components/ImageTrail.jsx'
 import { albums as rawAlbums, trail } from '../data/gallery.js'
-import { removed as committedRemovals } from '../data/galleryRemovals.js'
+import {
+  useGalleryRemovals,
+  buildRemovalFile,
+} from '../hooks/useGalleryRemovals.js'
 import { society } from '../data/society.js'
 
-const LS_KEY = 'ausss-gallery-removals'
-
-// ── Admin removal state ────────────────────────────────────────────────────
-// Admin mode (?admin=1) lets a committee member mark photos for takedown.
-// Marks live in localStorage and merge with the committed list in
-// galleryRemovals.js. "Copy removal list" exports the merged set as the
-// contents of galleryRemovals.js to paste back into the repo + deploy.
-
-function readLocalMarks() {
-  try {
-    const raw = localStorage.getItem(LS_KEY)
-    const parsed = raw ? JSON.parse(raw) : []
-    return Array.isArray(parsed) ? parsed : []
-  } catch {
-    return []
-  }
-}
-
-function useRemovals(isAdmin) {
-  const [localMarks, setLocalMarks] = useState(() =>
-    isAdmin ? readLocalMarks() : [],
-  )
-
-  const effective = useMemo(
-    () => new Set([...committedRemovals, ...localMarks]),
-    [localMarks],
-  )
-
-  const toggle = useCallback((full) => {
-    setLocalMarks((prev) => {
-      const next = prev.includes(full)
-        ? prev.filter((p) => p !== full)
-        : [...prev, full]
-      try {
-        localStorage.setItem(LS_KEY, JSON.stringify(next))
-      } catch {
-        /* ignore quota / private-mode errors */
-      }
-      return next
-    })
-  }, [])
-
-  const clearLocal = useCallback(() => {
-    setLocalMarks([])
-    try {
-      localStorage.removeItem(LS_KEY)
-    } catch {
-      /* ignore */
-    }
-  }, [])
-
-  return { effective, localMarks, toggle, clearLocal }
-}
+// Visitors always read the union of committed + live removals (the live list
+// is fetched from the backend on load). Inline admin mode (?admin=1) lets a
+// committee member mark photos for export. The dedicated /gallery/admin page
+// hides photos live for everyone. All three share ../hooks/useGalleryRemovals.
 
 // Hide removed photos and recompute count/cover; drop now-empty albums.
 function visibleAlbums(albums, effective) {
@@ -76,7 +30,7 @@ export default function GalleryPage() {
   const { slug } = useParams()
   const [params] = useSearchParams()
   const isAdmin = params.get('admin') === '1'
-  const removals = useRemovals(isAdmin)
+  const removals = useGalleryRemovals(isAdmin ? 'local' : 'none')
 
   const album = slug ? rawAlbums.find((a) => a.slug === slug) : null
   if (slug && !album) return <NotFoundAlbum slug={slug} />
@@ -166,43 +120,30 @@ function GalleryIndex({ isAdmin, removals }) {
             pipeline finishes processing.
           </p>
         ) : (
-          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {albums.map((a) => (
-              <li key={a.slug} className="reveal">
-                <Link
-                  to={`/gallery/${a.slug}${isAdmin ? '?admin=1' : ''}`}
-                  className="group block overflow-hidden rounded-3xl border border-white/10 bg-forest-800 transition-colors hover:border-medical/40"
-                >
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    {a.cover ? (
-                      <img
-                        src={a.cover}
-                        alt={a.title}
-                        loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                    ) : (
-                      <div className="h-full w-full bg-forest-700" />
-                    )}
-                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-forest-950/85 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-5">
-                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-medical-light">
-                        {a.count} {a.count === 1 ? 'photo' : 'photos'}
-                      </p>
-                      <h2 className="heading-serif mt-1 text-xl text-white">
-                        {a.title}
-                      </h2>
-                    </div>
-                  </div>
-                  {a.blurb && (
-                    <p className="px-5 py-4 text-sm leading-relaxed text-silver/70">
-                      {a.blurb}
-                    </p>
-                  )}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <>
+            {/* Mobile: two staggered columns (zigzag), matching the merch page. */}
+            <div className="grid grid-cols-2 gap-3 sm:hidden">
+              <div className="flex flex-col gap-3">
+                {albums.map((a, i) =>
+                  i % 2 === 0 ? <AlbumCard key={a.slug} a={a} isAdmin={isAdmin} /> : null,
+                )}
+              </div>
+              <div className="flex flex-col gap-3 pt-10">
+                {albums.map((a, i) =>
+                  i % 2 === 1 ? <AlbumCard key={a.slug} a={a} isAdmin={isAdmin} /> : null,
+                )}
+              </div>
+            </div>
+
+            {/* Desktop: even grid. */}
+            <ul className="hidden gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-3">
+              {albums.map((a) => (
+                <li key={a.slug}>
+                  <AlbumCard a={a} isAdmin={isAdmin} />
+                </li>
+              ))}
+            </ul>
+          </>
         )}
 
         <div className="reveal mt-16 text-center">
@@ -219,6 +160,42 @@ function GalleryIndex({ isAdmin, removals }) {
 
       {isAdmin && <AdminBar removals={removals} />}
     </article>
+  )
+}
+
+function AlbumCard({ a, isAdmin }) {
+  return (
+    <Link
+      to={`/gallery/${a.slug}${isAdmin ? '?admin=1' : ''}`}
+      className="reveal group block overflow-hidden rounded-2xl border border-white/10 bg-forest-800 transition-colors hover:border-medical/40 sm:rounded-3xl"
+    >
+      <div className="relative aspect-[4/3] overflow-hidden">
+        {a.cover ? (
+          <img
+            src={a.cover}
+            alt={a.title}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        ) : (
+          <div className="h-full w-full bg-forest-700" />
+        )}
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-forest-950/85 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5">
+          <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-medical-light sm:text-[10px]">
+            {a.count} {a.count === 1 ? 'photo' : 'photos'}
+          </p>
+          <h2 className="heading-serif mt-1 text-base text-white sm:text-xl">
+            {a.title}
+          </h2>
+        </div>
+      </div>
+      {a.blurb && (
+        <p className="hidden px-5 py-4 text-sm leading-relaxed text-silver/70 sm:block">
+          {a.blurb}
+        </p>
+      )}
+    </Link>
   )
 }
 
@@ -251,6 +228,13 @@ function AlbumView({ album, isAdmin, removals }) {
     [photos.length],
   )
 
+  // A pinned featured photo (pipeline puts it first) renders as a full-width
+  // banner above the grid. The grid then shows the rest; `gridOffset` keeps
+  // lightbox indices aligned with the full `photos` array.
+  const featuredPhoto = photos[0]?.featured ? photos[0] : null
+  const gridPhotos = featuredPhoto ? photos.slice(1) : photos
+  const gridOffset = featuredPhoto ? 1 : 0
+
   return (
     <article className="bg-forest-950">
       <header className="container-prose relative pb-12 pt-32 text-center sm:pt-40">
@@ -270,8 +254,53 @@ function AlbumView({ album, isAdmin, removals }) {
       </header>
 
       <div className="container-prose pb-20">
+        {featuredPhoto && (
+          <figure className="reveal relative mb-3 sm:mb-4">
+            <button
+              type="button"
+              onClick={() => setOpenIdx(0)}
+              className="group block w-full overflow-hidden rounded-2xl bg-forest-800 focus:outline-none focus:ring-2 focus:ring-medical sm:rounded-3xl"
+              aria-label={`Open featured photo (${featuredPhoto.label || 'featured'}) of ${photos.length}`}
+            >
+              <img
+                src={featuredPhoto.full}
+                alt={`${album.title} — ${featuredPhoto.label || 'featured photo'}`}
+                width={featuredPhoto.w}
+                height={featuredPhoto.h}
+                className={`max-h-[72vh] w-full object-contain transition-transform duration-700 group-hover:scale-[1.02] ${
+                  removals.effective.has(featuredPhoto.full) ? 'opacity-30 grayscale' : ''
+                }`}
+              />
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-forest-950/70 to-transparent"
+                aria-hidden="true"
+              />
+              {featuredPhoto.label && (
+                <figcaption className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-forest-950/70 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-medical-light ring-1 ring-white/10 backdrop-blur-sm sm:bottom-5 sm:left-5 sm:text-xs">
+                  <span className="h-1.5 w-1.5 rounded-full bg-medical" />
+                  {featuredPhoto.label}
+                </figcaption>
+              )}
+            </button>
+            {isAdmin && (
+              <button
+                type="button"
+                onClick={() => removals.toggle(featuredPhoto.full)}
+                className={`absolute right-3 top-3 z-10 rounded-full px-3 py-1.5 text-xs font-semibold shadow-lg transition-colors ${
+                  removals.effective.has(featuredPhoto.full)
+                    ? 'bg-medical text-forest-950 hover:bg-medical-light'
+                    : 'bg-red-600/90 text-white hover:bg-red-600'
+                }`}
+                aria-pressed={removals.effective.has(featuredPhoto.full)}
+              >
+                {removals.effective.has(featuredPhoto.full) ? 'Restore' : 'Remove'}
+              </button>
+            )}
+          </figure>
+        )}
         <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4">
-          {photos.map((p, i) => {
+          {gridPhotos.map((p, gi) => {
+            const i = gi + gridOffset
             const marked = removals.effective.has(p.full)
             return (
               <li key={p.thumb} className="relative">
@@ -356,14 +385,7 @@ function AdminBar({ removals }) {
   const total = removals.effective.size
 
   const copyList = async () => {
-    const all = [...removals.effective].sort()
-    const file =
-      `// Soft-delete list for gallery photos. Any photo whose \`full\` path\n` +
-      `// appears here is hidden from every visitor. Reversible — delete a line\n` +
-      `// to restore. Marked in admin mode (/gallery?admin=1) and exported here.\n\n` +
-      `export const removed = [\n` +
-      all.map((p) => `  '${p}',`).join('\n') +
-      `\n]\n`
+    const file = buildRemovalFile(removals.effective)
     try {
       await navigator.clipboard.writeText(file)
       setCopied(true)
@@ -410,7 +432,14 @@ function AdminBar({ removals }) {
         Paste the copied list into{' '}
         <code className="text-medical-light">src/data/galleryRemovals.js</code>{' '}
         and redeploy to hide these for everyone. Marks are stored only in this
-        browser until then.
+        browser until then. Tip:{' '}
+        <Link
+          to="/gallery/admin"
+          className="text-medical-light underline-offset-2 hover:underline"
+        >
+          open the full admin page
+        </Link>{' '}
+        to see every album&rsquo;s photos on one screen.
       </p>
     </div>
   )

@@ -4,11 +4,11 @@
 // line. Photos can be marked visually in admin mode (visit /gallery?admin=1),
 // then exported here with the "Copy removal list" button.
 //
-// NOTE: the photos marked on 2026-05-21 were baked out at the source level
-// (the pipeline excludes them AND their visual twins, then backfills), so this
-// list is empty again. Use it for takedown requests between pipeline runs.
+// NOTE: cleared 2026-05-22 for the full re-index off the "New Photos" source
+// batch. Output paths are renumbered every run, and the old source files these
+// referenced no longer exist on disk, so the two prior aswan-nga takedowns
+// (009/016) would now hide arbitrary new photos. After reviewing the new aswan
+// album, re-mark via /gallery/admin if those individuals reappear. Use this
+// file for takedown requests between pipeline runs.
 
-export const removed = [
-  '/assets/gallery/aswan-nga/009-full.jpg',
-  '/assets/gallery/aswan-nga/016-full.jpg',
-]
+export const removed = []
