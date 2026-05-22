@@ -467,16 +467,8 @@ export const committees = [
   },
 ]
 
-// NOTE: the Hero's "Members" figure is dynamic, it reads
-// MEMBERS_META.count from src/data/members.generated.js (regenerated
-// from the membership xlsx). Keep this in sync if you ever wire
-// `stats` into the UI.
-export const stats = [
-  { value: '581', label: 'Active Members' },
-  { value: '6', label: 'Standing Committees' },
-  { value: '4', label: 'Support Divisions' },
-  { value: '300+', label: 'Exchange Students Served' },
-]
+// NOTE: the Hero's "Members" figure is dynamic — it reads MEMBERS_META.count
+// from src/data/members.generated.js (regenerated from the membership xlsx).
 
 // --- Slug helpers (used by the per-committee routes) ---------------------
 // A committee may set an explicit `slug`; otherwise it's derived from abbr.

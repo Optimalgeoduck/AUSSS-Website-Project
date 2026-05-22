@@ -20,15 +20,6 @@ const PATHS = {
   tiktok: (
     <path d="M16 3c.4 2.6 2 4.2 4.5 4.4v3.1c-1.6.1-3.1-.4-4.5-1.3v6.3a6 6 0 1 1-6-6c.3 0 .7 0 1 .1v3.2a3 3 0 1 0 2 2.8V3h3z" />
   ),
-  // Linktree branching mark: vertical stem, top chevron, crossbar, bottom fork.
-  linktree: (
-    <>
-      <path d="M12 4v16" />
-      <path d="M7 9l5-5 5 5" />
-      <path d="M6 13h12" />
-      <path d="M8.5 20 12 16l3.5 4" />
-    </>
-  ),
 }
 
 export default function SocialIcon({ name, className = 'h-6 w-6' }) {

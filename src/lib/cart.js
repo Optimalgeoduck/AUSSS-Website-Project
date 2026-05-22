@@ -121,11 +121,6 @@ export function useCartCount() {
   return cartCount(s)
 }
 
-export function useCartSubtotal() {
-  const s = useCart()
-  return cartSubtotal(s)
-}
-
 // Tiny formatter — EGP first, no decimals (the catalogue is round numbers).
 export function formatEGP(n) {
   return `${Number(n || 0).toLocaleString('en-EG')} EGP`

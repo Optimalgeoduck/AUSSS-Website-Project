@@ -3,6 +3,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom'
 import useReveal from '../hooks/useReveal.js'
 import useMediaQuery from '../hooks/useMediaQuery.js'
 import ImageTrail from '../components/ImageTrail.jsx'
+import GalleryAurora from '../components/GalleryAurora.jsx'
 import { albums as rawAlbums, trail } from '../data/gallery.js'
 import {
   useGalleryRemovals,
@@ -69,12 +70,13 @@ function GalleryIndex({ isAdmin, removals }) {
           aria-hidden="true"
         />
 
+        <GalleryAurora />
         {showTrail && (
           <div className="absolute inset-0 z-0" aria-hidden="true">
             <ImageTrail items={trail} variant={7} />
           </div>
         )}
-        {!showTrail && hasTrail && (
+        {reduceMotion && hasTrail && (
           <div
             className="absolute inset-0 z-0 grid grid-cols-3 gap-2 p-4 opacity-25 sm:grid-cols-4 sm:gap-3 sm:p-6"
             aria-hidden="true"
@@ -237,20 +239,27 @@ function AlbumView({ album, isAdmin, removals }) {
 
   return (
     <article className="bg-forest-950">
-      <header className="container-prose relative pb-12 pt-32 text-center sm:pt-40">
-        <span className="eyebrow justify-center">
-          <span className="h-px w-8 bg-medical" />
-          {photos.length} {photos.length === 1 ? 'photo' : 'photos'}
-          <span className="h-px w-8 bg-medical" />
-        </span>
-        <h1 className="heading-serif mt-6 text-4xl text-white sm:text-5xl">
-          {album.title}
-        </h1>
-        {album.blurb && (
-          <p className="mx-auto mt-4 max-w-xl text-base font-light leading-relaxed text-silver/75">
-            {album.blurb}
-          </p>
-        )}
+      <header className="relative isolate overflow-hidden pb-12 pt-32 text-center sm:pt-40">
+        <GalleryAurora />
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-28 bg-gradient-to-t from-forest-950 to-transparent"
+          aria-hidden="true"
+        />
+        <div className="container-prose relative z-10">
+          <span className="eyebrow justify-center">
+            <span className="h-px w-8 bg-medical" />
+            {photos.length} {photos.length === 1 ? 'photo' : 'photos'}
+            <span className="h-px w-8 bg-medical" />
+          </span>
+          <h1 className="heading-serif mt-6 text-4xl text-white sm:text-5xl">
+            {album.title}
+          </h1>
+          {album.blurb && (
+            <p className="mx-auto mt-4 max-w-xl text-base font-light leading-relaxed text-silver/75">
+              {album.blurb}
+            </p>
+          )}
+        </div>
       </header>
 
       <div className="container-prose pb-20">
@@ -565,8 +574,9 @@ function Lightbox({ photos, index, onClose, onNext, onPrev }) {
 
 function NotFoundAlbum({ slug }) {
   return (
-    <article className="bg-forest-950">
-      <div className="container-prose flex min-h-[60vh] flex-col items-center justify-center pt-32 text-center">
+    <article className="relative isolate overflow-hidden bg-forest-950">
+      <GalleryAurora />
+      <div className="container-prose relative z-10 flex min-h-[60vh] flex-col items-center justify-center pt-32 text-center">
         <h1 className="heading-serif text-3xl text-white sm:text-4xl">
           Album not found
         </h1>

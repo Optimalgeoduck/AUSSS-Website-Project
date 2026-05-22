@@ -11,6 +11,8 @@ import SpecialResult from '../components/SpecialResult.jsx'
 import { matchPosition, isPresidentPosition } from '../lib/teamIndex.js'
 
 const CONSTITUTION_PDF = '/assets/docs/AUSSS-Constitution-and-Bylaws.pdf'
+const MEMBERSHIP_ISSUE_FORM =
+  'https://docs.google.com/forms/d/e/1FAIpQLSeU1QhHkuLpJtiUFGbD_Kdbqhzs8GMAuR3x63HMnm4XzeBAYQ/viewform'
 
 const STATUS_COLOR = {
   'Full Member': '#0f7a53',
@@ -269,6 +271,18 @@ export default function MembersPage() {
                       <span className="text-white">
                         {statusRecord.currentPosition || 'General Member'}
                       </span>
+                    </p>
+                    <p className="mt-6 border-t border-white/10 pt-4 text-xs text-silver/55">
+                      Found an issue with your membership? Fill out this form{' '}
+                      <a
+                        href={MEMBERSHIP_ISSUE_FORM}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-semibold text-medical-light underline-offset-2 transition-colors hover:text-white hover:underline"
+                      >
+                        here
+                      </a>
+                      .
                     </p>
                   </div>
                   <GuidanceCard advice={advice} accent={accent} />
