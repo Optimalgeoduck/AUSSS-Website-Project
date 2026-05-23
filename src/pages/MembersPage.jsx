@@ -251,8 +251,8 @@ export default function MembersPage() {
                     </p>
                     <div className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] sm:grid-cols-4">
                       {[
-                        ['Year joined', statusRecord.yearJoined || ','],
-                        ['Years spent', statusRecord.yearsSpent || ','],
+                        ['Year joined', statusRecord.yearJoined || '—'],
+                        ['Years spent', statusRecord.yearsSpent || '—'],
                         ['Local GAs', parseGA(statusRecord.lgas).display],
                         ['National GAs', parseGA(statusRecord.ngas).display],
                       ].map(([k, v]) => (
