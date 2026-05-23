@@ -85,6 +85,12 @@ for (const c of committees) {
   }
 }
 
+// The membership sheet sometimes records the Public Health officer with the
+// informal abbreviation "LOPH" instead of the official "LPO" — alias it to the
+// LPO entry so both resolve to the same result.
+const lpoEntry = index.get(norm('LPO'))
+if (lpoEntry) addAlias('LOPH', lpoEntry)
+
 // ── Executive Board (President handled separately as the sarcastic page) ─
 for (const m of executiveBoard) {
   if (m.tier === 'lead') continue // president → isPresidentPosition()
