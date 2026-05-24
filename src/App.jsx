@@ -13,6 +13,7 @@ const CheckoutPage = lazy(() => import('./pages/CheckoutPage.jsx'))
 const MembersPage = lazy(() => import('./pages/MembersPage.jsx'))
 const SocialPage = lazy(() => import('./pages/SocialPage.jsx'))
 const ExchangePage = lazy(() => import('./pages/ExchangePage.jsx'))
+const ShareStoryPage = lazy(() => import('./pages/ShareStoryPage.jsx'))
 const GalleryPage = lazy(() => import('./pages/GalleryPage.jsx'))
 const GalleryAdminPage = lazy(() => import('./pages/GalleryAdminPage.jsx'))
 const JoinPage = lazy(() => import('./pages/JoinPage.jsx'))
@@ -40,6 +41,7 @@ export default function App() {
                 <Route path="/committees/:slug" element={<CommitteePage />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/exchange" element={<ExchangePage />} />
+                <Route path="/exchange/share" element={<ShareStoryPage />} />
                 <Route path="/gallery" element={<GalleryPage />} />
                 <Route path="/gallery/admin" element={<GalleryAdminPage />} />
                 <Route path="/gallery/:slug" element={<GalleryPage />} />

@@ -139,6 +139,7 @@ export default function ExchangePage() {
           {(() => {
             const visible = testimonials.filter((t) => t.published !== false)
             return visible.length > 0 ? (
+            <>
             <div className="mt-10 space-y-8">
               {visible.map((t, idx) => (
                 <figure
@@ -192,17 +193,26 @@ export default function ExchangePage() {
                 </figure>
               ))}
             </div>
+            <div className="mt-10 text-center">
+              <Link
+                to="/exchange/share"
+                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+              >
+                Share your exchange story
+              </Link>
+            </div>
+            </>
           ) : (
             <div className="mx-auto mt-8 max-w-2xl rounded-2xl border border-dashed border-white/15 bg-white/[0.03] p-8 text-center">
               <p className="text-sm leading-relaxed text-silver/60">
                 Did an exchange with AUSSS? Your story goes here.
               </p>
-              <a
-                href="mailto:vpe.ausss@gmail.com?subject=My%20AUSSS%20exchange%20story"
+              <Link
+                to="/exchange/share"
                 className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
               >
                 Share your experience
-              </a>
+              </Link>
             </div>
           )
           })()}
