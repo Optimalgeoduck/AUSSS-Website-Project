@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import useReveal from '../hooks/useReveal.js'
 import {
@@ -6,9 +6,15 @@ import {
   adviceFor,
   NOT_A_MEMBER,
   preloadMembers,
+  findRecordByPosition,
+  splitPositions,
 } from '../lib/membership.js'
 import SpecialResult from '../components/SpecialResult.jsx'
-import { matchPosition, isPresidentPosition } from '../lib/teamIndex.js'
+import {
+  matchPosition,
+  isPresidentPosition,
+  isHebaIsmail,
+} from '../lib/teamIndex.js'
 
 const CONSTITUTION_PDF = '/assets/docs/AUSSS-Constitution-and-Bylaws.pdf'
 const MEMBERSHIP_ISSUE_FORM =
@@ -114,11 +120,41 @@ export default function MembersPage() {
   useReveal()
   useEffect(() => {
     preloadMembers() // warm the dataset while the user types
+    // Browsers try to restore scroll position on refresh — but here the
+    // result card isn't restored, so the user lands on a half-scrolled
+    // empty page. Disable restoration and snap to the top.
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual'
+    }
+    window.scrollTo({ top: 0, behavior: 'auto' })
   }, [])
   const [form, setForm] = useState({ name: '', email: '' })
   const [busy, setBusy] = useState(false)
   const [result, setResult] = useState(null)
   const [reveal, setReveal] = useState(false) // "show status anyway" on special pages
+  const resultRef = useRef(null)
+  // After a fresh result lands, glide down to it. Adaptive — if the card
+  // fits in the viewport beneath the sticky header, vertically centre it so
+  // both top and bottom content are visible at once; if it's taller, just
+  // align the top to the header offset so the user starts at the headline.
+  useEffect(() => {
+    if (!result) return
+    const id = window.requestAnimationFrame(() => {
+      const el = resultRef.current
+      if (!el) return
+      // Matches the `scroll-padding-top: 7rem` from index.css base layer.
+      const headerOffset = 7 * 16
+      const rect = el.getBoundingClientRect()
+      const usable = window.innerHeight - headerOffset
+      let top = window.scrollY + rect.top - headerOffset
+      if (rect.height < usable) {
+        // Centre the card in the usable viewport area.
+        top -= (usable - rect.height) / 2
+      }
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
+    })
+    return () => window.cancelAnimationFrame(id)
+  }, [result])
 
   const submit = async (e) => {
     e.preventDefault()
@@ -126,15 +162,39 @@ export default function MembersPage() {
     setBusy(true)
     setResult(null)
     setReveal(false)
+    // Heba's spreadsheet name spelling is not predictable, so if the typed
+    // name matches a known variant, find her by her unique Supervising
+    // Council position instead of relying on the hashed name lookup.
+    if (isHebaIsmail({ typedName: form.name })) {
+      const heba = findRecordByPosition((p) => /\bsupervising\s+council\b/i.test(p))
+      if (heba) {
+        setResult({ state: 'heba', record: heba })
+        setBusy(false)
+        return
+      }
+    }
     const r = await lookupMember({ name: form.name, email: form.email })
     if (r.state === 'found') {
       const pos = r.record.currentPosition
-      if (isPresidentPosition(pos)) {
-        setResult({ state: 'president', record: r.record })
+      const positions = splitPositions(pos)
+      if (isHebaIsmail({ position: pos })) {
+        setResult({ state: 'heba', record: r.record })
+      } else if (isPresidentPosition(pos)) {
+        const otherPositions = positions.filter(
+          (p) => !isPresidentPosition(p),
+        )
+        setResult({ state: 'president', record: r.record, otherPositions })
       } else {
-        const entry = matchPosition(pos)
-        if (entry) setResult({ state: 'to-member', entry, record: r.record })
-        else setResult(r)
+        const m = matchPosition(pos)
+        if (m) {
+          const otherPositions = positions.filter((p) => p !== m.matched)
+          setResult({
+            state: 'to-member',
+            entry: m.entry,
+            record: r.record,
+            otherPositions,
+          })
+        } else setResult(r)
       }
     } else {
       setResult(r)
@@ -143,7 +203,9 @@ export default function MembersPage() {
   }
 
   const special =
-    result?.state === 'president' || result?.state === 'to-member'
+    result?.state === 'president' ||
+    result?.state === 'to-member' ||
+    result?.state === 'heba'
   // The real status card shows for a normal hit, or when a special page
   // user clicks "show status anyway".
   const statusRecord =
@@ -230,7 +292,7 @@ export default function MembersPage() {
 
           {/* Result */}
           {result && (
-            <div className="mt-8 text-center">
+            <div ref={resultRef} className="mt-8 scroll-mt-32 text-center">
               {special && !reveal && (
                 <SpecialResult
                   result={result}
@@ -266,12 +328,31 @@ export default function MembersPage() {
                         </div>
                       ))}
                     </div>
-                    <p className="mt-4 text-sm text-silver/70">
-                      Current position:{' '}
-                      <span className="text-white">
-                        {statusRecord.currentPosition || 'General Member'}
-                      </span>
-                    </p>
+                    {(() => {
+                      const positions = splitPositions(statusRecord.currentPosition)
+                      if (positions.length <= 1) {
+                        return (
+                          <p className="mt-4 text-sm text-silver/70">
+                            Current position:{' '}
+                            <span className="text-white">
+                              {positions[0] || 'General Member'}
+                            </span>
+                          </p>
+                        )
+                      }
+                      return (
+                        <div className="mt-4 text-sm text-silver/70">
+                          <p>Current positions:</p>
+                          <ul className="mt-1.5 space-y-1">
+                            {positions.map((p) => (
+                              <li key={p} className="text-white">
+                                {p}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )
+                    })()}
                     <p className="mt-6 border-t border-white/10 pt-4 text-xs text-silver/55">
                       Found an issue with your membership? Fill out this form{' '}
                       <a
@@ -349,7 +430,10 @@ export default function MembersPage() {
             </div>
           )}
 
-          {/* Governance */}
+          {/* Governance — only render alongside an actual membership status
+              card (so it doesn't crowd the special TO/EB/Heba cards or the
+              not-found / error states). */}
+          {found && (
           <div className="reveal mt-12 rounded-2xl border border-white/10 bg-forest-800/60 p-7 text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-medical-light">
               Governance
@@ -379,6 +463,7 @@ export default function MembersPage() {
               </a>
             </div>
           </div>
+          )}
         </div>
       </div>
     </article>

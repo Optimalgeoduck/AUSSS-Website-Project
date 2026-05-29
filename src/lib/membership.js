@@ -42,6 +42,39 @@ const mapRecord = (raw) => ({
 // bundled with the app, nothing to preload).
 export function preloadMembers() {}
 
+// Position cells in the source sheet sometimes pack multiple roles separated
+// by a line break (e.g. "Supervising Council\r\nInternational TEDA"). Splits
+// the raw value into individual positions so the UI can render them as a
+// stacked list instead of one squashed string.
+export function splitPositions(raw) {
+  return String(raw ?? '')
+    .split(/\r\n|\n/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+}
+
+// The membership data is keyed by SHA-256 of name/email, so we can't look up
+// people by name spelling we don't already know. For "find the unique holder
+// of a known role" cases (currently: Heba Ismail → Supervising Council), we
+// scan the values once and cache the first match.
+const _byPositionCache = new Map()
+export function findRecordByPosition(test) {
+  const key = test.toString()
+  if (_byPositionCache.has(key)) return _byPositionCache.get(key)
+  let hit = null
+  for (const arr of Object.values(MEMBERS_BY_NAME)) {
+    for (const raw of arr) {
+      if (test(raw.p || '')) {
+        hit = mapRecord(raw)
+        break
+      }
+    }
+    if (hit) break
+  }
+  _byPositionCache.set(key, hit)
+  return hit
+}
+
 // ── Lookup (by name OR email) ────────────────────────────────────────────
 // Returns one of:
 //   { state: 'found', record }

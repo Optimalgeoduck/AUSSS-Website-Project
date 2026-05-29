@@ -16,10 +16,43 @@ export const norm = (v) =>
 
 const compact = (v) => norm(v).replace(/[^a-z0-9]/g, '')
 
+// Source positions sometimes pack multiple roles on separate lines
+// ("LEO-OUT\r\nNational CBSD Team- TEDA"). Split so each can be matched
+// individually.
+export function splitPositions(raw) {
+  return String(raw ?? '')
+    .split(/\r\n|\n/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+}
+
 // "President" / "AUSSS President" → true, but NOT "Vice President".
+// Multi-position safe — true if any sub-position is a presidential role.
 export function isPresidentPosition(pos) {
-  const p = norm(pos).replace(/^ausss\s+/, '')
-  return /\bpresident\b/.test(p) && !/\bvice\b/.test(p)
+  return splitPositions(pos).some((part) => {
+    const p = norm(part).replace(/^ausss\s+/, '')
+    return /\bpresident\b/.test(p) && !/\bvice\b/.test(p)
+  })
+}
+
+// Heba Ismail, AUSSS President 2024–2025 and current Supervising Council
+// member, gets her own welcome card. Matched by typed name (so she's caught
+// whether she enters name or email) or by her unique Supervising Council
+// position in the current data.
+const HEBA_NAME_KEYS = new Set(
+  [
+    'Heba Ismail',
+    'Heba Esmail',
+    'Heba Ismaeel',
+    'Heba Esmaeel',
+    'Heba Ismael',
+    'Heba Esmael',
+  ].map(norm),
+)
+export function isHebaIsmail({ position, typedName }) {
+  if (typedName && HEBA_NAME_KEYS.has(norm(typedName))) return true
+  if (position && /\bsupervising\s+council\b/i.test(position)) return true
+  return false
 }
 
 const index = new Map()
@@ -117,9 +150,15 @@ for (const m of executiveBoard) {
 
 const SKIP = new Set(['', 'member', 'general member', 'none', 'n/a', '-'])
 
-// Returns the matched entry or null.
+// Returns the matched entry or null. Walks each sub-position and returns
+// the first hit, so a record like "LEO-OUT\r\nNational CBSD Team- TEDA"
+// still resolves to the LEO-Out card.
 export function matchPosition(position) {
-  const p = norm(position)
-  if (SKIP.has(p)) return null
-  return index.get(p) || index.get(compact(position)) || null
+  for (const part of splitPositions(position)) {
+    const p = norm(part)
+    if (SKIP.has(p)) continue
+    const hit = index.get(p) || index.get(compact(part))
+    if (hit) return { entry: hit, matched: part }
+  }
+  return null
 }
