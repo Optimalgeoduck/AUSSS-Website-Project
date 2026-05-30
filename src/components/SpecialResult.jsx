@@ -828,7 +828,7 @@ function Heba({ onReveal }) {
       </div>
 
       <p className="relative mx-auto mt-7 max-w-lg text-lg font-light leading-relaxed text-silver/85">
-        You handed the gavel down and stayed in the room. AUSSS runs
+        You handed the gavel down and stayed in the room. AUSSS still runs
         on the shape you gave it.
       </p>
       <p className="relative mx-auto mt-3 max-w-lg text-sm leading-relaxed text-silver/60">
