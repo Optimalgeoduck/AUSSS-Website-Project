@@ -276,19 +276,35 @@ function President({ onReveal, otherPositions }) {
   return (
     <div className="relative overflow-hidden rounded-3xl border border-[#C9A33B]/30 bg-gradient-to-br from-forest-800 to-forest-950 p-10 text-center sm:p-14">
       <span className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#C9A33B]/10 blur-3xl" />
-      <img
-        src="/assets/brand/ausss-horizontal-white.png"
-        alt="AUSSS"
-        className="relative mx-auto mb-8 h-12 w-auto opacity-80"
-      />
-      <span className="relative mx-auto grid h-16 w-16 place-items-center rounded-full bg-[#C9A33B]/15">
-        <svg viewBox="0 0 24 24" className="h-9 w-9 text-[#E7C763]" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <div className="relative mx-auto h-32 w-32 sm:h-36 sm:w-36">
+        <div className="h-full w-full overflow-hidden rounded-full bg-gradient-to-br from-[#C9A33B]/25 to-amber-300/10 ring-2 ring-[#E7C763]/45">
+          <img
+            src="/assets/team/amr-hesham.jpg"
+            alt="Amr Hesham"
+            className="h-full w-full object-cover"
+          />
+        </div>
+        {/* Crown perched on his head — slight tilt for personality */}
+        <svg
+          viewBox="0 0 24 24"
+          className="absolute -top-5 left-1/2 h-10 w-10 -translate-x-1/2 -rotate-[14deg] text-[#E7C763] drop-shadow-[0_2px_6px_rgba(0,0,0,0.55)] sm:-top-6 sm:h-12 sm:w-12"
+          fill="#E7C763"
+          fillOpacity="0.22"
+          stroke="currentColor"
+          strokeWidth="1.4"
+        >
           <path d="M3 8l4 4 5-7 5 7 4-4-2 11H5L3 8z" strokeLinejoin="round" />
           <path d="M5 21h14" strokeLinecap="round" />
         </svg>
-      </span>
-      <p className="relative mt-6 text-xs font-semibold uppercase tracking-[0.28em] text-[#E7C763]">
+      </div>
+      <p className="heading-serif relative mt-4 text-2xl text-white sm:text-3xl">
+        Amr Hesham Shaker
+      </p>
+      <p className="relative mt-4 text-xs font-semibold uppercase tracking-[0.28em] text-[#E7C763]">
         AUSSS · Office of the President
+      </p>
+      <p className="relative mt-2 text-sm italic text-silver/65">
+        “Making AUSSS Great Again”
       </p>
       <h2 className="heading-serif relative mt-4 text-4xl text-white sm:text-5xl">
         You’re the President.
@@ -791,10 +807,12 @@ function Heba({ onReveal }) {
       <h2 className="heading-serif relative mt-4 text-4xl text-white sm:text-5xl">
         Welcome back, Heba.
       </h2>
-      <p className="relative mt-2 text-sm italic text-silver/65">
-        Or{' '}
-        <span className="font-medium text-[#F0D38A]">Grandma</span>, to
-        anyone who&rsquo;s been here long enough.
+      <p className="relative mx-auto mt-3 max-w-md text-[11px] uppercase leading-relaxed tracking-[0.08em] text-silver/55">
+        &ldquo;&lsquo;What&rsquo; and &lsquo;if&rsquo; are two words as
+        non&nbsp;threatening as words can be, but put them together
+        side&nbsp;by&nbsp;side and they have the power to haunt you for
+        the rest of your life.{' '}
+        <span className="font-semibold text-[#F0D38A]">What if?</span>&rdquo;
       </p>
 
       <div className="relative mt-5 flex flex-col items-center gap-2">
@@ -810,7 +828,7 @@ function Heba({ onReveal }) {
       </div>
 
       <p className="relative mx-auto mt-7 max-w-lg text-lg font-light leading-relaxed text-silver/85">
-        You handed the gavel down and stayed in the room. AUSSS still runs
+        You handed the gavel down and stayed in the room. AUSSS runs
         on the shape you gave it.
       </p>
       <p className="relative mx-auto mt-3 max-w-lg text-sm leading-relaxed text-silver/60">
