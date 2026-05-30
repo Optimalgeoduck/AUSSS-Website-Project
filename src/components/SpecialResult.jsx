@@ -43,12 +43,15 @@ function buildHebaGarden() {
   }
 
   /* ── Main spiral ──────────────────────────────────────────────────── */
-  const SPIRAL_DURATION = 5.6 // seconds — 2 turns take longer than 1.3
-  const SPIRAL_START_A = 200 // emerges from behind her lower-left shoulder
-  const SPIRAL_TURNS = 2 // two full wraps for density
+  // Start at 200° (emerges from behind her lower-left shoulder) and run
+  // an extra wrap so the tail lands at 270° — the bottom of the photo.
+  // Total = 3 full turns + 70° = 3.194 turns.
+  const SPIRAL_DURATION = 7.0 // seconds — three wraps take a bit longer
+  const SPIRAL_START_A = 200
+  const SPIRAL_TURNS = 3.194
   const SPIRAL_START_R = 52 // hidden behind photo (r < PHOTO_R)
-  const SPIRAL_END_R = 86 // tighter spread — coils stay close so it looks dense
-  const SPIRAL_STEPS = 220
+  const SPIRAL_END_R = 92 // small radial bump to fit the extra wrap
+  const SPIRAL_STEPS = 320
 
   const spiralPoints = []
   for (let i = 0; i <= SPIRAL_STEPS; i++) {
@@ -67,7 +70,7 @@ function buildHebaGarden() {
 
   /* ── Branches ─────────────────────────────────────────────────────── */
   const TYPES = ['rose', 'rose', 'daisy', 'daisy', 'bud', 'bud', 'bud', 'bud']
-  const BRANCH_COUNT = 24
+  const BRANCH_COUNT = 32
   const BRANCH_T_START = 0.12 // skip the part hidden behind the photo
   const BRANCH_T_END = 0.97
   const branches = []
@@ -135,6 +138,63 @@ function buildHebaGarden() {
     })
   }
 
+  /* ── Extra leaves and flowers ─────────────────────────────────────────
+     Scattered between the branches so the floral density is ~20% higher
+     than what one-leaf + one-flower per branch gives. */
+  const EXTRA_COUNT = Math.round(BRANCH_COUNT * 0.2) // 7 of each
+  const extraLeaves = []
+  const extraFlowers = []
+  for (let i = 0; i < EXTRA_COUNT; i++) {
+    const t =
+      BRANCH_T_START +
+      (BRANCH_T_END - BRANCH_T_START) * ((i + 0.5) / EXTRA_COUNT) +
+      range(-0.03, 0.03)
+    const idx = Math.max(
+      0,
+      Math.min(SPIRAL_STEPS, Math.round(t * SPIRAL_STEPS)),
+    )
+    const root = spiralPoints[idx]
+    const offsetA = root.a + (rand() < 0.5 ? -85 : 85) + range(-18, 18)
+    const offsetR = root.r + range(6, 18)
+    const [lx, ly] = polar(offsetA, offsetR)
+    const w = range(8.5, 11.5)
+    extraLeaves.push({
+      x: lx,
+      y: ly,
+      rot: 90 - root.a + range(-30, 30),
+      w,
+      h: w * (20 / 14),
+      startTime: t * SPIRAL_DURATION + 0.3,
+    })
+  }
+  for (let i = 0; i < EXTRA_COUNT; i++) {
+    const t =
+      BRANCH_T_START +
+      (BRANCH_T_END - BRANCH_T_START) * ((i + 0.5) / EXTRA_COUNT) +
+      range(-0.04, 0.04)
+    const idx = Math.max(
+      0,
+      Math.min(SPIRAL_STEPS, Math.round(t * SPIRAL_STEPS)),
+    )
+    const root = spiralPoints[idx]
+    const offsetA = root.a + (rand() < 0.5 ? -90 : 90) + range(-15, 15)
+    const offsetR = root.r + range(10, 22)
+    const [fx, fy] = polar(offsetA, offsetR)
+    const type = TYPES[(i * 3) % TYPES.length]
+    const baseSize = type === 'rose' ? 14 : type === 'daisy' ? 12 : 8
+    extraFlowers.push({
+      x: fx,
+      y: fy,
+      type,
+      size: baseSize * range(0.9, 1.1),
+      rot:
+        type === 'bud'
+          ? 90 - root.a + range(-15, 15) + 180
+          : range(0, 360),
+      startTime: t * SPIRAL_DURATION + 0.45,
+    })
+  }
+
   /* ── Sparkle dots ─────────────────────────────────────────────────── */
   const sparkles = []
   const SPARKLE_COUNT = 22
@@ -160,6 +220,8 @@ function buildHebaGarden() {
     spiral: { d: spiralD, duration: SPIRAL_DURATION },
     branches,
     sparkles,
+    extraLeaves,
+    extraFlowers,
   }
 }
 
@@ -622,6 +684,22 @@ function Heba({ onReveal }) {
                 />
               </g>
             ))}
+            {HEBA_GARDEN.extraLeaves.map((l, i) => (
+              <g
+                key={`xlf-${i}`}
+                transform={`translate(${l.x.toFixed(1)} ${l.y.toFixed(1)}) rotate(${l.rot.toFixed(1)})`}
+              >
+                <use
+                  className="hb-leaf"
+                  href="#hb-leaf-sym"
+                  x={(-l.w / 2).toFixed(1)}
+                  y={(-l.h / 2).toFixed(1)}
+                  width={l.w.toFixed(1)}
+                  height={l.h.toFixed(1)}
+                  data-start-time={l.startTime.toFixed(3)}
+                />
+              </g>
+            ))}
           </g>
 
           {/* One flower per branch tip — mix of roses, daisies, buds */}
@@ -648,6 +726,32 @@ function Heba({ onReveal }) {
                     width={w.toFixed(1)}
                     height={h.toFixed(1)}
                     data-start-time={b.flowerStartTime.toFixed(3)}
+                  />
+                </g>
+              )
+            })}
+            {HEBA_GARDEN.extraFlowers.map((f, i) => {
+              const sym =
+                f.type === 'rose'
+                  ? '#hb-rose-sym'
+                  : f.type === 'daisy'
+                    ? '#hb-daisy-sym'
+                    : '#hb-bud-sym'
+              const w = f.size
+              const h = f.type === 'bud' ? f.size * 1.6 : f.size
+              return (
+                <g
+                  key={`xfl-${i}`}
+                  transform={`translate(${f.x.toFixed(1)} ${f.y.toFixed(1)}) rotate(${f.rot.toFixed(1)})`}
+                >
+                  <use
+                    className="hb-bloom"
+                    href={sym}
+                    x={(-w / 2).toFixed(1)}
+                    y={(-h / 2).toFixed(1)}
+                    width={w.toFixed(1)}
+                    height={h.toFixed(1)}
+                    data-start-time={f.startTime.toFixed(3)}
                   />
                 </g>
               )
