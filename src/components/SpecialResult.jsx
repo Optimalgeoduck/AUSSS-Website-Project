@@ -816,7 +816,7 @@ function Heba({ onReveal }) {
       <p className="relative mx-auto mt-3 max-w-lg text-sm leading-relaxed text-silver/60">
         There’s no membership tier high enough for what you’ve already done
         for this society. Thank you, sincerely, for sticking around to
-        watch over it.
+        watch over us.
       </p>
 
       <a

@@ -2,14 +2,15 @@ import { Link } from 'react-router-dom'
 
 const PILLARS = [
   {
-    title: 'Bridging Bench & Bedside',
-    body: 'We translate curiosity at the bench into competence at the bedside, embedding research literacy into clinical training.',
+    title: 'Health for the Community',
+    body: 'Awareness campaigns, screenings, and outreach take students beyond the lecture hall to serve communities across Egypt.',
     icon: (
-      <path
-        d="M7 4v6l-3 7a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3l-3-7V4M6 4h12M9 14h6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <>
+        <circle cx="9" cy="7" r="3" />
+        <path d="M2.5 20a6.5 6.5 0 0 1 13 0" strokeLinecap="round" />
+        <path d="M16 4.4a3 3 0 0 1 0 5.7" strokeLinecap="round" />
+        <path d="M17 13.6a6.3 6.3 0 0 1 4.5 6.1" strokeLinecap="round" />
+      </>
     ),
   },
   {
@@ -59,8 +60,9 @@ export default function About() {
               an autonomous affiliate member of IFMSA-Egypt.
             </p>
             <p>
-              Through professional and research exchanges, projects, and
-              extracurricular training, AUSSS empowers medical students to use
+              Through professional and research exchanges, projects, campaigns, and
+               peer to peer training
+       AUSSS empowers medical students to use
               their knowledge for the benefit of society, and provides a forum
               to discuss health, education, and science with peers across Egypt
               and around the world.

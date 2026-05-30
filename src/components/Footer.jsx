@@ -57,6 +57,50 @@ export default function Footer() {
           </nav>
         </div>
 
+        <div className="mt-10 border-t border-white/10 pt-10">
+          <p className="mb-5 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-silver/40">
+            Find us
+          </p>
+          <div className="mx-auto grid max-w-3xl items-stretch gap-6 md:grid-cols-2">
+            <div className="overflow-hidden rounded-2xl border border-white/10">
+              <iframe
+                title="Faculty of Medicine, Ain Shams University on Google Maps"
+                src="https://maps.google.com/maps?q=Faculty%20of%20Medicine%2C%20Ain%20Shams%20University&z=16&output=embed"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="block h-64 w-full border-0 grayscale-[0.2] md:h-full"
+              />
+            </div>
+            <address className="flex flex-col justify-center gap-3 rounded-2xl border border-white/10 bg-white/[0.02] p-6 not-italic">
+              <p className="heading-serif text-base text-white">
+                Faculty of Medicine, Ain Shams University
+              </p>
+              <p className="text-sm leading-relaxed text-silver/70">
+                38 Abbassia, next to Al-Nour Mosque
+                <br />
+                Cairo 1181, Egypt
+              </p>
+              <a
+                href="https://maps.google.com/maps?q=Faculty%20of%20Medicine%2C%20Ain%20Shams%20University"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-1 inline-flex items-center gap-1.5 text-sm text-silver/70 transition-colors hover:text-white"
+              >
+                <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">
+                  <path
+                    d="M12 21s-6-5.686-6-10a6 6 0 1 1 12 0c0 4.314-6 10-6 10Z"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinejoin="round"
+                  />
+                  <circle cx="12" cy="11" r="2.25" stroke="currentColor" strokeWidth="1.5" />
+                </svg>
+                Open in Google Maps
+              </a>
+            </address>
+          </div>
+        </div>
+
         <div className="mt-10 flex flex-col items-center gap-5 border-t border-white/10 pt-10">
           <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-silver/40">
             An autonomous affiliate of
