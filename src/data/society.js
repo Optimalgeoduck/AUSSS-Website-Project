@@ -586,6 +586,84 @@ export const ifmsaScale = {
   ],
 }
 
+// --- IFMSA history timeline (drives /ifmsa/history) --------------------
+// Founding years, name changes and blurbs taken from each committee's own
+// page on ifmsa.org/standing-committees. `accent` is a dark-bg-readable
+// colour (SCOME's true brand #100016 is near-black, so it gets a lighter
+// accent here). `renames` lists the committee's previous names in order.
+export const ifmsaHistory = {
+  founded: {
+    year: '1951',
+    body: 'The International Federation of Medical Students’ Associations is founded — one of the world’s oldest and largest student-run organisations. Its work is organised through standing committees, each owning a field of global health. They were not all born at once: the federation grew committee by committee over the following four decades.',
+  },
+  // Chronological — ordered by founding year.
+  committees: [
+    {
+      abbr: 'SCOPE',
+      year: '1951',
+      name: 'Standing Committee on Professional Exchange',
+      accent: '#0181c1',
+      logo: '/assets/logos/SCOPE.png',
+      body: 'IFMSA’s very first standing committee, born with the federation itself. It started with just 8 European countries; by 1952 already 463 students had completed a clinical placement abroad. Today it is one of the largest student-run exchange programmes in the world — roughly 13,000 students a year across 100+ National Member Organisations — and is called the backbone of the federation, its longest-running project.',
+    },
+    {
+      abbr: 'SCOME',
+      year: '1951',
+      name: 'Standing Committee on Medical Education',
+      accent: '#a78bfa',
+      logo: '/assets/logos/SCOME.png',
+      body: 'Also one of IFMSA’s original 1951 committees. From the start it has been the forum where medical students act as full stakeholders in their own education — reforming curricula, training educators, and carrying the student voice into medical-education systems as the first quality-check of their own training.',
+    },
+    {
+      abbr: 'SCOPH',
+      year: '1952',
+      name: 'Standing Committee on Public Health',
+      accent: '#f47d3b',
+      logo: '/assets/logos/SCOPH.png',
+      body: 'Founded by students determined to prevent ill-health and shape policy. Its focus widened over six decades from students’ own health to global public health — prevention, health promotion, and health-policy advocacy on issues from antimicrobial resistance to climate and mental health.',
+      renames: [
+        { year: '1952', name: 'Standing Committee on Students’ Health (SCOSH)' },
+        { year: '1963', name: 'Standing Committee on Health (SCOH)' },
+        { year: '1983', name: 'Standing Committee on Public Health (SCOPH)' },
+      ],
+    },
+    {
+      abbr: 'SCORP',
+      year: '1983',
+      name: 'Standing Committee on Human Rights and Peace',
+      accent: '#5f903f',
+      logo: '/assets/logos/SCORP.png',
+      body: 'Founded as the global refugee crisis came into the spotlight. Members soon realised relief alone was not enough — sustainable solutions meant addressing the root causes of conflict and human-rights abuses. Today it empowers students to promote and protect human rights, peace, refugee health, medical ethics and humanitarian aid.',
+      renames: [
+        { year: '1983', name: 'Standing Committee on Refugees (SCOR)' },
+        { year: '1995', name: 'Standing Committee on Refugees and Peace' },
+        { year: '2005', name: 'Standing Committee on Human Rights and Peace (SCORP)' },
+      ],
+    },
+    {
+      abbr: 'SCORE',
+      year: '1991',
+      name: 'Standing Committee on Research Exchange',
+      accent: '#5b73d8',
+      logo: '/assets/logos/SCORE.png',
+      body: 'The research counterpart to SCOPE, created to give future physicians an international research clerkship — basic-lab, clinical, or global-action projects. It now connects 65+ National Member Organisations and over 3,000 research projects, placing more than 2,400 students a year, each entirely coordinated by student volunteers.',
+    },
+    {
+      abbr: 'SCORA',
+      year: '1992',
+      name: 'Standing Committee on Sexual & Reproductive Health and Rights incl. HIV & AIDS',
+      accent: '#e0454f',
+      logo: '/assets/logos/SCORA.png',
+      body: 'Founded out of a will to act on HIV, sexually transmitted infections, and the stigma around them, supporting people living with HIV/AIDS. Its scope grew to cover comprehensive sexuality education, maternal health, gender and gender-based violence. Its members are known as “SCORAngels”.',
+      renames: [
+        { year: '1992', name: 'Standing Committee on AIDS / Reproductive Health' },
+        { year: '2014', name: 'Standing Committee on Sexual & Reproductive Health incl. HIV/AIDS' },
+        { year: '2019', name: 'Standing Committee on SRHR incl. HIV & AIDS (SCORA)' },
+      ],
+    },
+  ],
+}
+
 // --- Exchange programme copy (drives /exchange) ------------------------
 export const exchange = {
   intro:

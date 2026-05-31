@@ -167,6 +167,44 @@ export default function IFMSAPage() {
           </div>
         </section>
 
+        {/* History subpage CTA */}
+        <section className="reveal mx-auto max-w-3xl">
+          <Link
+            to="/ifmsa/history"
+            className="group flex flex-col items-start gap-4 rounded-3xl border border-white/10 bg-forest-800 p-7 transition-colors hover:border-medical/40 sm:flex-row sm:items-center sm:justify-between sm:p-8"
+          >
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-medical-light">
+                The IFMSA story
+              </p>
+              <h3 className="heading-serif mt-2 text-2xl text-white">
+                A history in six committees
+              </h3>
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-silver/70">
+                IFMSA grew committee by committee from 1951. Trace each standing
+                committee’s founding year and name changes on a single timeline.
+              </p>
+            </div>
+            <span className="inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-medical-light transition-colors group-hover:text-white">
+              View the timeline
+              <svg
+                viewBox="0 0 24 24"
+                className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 12h14M13 6l6 6-6 6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+          </Link>
+        </section>
+
         {/* Links */}
         <section className="reveal text-center">
           <p className="text-sm uppercase tracking-[0.2em] text-silver/50">

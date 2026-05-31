@@ -8,6 +8,7 @@ import Home from './pages/Home.jsx'
 const CommitteePage = lazy(() => import('./pages/CommitteePage.jsx'))
 const ContactPage = lazy(() => import('./pages/ContactPage.jsx'))
 const IFMSAPage = lazy(() => import('./pages/IFMSAPage.jsx'))
+const IFMSAHistoryPage = lazy(() => import('./pages/IFMSAHistoryPage.jsx'))
 const MerchPage = lazy(() => import('./pages/MerchPage.jsx'))
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage.jsx'))
 const MembersPage = lazy(() => import('./pages/MembersPage.jsx'))
@@ -47,6 +48,7 @@ export default function App() {
                 <Route path="/gallery/:slug" element={<GalleryPage />} />
                 <Route path="/join" element={<JoinPage />} />
                 <Route path="/ifmsa" element={<IFMSAPage />} />
+                <Route path="/ifmsa/history" element={<IFMSAHistoryPage />} />
                 <Route path="/merch" element={<MerchPage />} />
                 <Route path="/merch/checkout" element={<CheckoutPage />} />
                 <Route path="/members" element={<MembersPage />} />
