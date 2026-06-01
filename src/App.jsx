@@ -9,6 +9,9 @@ const CommitteePage = lazy(() => import('./pages/CommitteePage.jsx'))
 const ContactPage = lazy(() => import('./pages/ContactPage.jsx'))
 const IFMSAPage = lazy(() => import('./pages/IFMSAPage.jsx'))
 const IFMSAHistoryPage = lazy(() => import('./pages/IFMSAHistoryPage.jsx'))
+const MagazinePage = lazy(() => import('./pages/MagazinePage.jsx'))
+const LoginPage = lazy(() => import('./pages/LoginPage.jsx'))
+const AccountPage = lazy(() => import('./pages/AccountPage.jsx'))
 const MerchPage = lazy(() => import('./pages/MerchPage.jsx'))
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage.jsx'))
 const MembersPage = lazy(() => import('./pages/MembersPage.jsx'))
@@ -49,9 +52,17 @@ export default function App() {
                 <Route path="/join" element={<JoinPage />} />
                 <Route path="/ifmsa" element={<IFMSAPage />} />
                 <Route path="/ifmsa/history" element={<IFMSAHistoryPage />} />
+                <Route path="/magazine" element={<MagazinePage />} />
+                <Route path="/magazine/:issue" element={<MagazinePage />} />
+                <Route
+                  path="/magazine/:issue/:article"
+                  element={<MagazinePage />}
+                />
                 <Route path="/merch" element={<MerchPage />} />
                 <Route path="/merch/checkout" element={<CheckoutPage />} />
                 <Route path="/members" element={<MembersPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/account" element={<AccountPage />} />
                 <Route path="/social" element={<SocialPage />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>

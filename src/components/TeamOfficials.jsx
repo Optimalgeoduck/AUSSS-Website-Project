@@ -1,7 +1,9 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { committees, slugFor } from '../data/society.js'
 import { readableAccent, rgba } from '../lib/color.js'
+import { driveImg } from '../lib/img.js'
+import { useOfficerOverrides } from '../hooks/useOfficerOverrides.js'
 
 const isSupport = (g) => /support|division|psd|pnsd|cbsd/i.test(g || '')
 
@@ -40,14 +42,47 @@ function TierLabel({ children }) {
   )
 }
 
-function CommitteeCard({ c, i }) {
+// Officer avatar with a Drive-friendly fallback to initials.
+function Avatar({ person, color }) {
+  const [failed, setFailed] = useState(false)
+  return (
+    <div
+      className="grid h-12 w-12 place-items-center overflow-hidden rounded-full bg-forest-950 text-sm font-semibold text-silver ring-2 sm:h-16 sm:w-16"
+      style={{ '--tw-ring-color': rgba(color, 0.55) }}
+    >
+      {person.photo && !failed ? (
+        <img
+          src={person.photo}
+          alt={person.name || person.abbr}
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          onError={() => setFailed(true)}
+          className="h-full w-full object-cover"
+        />
+      ) : (
+        initials(person.name)
+      )}
+    </div>
+  )
+}
+
+function CommitteeCard({ c, i, ov }) {
   // The full title is shown once as a header. Each person below it shows
   // just name + abbreviation. Multi-officer committees use `officers`;
   // single ones derive a one-entry list from officerAbbr / holder.
-  const people =
+  const basePeople =
     Array.isArray(c.officers) && c.officers.length > 0
       ? c.officers
       : [{ name: c.holder, abbr: c.officerAbbr, photo: c.photo }]
+  // The officer photo edited in /account (override keyed by slug) applies to
+  // the lead officer — so it shows here on the home page, not just the
+  // committee page.
+  const people =
+    ov && ov.photo
+      ? basePeople.map((o, idx) =>
+          idx === 0 ? { ...o, photo: driveImg(ov.photo) } : o,
+        )
+      : basePeople
 
   const accent = readableAccent(c.color)
 
@@ -118,21 +153,7 @@ function CommitteeCard({ c, i }) {
             key={o.abbr || idx}
             className="flex w-20 flex-col items-center text-center sm:w-28"
           >
-            <div
-              className="grid h-12 w-12 place-items-center overflow-hidden rounded-full bg-forest-950 text-sm font-semibold text-silver ring-2 sm:h-16 sm:w-16"
-              style={{ '--tw-ring-color': rgba(c.color, 0.55) }}
-            >
-              {o.photo ? (
-                <img
-                  src={o.photo}
-                  alt={o.name || o.abbr}
-                  loading="lazy"
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                initials(o.name)
-              )}
-            </div>
+            <Avatar person={o} color={c.color} />
             <span
               className={`mt-2 block text-sm font-medium leading-tight ${
                 o.name?.trim() ? 'text-silver' : 'italic text-silver/35'
@@ -169,6 +190,7 @@ function CommitteeCard({ c, i }) {
 }
 
 export default function TeamOfficials() {
+  const { overrides } = useOfficerOverrides()
   const { standing, support } = useMemo(() => {
     return {
       standing: committees.filter((c) => !isSupport(c.group)),
@@ -218,7 +240,12 @@ export default function TeamOfficials() {
             </div>
             <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
               {standing.map((c, i) => (
-                <CommitteeCard key={`${c.abbr}-${i}`} c={c} i={i} />
+                <CommitteeCard
+                  key={`${c.abbr}-${i}`}
+                  c={c}
+                  i={i}
+                  ov={overrides[slugFor(c)]}
+                />
               ))}
             </div>
           </>
@@ -233,7 +260,12 @@ export default function TeamOfficials() {
             </div>
             <div className="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
               {support.map((c, i) => (
-                <CommitteeCard key={`${c.abbr}-${i}`} c={c} i={i} />
+                <CommitteeCard
+                  key={`${c.abbr}-${i}`}
+                  c={c}
+                  i={i}
+                  ov={overrides[slugFor(c)]}
+                />
               ))}
             </div>
           </>

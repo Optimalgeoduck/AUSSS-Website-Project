@@ -6,8 +6,6 @@ import CartButton from './CartButton.jsx'
 // `to` may be a route ("/ifmsa") or a home-section hash ("/#about").
 const LINKS = [
   { to: '/#about', label: 'About' },
-  { to: '/#board', label: 'Leadership' },
-  { to: '/#officials', label: 'Committees' },
   { to: '/exchange', label: 'Exchange' },
   { to: '/gallery', label: 'Gallery' },
   { to: '/ifmsa', label: 'IFMSA' },
@@ -15,6 +13,9 @@ const LINKS = [
   { to: '/social', label: 'Social' },
   { to: '/contact', label: 'Contact' },
 ]
+
+// Catchy launch CTA for the magazine, shown as a highlighted pill.
+const MAGAZINE_CTA = 'Check out our 1st AUSSS Magazine!'
 
 function parseTo(to) {
   const [pathname, hash] = to.split('#')
@@ -97,14 +98,10 @@ export default function Navbar() {
           ))}
           <li>
             <Link
-              to="/members"
-              className={`rounded-full px-5 py-2 text-sm font-semibold transition-all duration-300 ${
-                solid
-                  ? 'bg-forest text-white hover:bg-forest-600 dark:bg-medical dark:text-forest-950 dark:hover:bg-medical-light'
-                  : 'bg-white text-forest hover:bg-silver-light'
-              }`}
+              to="/magazine"
+              className="whitespace-nowrap rounded-full bg-medical px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-medical/20 transition-colors duration-300 hover:bg-medical-light"
             >
-              Members
+              {MAGAZINE_CTA}
             </Link>
           </li>
           <li>
@@ -112,6 +109,18 @@ export default function Navbar() {
           </li>
           <li>
             <ThemeToggle tone={solid ? 'solid' : 'transparent'} />
+          </li>
+          <li>
+            <Link
+              to="/members"
+              className={`rounded-full px-5 py-2 text-sm font-semibold transition-all duration-300 ${
+                solid
+                  ? 'bg-forest-600 text-silver-light hover:bg-forest-500'
+                  : 'bg-white text-forest hover:bg-silver-light'
+              }`}
+            >
+              Members
+            </Link>
           </li>
         </ul>
 
@@ -154,8 +163,16 @@ export default function Navbar() {
           ))}
           <li className="pt-4">
             <Link
+              to="/magazine"
+              className="block w-full rounded-full bg-medical py-3 text-center text-sm font-semibold text-white"
+            >
+              {MAGAZINE_CTA}
+            </Link>
+          </li>
+          <li className="pt-3">
+            <Link
               to="/members"
-              className="block w-full rounded-full bg-forest py-3 text-center text-sm font-semibold text-white dark:bg-medical dark:text-forest-950"
+              className="block w-full rounded-full bg-forest-600 py-3 text-center text-sm font-semibold text-silver-light"
             >
               Members
             </Link>

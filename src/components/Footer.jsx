@@ -42,6 +42,7 @@ export default function Footer() {
             <Link to={{ pathname: '/', hash: '#officials' }} className="transition-colors hover:text-white">Committees</Link>
             <Link to="/merch" className="transition-colors hover:text-white">Merch</Link>
             <Link to="/ifmsa" className="transition-colors hover:text-white">IFMSA</Link>
+            <Link to="/magazine" className="transition-colors hover:text-white">Magazine</Link>
             <Link to="/social" className="transition-colors hover:text-white">Social</Link>
             <Link to="/contact" className="transition-colors hover:text-white">Contact</Link>
             <Link to="/members" className="transition-colors hover:text-white">Members</Link>
@@ -54,6 +55,7 @@ export default function Footer() {
               Constitution
             </a>
             <Link to="/join" className="transition-colors hover:text-white">Join</Link>
+            <Link to="/login" className="transition-colors hover:text-white">Officer login</Link>
           </nav>
         </div>
 

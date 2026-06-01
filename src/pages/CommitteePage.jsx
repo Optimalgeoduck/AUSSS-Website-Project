@@ -1,7 +1,10 @@
+import { useState } from 'react'
 import { useParams, Navigate, Link } from 'react-router-dom'
 import useReveal from '../hooks/useReveal.js'
-import { committeeBySlug } from '../data/society.js'
+import { committeeBySlug, slugFor } from '../data/society.js'
 import { readableAccent, rgba } from '../lib/color.js'
+import { driveImg } from '../lib/img.js'
+import { useOfficerOverrides } from '../hooks/useOfficerOverrides.js'
 import GoogleCalendar from '../components/GoogleCalendar.jsx'
 
 const initials = (name) =>
@@ -16,17 +19,21 @@ const initials = (name) =>
 
 function PersonCard({ person, color }) {
   const accent = readableAccent(color)
+  const [imgFailed, setImgFailed] = useState(false)
   return (
     <div className="flex w-36 flex-col items-center text-center">
       <div
         className="grid h-24 w-24 place-items-center overflow-hidden rounded-full bg-forest-950 text-lg font-semibold text-silver ring-2"
         style={{ '--tw-ring-color': rgba(color, 0.55) }}
       >
-        {person.photo ? (
+        {person.photo && !imgFailed ? (
           <img
             src={person.photo}
             alt={person.name || person.role || person.abbr}
             loading="lazy"
+            // lh3.googleusercontent (Drive photos) 403s when a referrer is sent.
+            referrerPolicy="no-referrer"
+            onError={() => setImgFailed(true)}
             className="h-full w-full object-cover"
           />
         ) : (
@@ -55,25 +62,66 @@ function PersonCard({ person, color }) {
 export default function CommitteePage() {
   const { slug } = useParams()
   const c = committeeBySlug(slug)
+  const { overrides } = useOfficerOverrides()
   useReveal()
 
   if (!c) return <Navigate to="/" replace />
 
+  // Live officer edits (photo / tagline / bio / what-we-do / members) merged
+  // on top of the static society.js committee. Empty when no override exists
+  // or the feature is dormant.
+  const ov = overrides[slugFor(c)] || {}
+
   const accent = readableAccent(c.color)
-  const officers =
+  const tagline = ov.tagline || c.tagline
+  const baseOfficers =
     Array.isArray(c.officers) && c.officers.length > 0
       ? c.officers
       : [{ name: c.holder, abbr: c.officerAbbr, photo: c.photo }]
-  const members = Array.isArray(c.members) ? c.members : []
-  const about = Array.isArray(c.about)
-    ? c.about
-    : c.about
-      ? [c.about]
-      : c.description
-        ? [c.description]
+  // The editable officer photo applies to the lead officer.
+  const officers = ov.photo
+    ? baseOfficers.map((o, i) => (i === 0 ? { ...o, photo: driveImg(ov.photo) } : o))
+    : baseOfficers
+  // Members: section is opt-in. When enabled, the officer-managed list
+  // replaces the static one; when explicitly disabled, no member cards show.
+  const membersHidden = ov.membersEnabled === false
+  const members = ov.membersEnabled
+    ? (Array.isArray(ov.members) ? ov.members : []).map((m) => ({
+        name: m.name,
+        photo: driveImg(m.photo),
+        role: m.title,
+      }))
+    : membersHidden
+      ? []
+      : Array.isArray(c.members)
+        ? c.members
         : []
-  const whatWeDo = Array.isArray(c.whatWeDo) ? c.whatWeDo : []
-  const activities = Array.isArray(c.activities) ? c.activities : []
+  const about =
+    Array.isArray(ov.about) && ov.about.length
+      ? ov.about
+      : Array.isArray(c.about)
+        ? c.about
+        : c.about
+          ? [c.about]
+          : c.description
+            ? [c.description]
+            : []
+  const whatWeDo =
+    Array.isArray(ov.whatWeDo) && ov.whatWeDo.length
+      ? ov.whatWeDo
+      : Array.isArray(c.whatWeDo)
+        ? c.whatWeDo
+        : []
+  // Activities ("what we run"): officer-edited list when present, else the
+  // static cards. An empty override list falls back (like about/whatWeDo), so
+  // clearing the override fully restores the defaults.
+  const activitiesSource =
+    Array.isArray(ov.activities) && ov.activities.length
+      ? ov.activities
+      : Array.isArray(c.activities)
+        ? c.activities
+        : []
+  const activities = activitiesSource
   const hasNational = activities.some((a) => a.scope === 'IFMSA-Egypt')
 
   return (
@@ -122,9 +170,9 @@ export default function CommitteePage() {
           <h1 className="heading-serif mt-3 text-4xl text-white sm:text-6xl">
             {c.name}
           </h1>
-          {(c.tagline || c.officer) && (
+          {(tagline || c.officer) && (
             <p className="mx-auto mt-4 max-w-2xl text-lg font-light text-silver/75">
-              {c.tagline || c.officer}
+              {tagline || c.officer}
             </p>
           )}
         </div>
@@ -183,7 +231,7 @@ export default function CommitteePage() {
                 <span>
                   Items marked{' '}
                   <span className="font-semibold text-silver/70">
-                    IFMSA-Egypt national
+                    IFMSA-Egypt-National
                   </span>{' '}
                   are documented national campaigns run through local
                   committees including Ain Shams, not AUSSS-exclusive
@@ -192,9 +240,9 @@ export default function CommitteePage() {
                     className="font-semibold"
                     style={{ color: accent }}
                   >
-                    AUSSS
+                    AUSSS-Local
                   </span>{' '}
-                  are verified from AUSSS’s own channels.
+                  are locally run campaigns fully coordinated by our teams.
                 </span>
               </p>
             )}
@@ -206,18 +254,21 @@ export default function CommitteePage() {
           <SectionLabel accent={accent} center>
             The team
           </SectionLabel>
+          {/* Officer(s) / director on their own row */}
           <div className="mt-10 flex flex-wrap justify-center gap-x-10 gap-y-10">
             {officers.map((o, idx) => (
               <PersonCard key={o.abbr || idx} person={o} color={c.color} />
             ))}
-            {members.map((m, idx) => (
-              <PersonCard key={`m-${idx}`} person={m} color={c.color} />
-            ))}
           </div>
-          {members.length === 0 && (
-            <p className="mt-8 text-sm text-silver/45">
-              Committee members will be listed here soon.
-            </p>
+          {/* The rest of the team, below */}
+          {members.length > 0 && (
+            <div className="mx-auto mt-12 max-w-3xl border-t border-white/10 pt-12">
+              <div className="flex flex-wrap justify-center gap-x-10 gap-y-10">
+                {members.map((m, idx) => (
+                  <PersonCard key={`m-${idx}`} person={m} color={c.color} />
+                ))}
+              </div>
+            </div>
           )}
         </section>
 
@@ -268,7 +319,7 @@ function ActivityCard({ a, color, accent }) {
               : 'border-white/10 text-silver/55'
           }`}
         >
-          {ausss ? 'AUSSS' : 'IFMSA-Egypt national'}
+          {ausss ? 'AUSSS-Local' : 'IFMSA-Egypt-National'}
         </span>
       </div>
       <h3 className="heading-serif text-lg text-white">{a.title}</h3>
