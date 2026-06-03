@@ -241,7 +241,7 @@ function RevealButton({ onReveal, label }) {
   return (
     <button
       onClick={onReveal}
-      className="mt-7 text-xs font-semibold uppercase tracking-[0.18em] text-silver/55 underline-offset-4 transition-colors hover:text-white hover:underline"
+      className="relative z-10 mt-7 text-xs font-semibold uppercase tracking-[0.18em] text-silver/55 underline-offset-4 transition-colors hover:text-white hover:underline"
     >
       {label}
     </button>
@@ -484,8 +484,8 @@ function Heba({ onReveal }) {
       ref={cardRef}
       className="relative overflow-hidden rounded-3xl border border-[#D4A85C]/35 bg-gradient-to-br from-forest-800 via-forest-900 to-forest-950 p-10 text-center sm:p-14"
     >
-      <span className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[#D4A85C]/12 blur-3xl" />
-      <span className="absolute -right-24 -bottom-24 h-72 w-72 rounded-full bg-rose-300/10 blur-3xl" />
+      <span className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[#D4A85C]/12 blur-3xl" />
+      <span className="pointer-events-none absolute -right-24 -bottom-24 h-72 w-72 rounded-full bg-rose-300/10 blur-3xl" />
 
       <div className="relative mx-auto h-60 w-60 sm:h-72 sm:w-72">
         <svg
