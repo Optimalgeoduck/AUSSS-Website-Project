@@ -27,6 +27,18 @@ export default function Flipbook({ pages, title }) {
     }
   }, [pages])
 
+  // Preload + decode every page up front. Without this, flipping to a page
+  // whose image hasn't downloaded/decoded yet exposes the bare white page for a
+  // frame — a white flash on every flip. Decoding ahead of time keeps each flip
+  // landing on a ready image.
+  useEffect(() => {
+    for (const url of pages) {
+      const img = new Image()
+      img.src = url
+      img.decode?.().catch(() => {})
+    }
+  }, [pages])
+
   // Left/right arrow keys flip the book.
   useEffect(() => {
     if (!ratio) return
@@ -47,20 +59,20 @@ export default function Flipbook({ pages, title }) {
     )
   }
 
-  const baseW = 520
+  const baseW = 582
 
   return (
     <div className="flex w-full flex-col items-center">
-      <div className="magazine-frame mx-auto w-full max-w-[640px] md:max-w-[1336px]">
+      <div className="magazine-frame mx-auto w-full max-w-[717px] md:max-w-[1496px]">
         <HTMLFlipBook
           ref={bookRef}
           width={baseW}
           height={Math.round(baseW * ratio)}
           size="stretch"
           minWidth={300}
-          maxWidth={650}
+          maxWidth={728}
           minHeight={Math.round(300 * ratio)}
-          maxHeight={Math.round(650 * ratio)}
+          maxHeight={Math.round(728 * ratio)}
           maxShadowOpacity={0.5}
           showCover
           mobileScrollSupport
@@ -82,8 +94,8 @@ export default function Flipbook({ pages, title }) {
                   alt={`${title}, page ${i + 1}`}
                   className="h-full w-full select-none"
                   draggable={false}
-                  loading={i < 4 ? 'eager' : 'lazy'}
-                  decoding="async"
+                  loading="eager"
+                  decoding="sync"
                 />
               </div>
             )
