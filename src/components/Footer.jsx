@@ -1,11 +1,19 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { socials } from '../data/society.js'
 import SocialIcon from './SocialIcon.jsx'
+import GalleryAurora from './GalleryAurora.jsx'
 
 export default function Footer() {
+  // On the magazine page only, a faint aurora (bright at the top, fading down)
+  // lets the page's glow leak a little way over the top of the footer before
+  // settling back into the solid forest. The footer stays its own section.
+  const onMagazine = useLocation().pathname === '/magazine'
   return (
-    <footer className="border-t border-white/10 bg-forest-950 py-14">
-      <div className="container-prose">
+    <footer className="relative overflow-hidden border-t border-white/10 bg-forest-950 py-14">
+      {onMagazine && (
+        <GalleryAurora opacityClass="opacity-30" amplitude={1.1} blend={0.55} />
+      )}
+      <div className="container-prose relative z-10">
         <div className="flex flex-col items-center gap-10 text-center">
           <div className="flex flex-col items-center gap-3">
             <Link to="/" className="flex items-center">
@@ -37,29 +45,21 @@ export default function Footer() {
           </div>
 
           <nav className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-silver/70">
-            <Link to={{ pathname: '/', hash: '#about' }} className="transition-colors hover:text-white">About</Link>
-            <Link to={{ pathname: '/', hash: '#board' }} className="transition-colors hover:text-white">Leadership</Link>
-            <Link to={{ pathname: '/', hash: '#officials' }} className="transition-colors hover:text-white">Committees</Link>
+            <Link to="/" className="transition-colors hover:text-white">Home</Link>
             <Link to="/merch" className="transition-colors hover:text-white">Merch</Link>
             <Link to="/ifmsa" className="transition-colors hover:text-white">IFMSA</Link>
             <Link to="/magazine" className="transition-colors hover:text-white">Magazine</Link>
-            <Link to="/social" className="transition-colors hover:text-white">Social</Link>
             <Link to="/contact" className="transition-colors hover:text-white">Contact</Link>
             <Link to="/members" className="transition-colors hover:text-white">Members</Link>
-            <a
-              href="/assets/docs/AUSSS-Constitution-and-Bylaws.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-white"
-            >
+            <Link to="/constitution" className="transition-colors hover:text-white">
               Constitution
-            </a>
+            </Link>
             <Link to="/join" className="transition-colors hover:text-white">Join</Link>
             <Link to="/login" className="transition-colors hover:text-white">Officer login</Link>
           </nav>
         </div>
 
-        <div className="mt-10 border-t border-white/10 pt-10">
+        <div className="mt-10 pt-4">
           <p className="mb-5 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-silver/40">
             Find us
           </p>

@@ -5,8 +5,8 @@ import { submitStory } from '../lib/stories.js'
 import { STORIES_OPEN, STORIES_WEBAPP_URL } from '../data/storiesConfig.js'
 
 const PROGRAMME_OPTIONS = [
-  'SCOPE — Professional (clinical) exchange',
-  'SCORE — Research exchange',
+  'SCOPE: Professional (clinical) exchange',
+  'SCORE: Research exchange',
   'Other / not sure',
 ]
 
@@ -46,7 +46,7 @@ export default function ShareStoryPage() {
     if (!form.phone.trim() || form.phone.replace(/\D/g, '').length < 8)
       next.phone = 'Enter a valid phone / WhatsApp number'
     if (!form.story.trim() || form.story.trim().length < 30)
-      next.story = 'Tell us a little more — at least a couple of sentences'
+      next.story = 'Tell us a little more, at least a couple of sentences'
     if (form.story.length > MAX_STORY_LENGTH)
       next.story = `Keep it under ${MAX_STORY_LENGTH} characters`
     setErrors(next)
@@ -234,7 +234,7 @@ export default function ShareStoryPage() {
           {!STORIES_WEBAPP_URL && (
             <p className="mx-auto mt-2 max-w-2xl rounded-lg border border-medical/30 bg-medical/5 px-4 py-3 text-center text-xs text-medical-light">
               <strong>Dev preview:</strong> the story backend isn&rsquo;t
-              connected yet — submitting will log the payload to the console
+              connected yet; submitting will log the payload to the console
               and show a fake reference.
             </p>
           )}

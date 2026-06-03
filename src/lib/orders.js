@@ -32,7 +32,7 @@ function summarizeItems(items) {
       if (!p) return null
       const variant = [it.size, it.design].filter(Boolean).join(' / ')
       const label = variant ? `${p.name} (${variant})` : p.name
-      return `${it.qty}× ${label} — ${p.price * it.qty} EGP`
+      return `${it.qty}× ${label} = ${p.price * it.qty} EGP`
     })
     .filter(Boolean)
     .join('\n')

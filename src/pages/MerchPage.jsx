@@ -168,7 +168,7 @@ export default function MerchPage() {
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg font-light text-silver/75">
             Life Savers, Change Makers. Every piece in this drop is{' '}
-            <strong className="text-white">pre-order only</strong> — we collect
+            <strong className="text-white">pre-order only</strong>: we collect
             orders, then run production, then coordinate pickup. What you pay
             for is what you get.
           </p>

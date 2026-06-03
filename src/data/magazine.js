@@ -1,97 +1,41 @@
-// AUSSS magazine — issues + articles (drives /magazine).
+// AUSSS magazine — a single edition, read in-page as a page-flipping book
+// (drives /magazine).
 //
-// Hybrid publishing model: every issue ships TWO ways at once —
-//   1. in-site web ARTICLES   → fast, mobile-friendly, findable on Google
-//   2. the original designed PDF → the faithful Canva/InDesign layout
+// Publishing the edition:
+//   1. Rasterise the source PDF to web-sized page images by running
+//        _source/build-magazine.mjs
+//      (writes public/assets/magazine/issue-1/pages/NNN.jpg). Set `pages.count`
+//      below to the number it reports. The page flips through these images —
+//      no big PDF download, no client-side pdf.js.
+//   2. (Optional) `download` is a full-quality copy hosted off-repo (e.g. a
+//      Google Drive link) for the "Download" button.
+//   3. (Optional) `canva` keeps an "Open on Canva" link to the live design.
+//   4. (Optional) point `cover` at a cover image (the top-left thumbnail).
 //
-// Publishing an issue: hand the maintainer the PDF; its text + images are
-// extracted into `articles[]`, and the PDF + images are dropped into
-//   public/assets/magazine/<issue id>/
-// Until that's done an issue can ship with NO cover (a gradient placeholder is
-// drawn instead) and a null `pdf` (the button shows "coming soon"), so nothing
-// 404s while the page is still a draft.
-//
-// Article body is an ordered list of blocks the reader renders:
-//   { type: 'p',     text }
-//   { type: 'h2',    text }
-//   { type: 'quote', text, cite? }
-//   { type: 'image', src, alt?, caption? }
+// While `pages` and `canva` are both empty the page shows a placeholder, and
+// `cover: null` draws a gradient cover, so nothing 404s while it's a draft.
 
-export const issues = [
-  {
-    id: 'issue-1',
-    title: 'Issue 01',
-    // Human-readable cover line; not a real date object (kept as a string so
-    // it renders verbatim and never needs locale handling).
-    date: 'Sample issue',
-    blurb:
-      'A placeholder issue that shows the full magazine flow — the cover shelf, an issue page listing its articles, the in-site article reader, and the “original PDF” slot. Replace it when the first real issue is ready.',
-    cover: null, // null → gradient placeholder cover is drawn
-    pdf: null, // null → "original PDF coming soon"; set to '/assets/magazine/issue-1/issue.pdf' when uploaded
-    articles: [
-      {
-        slug: 'welcome-to-the-magazine',
-        title: 'Welcome to the AUSSS Magazine',
-        author: 'The Editorial Team',
-        dek: 'How this page works, and what you can expect to read here each issue.',
-        cover: null,
-        body: [
-          {
-            type: 'p',
-            text: 'This is a sample article. Each real article is published as a web page like this one — readable on any phone, instant to load, and findable on Google — while the original designed magazine stays one click away as a PDF.',
-          },
-          { type: 'h2', text: 'Two ways to read' },
-          {
-            type: 'p',
-            text: 'Prefer the designed layout your committee laid out? Open the original PDF from the issue page. Prefer to read on the go? Everything is right here as web articles. Same content, two formats.',
-          },
-          {
-            type: 'quote',
-            text: 'Life Savers, Change Makers — one story at a time.',
-            cite: 'AUSSS',
-          },
-          {
-            type: 'p',
-            text: 'When you send the first issue’s PDF, its articles and images will replace this placeholder, and the “original PDF” button will link to the file.',
-          },
-          {
-            type: 'image',
-            src: '/assets/magazine/issue-1/sample.jpg',
-            alt: 'Sample article image',
-            caption:
-              'Article images render like this, with an optional caption. (This placeholder has no file yet.)',
-          },
-        ],
-      },
-      {
-        slug: 'how-issues-are-published',
-        title: 'How an issue gets published',
-        author: 'The Editorial Team',
-        dek: 'From a finished PDF to live web articles, in a few steps.',
-        cover: null,
-        body: [
-          { type: 'h2', text: 'You design as usual' },
-          {
-            type: 'p',
-            text: 'Lay out the issue however you like and export a PDF. Nothing about your design workflow changes.',
-          },
-          { type: 'h2', text: 'We turn it into web articles' },
-          {
-            type: 'p',
-            text: 'The PDF’s text and images are pulled out and laid into article pages like this one, grouped under the issue, and the PDF is kept alongside for anyone who wants the designed version.',
-          },
-          {
-            type: 'p',
-            text: 'Readers get the best of both: a fast, shareable web read and the faithful designed PDF.',
-          },
-        ],
-      },
-    ],
+export const magazine = {
+  id: 'issue-1',
+  title: 'The Story of Origin, Vol 6',
+  // Human-readable cover line; kept as a string so it renders verbatim.
+  date: 'A CBSD production',
+  blurb:
+    'The sixth volume of the AUSSS Magazine. Read it in full below or download it, and don’t forget to share it with your friends.',
+  cover: '/assets/magazine/issue-1/cover.jpg',
+  // Web-sized page images flipped through in-page (built from the full-quality
+  // PDF by _source/build-magazine.mjs).
+  pages: {
+    base: '/assets/magazine/issue-1/pages',
+    count: 30,
+    pad: 3, // zero-padding in the filenames, e.g. 001.jpg
+    ext: 'jpg',
   },
-]
-
-// --- Lookups used by the magazine routes --------------------------------
-export const issueById = (id) => issues.find((i) => i.id === id)
-
-export const articleOf = (issue, slug) =>
-  issue ? issue.articles.find((a) => a.slug === slug) : undefined
+  // Full-quality copy for the Download button (hosted off-repo).
+  download:
+    'https://drive.google.com/file/d/1PuSttZynpiFCy7R5td61qY-OO8Nbz015/view',
+  // Canva "view" share link, kept as an "Open on Canva" fallback.
+  canva: 'https://www.canva.com/design/DAHGTEatDDQ/0BPis3tFKLYKp4OCFfUVXw/view',
+  // Optional aspect ratio (height ÷ width) for the Canva fallback frame.
+  aspect: null,
+}

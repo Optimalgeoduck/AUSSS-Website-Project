@@ -434,7 +434,7 @@ export default function MembersPage() {
               card (so it doesn't crowd the special TO/EB/Heba cards or the
               not-found / error states). */}
           {found && (
-          <div className="reveal mt-12 rounded-2xl border border-white/10 bg-forest-800/60 p-7 text-center">
+          <div className="mt-12 rounded-2xl border border-white/10 bg-forest-800/60 p-7 text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-medical-light">
               Governance
             </p>
@@ -446,14 +446,12 @@ export default function MembersPage() {
               &amp; Bylaws. Read the full document:
             </p>
             <div className="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <a
-                href={CONSTITUTION_PDF}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to="/constitution"
                 className="w-full rounded-full bg-white px-6 py-3 text-sm font-semibold text-forest transition-transform hover:scale-[1.03] sm:w-auto"
               >
                 View document
-              </a>
+              </Link>
               <a
                 href={CONSTITUTION_PDF}
                 download

@@ -4,8 +4,10 @@ import {
   executiveBoard,
   committees,
   society,
+  socials,
   slugFor,
 } from '../data/society.js'
+import SocialIcon from '../components/SocialIcon.jsx'
 
 const isSupport = (g) => /support|division|psd|pnsd|cbsd/i.test(g || '')
 
@@ -89,7 +91,7 @@ export default function ContactPage() {
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg font-light text-silver/75">
             Reach the Executive Board, a standing committee, or a support
-            division directly.
+            division directly, or follow us on our official channels.
           </p>
           {society.contactEmail && (
             <a
@@ -103,6 +105,41 @@ export default function ContactPage() {
       </header>
 
       <div className="container-prose space-y-14 pb-28 sm:pb-36">
+        {/* Follow us — merged in from the former /social page. */}
+        <section className="reveal">
+          <h2 className="heading-serif text-2xl text-white sm:text-3xl">
+            Follow AUSSS
+          </h2>
+          <p className="mt-2 text-sm text-silver/65">
+            Events, announcements and campaigns. Keep up with the society on
+            our official channels.
+          </p>
+          <div className="mt-6 grid gap-6 sm:grid-cols-3">
+            {socials.map((s) => (
+              <a
+                key={s.key}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col items-center rounded-3xl border border-white/10 bg-forest-800 p-8 text-center transition-all duration-500 hover:-translate-y-1.5 hover:border-medical/40 hover:shadow-2xl hover:shadow-forest-950/40"
+              >
+                <span className="grid h-16 w-16 place-items-center rounded-2xl bg-forest-950 text-medical-light transition-colors group-hover:bg-medical group-hover:text-white">
+                  <SocialIcon name={s.key} className="h-8 w-8" />
+                </span>
+                <h3 className="heading-serif mt-6 text-2xl text-white">
+                  {s.name}
+                </h3>
+                <p className="mt-2 break-words text-sm font-medium text-medical-light">
+                  {s.handle}
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-silver/65">
+                  {s.blurb}
+                </p>
+              </a>
+            ))}
+          </div>
+        </section>
+
         <Group title="Executive Board">
           {executiveBoard.map((m, i) => (
             <Row key={i} name={m.name} role={m.role} email={m.email} />

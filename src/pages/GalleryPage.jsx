@@ -118,7 +118,7 @@ function GalleryIndex({ isAdmin, removals }) {
       <div className="container-prose pb-20 pt-12">
         {albums.length === 0 ? (
           <p className="mx-auto max-w-xl rounded-2xl border border-dashed border-white/15 bg-white/[0.03] p-8 text-center text-sm text-silver/60">
-            The gallery is loading — photos will appear here once the asset
+            The gallery is loading. Photos will appear here once the asset
             pipeline finishes processing.
           </p>
         ) : (
@@ -273,7 +273,7 @@ function AlbumView({ album, isAdmin, removals }) {
             >
               <img
                 src={featuredPhoto.full}
-                alt={`${album.title} — ${featuredPhoto.label || 'featured photo'}`}
+                alt={`${album.title}, ${featuredPhoto.label || 'featured photo'}`}
                 width={featuredPhoto.w}
                 height={featuredPhoto.h}
                 className={`max-h-[72vh] w-full object-contain transition-transform duration-700 group-hover:scale-[1.02] ${
@@ -322,7 +322,7 @@ function AlbumView({ album, isAdmin, removals }) {
                   <div className="relative aspect-square overflow-hidden">
                     <img
                       src={p.thumb}
-                      alt={`${album.title} — photo ${i + 1}`}
+                      alt={`${album.title}, photo ${i + 1}`}
                       loading="lazy"
                       width={p.w}
                       height={p.h}

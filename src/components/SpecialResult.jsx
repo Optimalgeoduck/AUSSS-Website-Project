@@ -335,10 +335,18 @@ function Heba({ onReveal }) {
     let ctx
     let cancelled = false
     ;(async () => {
-      const [{ gsap }, scrollTriggerMod] = await Promise.all([
-        import('gsap'),
-        import('gsap/ScrollTrigger'),
-      ])
+      let gsap, scrollTriggerMod
+      try {
+        ;[{ gsap }, scrollTriggerMod] = await Promise.all([
+          import('gsap'),
+          import('gsap/ScrollTrigger'),
+        ])
+      } catch {
+        // GSAP couldn't load — reveal the (static) garden so the CSS pre-hide
+        // doesn't leave it permanently invisible.
+        if (!cancelled) root.classList.add('hb-ready')
+        return
+      }
       if (cancelled) return
       const ScrollTrigger = scrollTriggerMod.ScrollTrigger || scrollTriggerMod.default
       gsap.registerPlugin(ScrollTrigger)
@@ -351,16 +359,24 @@ function Heba({ onReveal }) {
         const sparkleEls = Array.from(root.querySelectorAll('.hb-sparkle'))
 
         // Prep all stem paths so they can be drawn via stroke-dashoffset
+        // opacity:1 here matters — the CSS pre-hide (see index.css) sets these
+        // to opacity:0 to kill the load flash, and the timeline only animates
+        // strokeDashoffset, so without restoring opacity they'd draw invisibly.
         if (spiralEl) {
           const len = spiralEl.getTotalLength()
           gsap.set(spiralEl, {
             strokeDasharray: len,
             strokeDashoffset: len,
+            opacity: 1,
           })
         }
         branchEls.forEach((el) => {
           const len = el.getTotalLength()
-          gsap.set(el, { strokeDasharray: len, strokeDashoffset: len })
+          gsap.set(el, {
+            strokeDasharray: len,
+            strokeDashoffset: len,
+            opacity: 1,
+          })
         })
         gsap.set([...leafEls, ...bloomEls, ...sparkleEls], {
           scale: 0,

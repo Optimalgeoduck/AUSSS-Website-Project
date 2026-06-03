@@ -1383,7 +1383,7 @@ export const albums = [
   {
     "slug": "booth-25-26",
     "title": "Booth 25-26",
-    "blurb": "Out on campus — recruiting the next generation.",
+    "blurb": "Out on campus, recruiting the next generation.",
     "cover": "/assets/gallery/booth-25-26/001-thumb.jpg",
     "count": 40,
     "photos": [

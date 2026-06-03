@@ -24,7 +24,7 @@
 export const merchProducts = [
   {
     id: 'tshirt-55',
-    name: 'AUSSS T-Shirt — 55th Limited Edition',
+    name: 'AUSSS T-Shirt, 55th Limited Edition',
     tagline: 'Think Global. Act Local.',
     description:
       'Forest-green ringer tee with white trim. AUSSS shield embroidered on the chest, alligator monogram on the side, and the "Life Savers, Change Makers" script on the back, finished with "55 years of youth, 55 years of impact."',

@@ -449,7 +449,7 @@ export default function CheckoutPage() {
         {!ORDERS_WEBAPP_URL && (
           <p className="mx-auto mt-10 max-w-2xl rounded-lg border border-medical/30 bg-medical/5 px-4 py-3 text-center text-xs text-medical-light">
             <strong>Dev preview:</strong> the order backend isn&rsquo;t
-            connected yet — submitting will log the payload to the console
+            connected yet; submitting will log the payload to the console
             and show a fake reference. Phase 4 wires the Apps Script.
           </p>
         )}

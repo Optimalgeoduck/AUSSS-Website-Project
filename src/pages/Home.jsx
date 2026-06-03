@@ -12,7 +12,18 @@ export default function Home() {
   return (
     <>
       <Hero />
+      {/* Soft gradient seams so section background colours blend into each
+          other instead of hard-cutting. Each strip starts at the section
+          above's edge colour and ends at the one below's (light + dark). */}
+      <div
+        aria-hidden="true"
+        className="h-24 bg-gradient-to-b from-forest-800 to-cream dark:to-forest-950 sm:h-32"
+      />
       <About />
+      <div
+        aria-hidden="true"
+        className="h-24 bg-gradient-to-b from-cream to-forest-950 dark:from-forest-950 sm:h-32"
+      />
       <ExecutiveBoard />
       <TeamOfficials />
 
@@ -39,8 +50,7 @@ export default function Home() {
               Society Calendar
             </h2>
             <p className="mt-4 text-lg font-light text-silver/70">
-              Society-wide events, deadlines, and assemblies. Each committee
-              and division also keeps its own calendar on its page.
+              Society-wide events, deadlines, and assemblies.
             </p>
           </div>
           <div className="reveal mx-auto max-w-5xl">

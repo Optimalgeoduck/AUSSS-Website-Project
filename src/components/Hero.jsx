@@ -55,7 +55,7 @@ export default function Hero() {
           className="animate-fade-up mx-auto mt-5 max-w-2xl text-balance text-base font-light text-silver/80 sm:text-xl"
           style={{ animationDelay: '0.2s' }}
         >
-          Empowering Medical Research and Student Exchange.
+          Science, health and humanity, driven by Ain Shams’ medical students.
         </p>
 
         <div
@@ -96,18 +96,18 @@ export default function Hero() {
             </div>
           ))}
         </div>
-      </div>
 
-      {/* Scroll cue */}
-      <a
-        href="#about"
-        aria-label="Scroll to about"
-        className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2"
-      >
-        <span className="flex h-10 w-6 items-start justify-center rounded-full border border-white/30 p-1.5">
-          <span className="h-2 w-1 animate-bounce rounded-full bg-white/70" />
-        </span>
-      </a>
+        <p
+          className="animate-fade-in mx-auto mt-8 max-w-2xl text-sm font-light text-silver/70 sm:text-base"
+          style={{ animationDelay: '0.6s' }}
+        >
+          This year, AUSSS officially celebrates its{' '}
+          <span className="font-semibold text-medical-light">
+            55th anniversary
+          </span>
+          .
+        </p>
+      </div>
     </section>
   )
 }

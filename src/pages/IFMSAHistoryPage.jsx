@@ -2,6 +2,44 @@ import useReveal from '../hooks/useReveal.js'
 import { Link } from 'react-router-dom'
 import { ifmsaHistory } from '../data/society.js'
 
+// Every card links out to the matching page on the official IFMSA site.
+// Renders an <a> when an href is present, otherwise a plain <div> so the
+// markup degrades gracefully if a link is ever missing.
+function CardLink({ href, className, children }) {
+  if (!href) return <div className={className}>{children}</div>
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`group block ${className}`}
+    >
+      {children}
+    </a>
+  )
+}
+
+// Small "Read on ifmsa.org ↗" affordance shown at the foot of each card.
+function ExternalCue() {
+  return (
+    <span className="mt-4 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-silver/45 transition-colors group-hover:text-medical-light">
+      Read on ifmsa.org
+      <svg
+        viewBox="0 0 24 24"
+        className="h-3.5 w-3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M7 17 17 7M9 7h8v8" />
+      </svg>
+    </span>
+  )
+}
+
 function TimelineItem({ year, accent, children, isFounding = false }) {
   return (
     <div className="reveal relative pl-14 sm:pl-20">
@@ -26,7 +64,7 @@ function TimelineItem({ year, accent, children, isFounding = false }) {
 
 export default function IFMSAHistoryPage() {
   useReveal()
-  const { founded, committees } = ifmsaHistory
+  const { founded, committees, supportDivisions } = ifmsaHistory
 
   return (
     <article className="bg-forest-950">
@@ -50,7 +88,7 @@ export default function IFMSAHistoryPage() {
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg font-light leading-relaxed text-silver/75">
             IFMSA grew committee by committee. Each standing committee owns a
-            field of global health — and each has its own story, founding year
+            field of global health, and each has its own story, founding year
             and, for some, a trail of name changes. Here is how they came to be.
           </p>
         </div>
@@ -66,22 +104,35 @@ export default function IFMSAHistoryPage() {
 
           {/* Founding of IFMSA */}
           <TimelineItem year={founded.year} accent="#3fb6ab" isFounding>
-            <div className="rounded-2xl border border-medical/30 bg-gradient-to-br from-forest-800 to-forest-900 p-6 sm:p-7">
+            <CardLink
+              href={founded.href}
+              className="rounded-2xl border border-medical/30 bg-gradient-to-br from-forest-800 to-forest-900 p-6 transition-colors hover:border-medical/60 sm:p-7"
+            >
               <h2 className="heading-serif text-2xl text-white">
                 IFMSA is founded
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-silver/75">
                 {founded.body}
               </p>
-            </div>
+              <ExternalCue />
+            </CardLink>
           </TimelineItem>
 
           {/* One node per committee, in founding order */}
           {committees.map((c) => (
             <TimelineItem key={c.abbr} year={c.year} accent={c.accent}>
-              <div className="rounded-2xl border border-white/10 bg-forest-800 p-6 transition-colors hover:border-white/20 sm:p-7">
+              <CardLink
+                href={c.href}
+                className="rounded-2xl border border-white/10 bg-forest-800 p-6 transition-colors hover:border-white/25 sm:p-7"
+              >
                 <div className="flex items-start gap-4">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/95 p-1.5">
+                  {/* The committee logo PNGs are solid white, so they need a
+                      dark chip (not a white one) to be visible. Accent border
+                      ties each to its committee colour. */}
+                  <span
+                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border bg-forest-950 p-1.5"
+                    style={{ borderColor: c.accent }}
+                  >
                     <img
                       src={c.logo}
                       alt={c.abbr}
@@ -127,13 +178,64 @@ export default function IFMSAHistoryPage() {
                     </ol>
                   </div>
                 )}
-              </div>
+
+                <ExternalCue />
+              </CardLink>
             </TimelineItem>
           ))}
         </div>
 
+        {/* Support divisions — not on the rail; they aren't tied to a founding
+            year. Operational portfolios that carry IFMSA alongside the six
+            standing committees. */}
+        {supportDivisions?.length > 0 && (
+          <div className="mx-auto mt-24 max-w-5xl">
+            <div className="reveal text-center">
+              <span className="eyebrow justify-center">
+                <span className="h-px w-8 bg-medical" />
+                Beyond the committees
+                <span className="h-px w-8 bg-medical" />
+              </span>
+              <h2 className="heading-serif mt-5 text-3xl text-white sm:text-4xl">
+                The support divisions
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-base font-light leading-relaxed text-silver/70">
+                The six standing committees own IFMSA’s health fields. Carrying
+                them is a second set of portfolios: the support divisions, each
+                led by a Vice-President, that keep the federation running.
+              </p>
+            </div>
+
+            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {supportDivisions.map((d) => (
+                <CardLink
+                  key={d.abbr}
+                  href={d.href}
+                  className="reveal rounded-2xl border border-white/10 bg-forest-800 p-6 transition-colors hover:border-white/25"
+                >
+                  <div className="flex items-center gap-4">
+                    <span
+                      className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-[11px] font-bold tracking-wide text-white"
+                      style={{ backgroundColor: d.accent }}
+                    >
+                      {d.abbr}
+                    </span>
+                    <h3 className="heading-serif text-xl leading-tight text-white">
+                      {d.name}
+                    </h3>
+                  </div>
+                  <p className="mt-4 text-sm leading-relaxed text-silver/75">
+                    {d.body}
+                  </p>
+                  <ExternalCue />
+                </CardLink>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Footer nav */}
-        <div className="mt-16 text-center">
+        <div className="mt-20 text-center">
           <Link
             to="/ifmsa"
             className="inline-flex items-center gap-2 text-sm font-semibold text-medical-light transition-colors hover:text-white"

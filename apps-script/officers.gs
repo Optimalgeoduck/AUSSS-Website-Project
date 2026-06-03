@@ -131,6 +131,39 @@ function readToken_(token) {
   }
 }
 
+// ── Site settings (global toggles in Script Properties) ─────────────────────
+// A tiny global KV any dev/EB account can flip; read publicly by the site.
+// Currently just `magazineInHeader` (show the Magazine CTA in the navbar).
+var SETTINGS_KEY = 'SITE_SETTINGS'
+
+function readSettings_() {
+  var out = { magazineInHeader: true }
+  var raw = PropertiesService.getScriptProperties().getProperty(SETTINGS_KEY)
+  if (raw) {
+    try {
+      var parsed = JSON.parse(raw)
+      if (parsed && typeof parsed.magazineInHeader === 'boolean') {
+        out.magazineInHeader = parsed.magazineInHeader
+      }
+    } catch (e) {
+      /* keep defaults */
+    }
+  }
+  return out
+}
+
+function writeSettings_(patch) {
+  var current = readSettings_()
+  if (patch && typeof patch.magazineInHeader === 'boolean') {
+    current.magazineInHeader = patch.magazineInHeader
+  }
+  PropertiesService.getScriptProperties().setProperty(
+    SETTINGS_KEY,
+    JSON.stringify(current),
+  )
+  return current
+}
+
 // ── Overrides ────────────────────────────────────────────────────────────────
 function readOverrides_() {
   var values = sheet_(OVERRIDES_SHEET).getDataRange().getValues()
@@ -209,6 +242,27 @@ function doGet(e) {
   try {
     if (action === 'overrides') {
       return json_({ ok: true, overrides: readOverrides_() })
+    }
+
+    // Public read of the global site settings (e.g. magazineInHeader).
+    if (action === 'settings') {
+      return json_({ ok: true, settings: readSettings_() })
+    }
+
+    // Dev/EB write of a site setting. GET (not POST) so the reply — the saved
+    // settings — is readable across Apps Script's 302 redirect, letting the
+    // toggle confirm immediately. Requires an 'all' or 'dev' scoped token.
+    if (action === 'setsettings') {
+      var st = readToken_(p.token)
+      if (!st) return json_({ ok: false, error: 'Session expired' })
+      if (st.scope !== 'all' && st.scope !== 'dev') {
+        return json_({ ok: false, error: 'Not allowed' })
+      }
+      var patch = {}
+      if (typeof p.magazineInHeader !== 'undefined') {
+        patch.magazineInHeader = String(p.magazineInHeader) === 'true'
+      }
+      return json_({ ok: true, settings: writeSettings_(patch) })
     }
 
     if (action === 'login') {
@@ -296,6 +350,8 @@ function doPost(e) {
       whatWeDo: Array.isArray(f.whatWeDo)
         ? f.whatWeDo.map(function (x) { return String(x).trim() }).filter(Boolean)
         : [],
+      // "What we do" is opt-in (off by default) — officers toggle it on.
+      whatWeDoEnabled: Boolean(f.whatWeDoEnabled),
       photo: resolvePhoto_(f.photo, slug, 'officer'),
       membersEnabled: Boolean(f.membersEnabled),
       members: resolvedMembers,

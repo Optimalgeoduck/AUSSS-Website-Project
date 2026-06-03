@@ -227,7 +227,7 @@ export default function TeamOfficials() {
           </h2>
           <p className="mt-4 text-lg font-light text-silver/70">
             The operational arm of the Executive Board. Select any unit to
-            explore who they are, what they do, and their calendar.
+            explore who they are and what they do.
           </p>
         </div>
 

@@ -201,7 +201,7 @@ function PhotoGrid({ removals, mode, onLock }) {
             Click any photo to hide it. Changes go{' '}
             <span className="font-semibold text-medical-light">live for
             everyone</span>{' '}
-            within seconds — no redeploy. Click again to restore. Nothing is
+            within seconds, no redeploy. Click again to restore. Nothing is
             deleted from disk.
           </p>
         ) : (
@@ -213,7 +213,7 @@ function PhotoGrid({ removals, mode, onLock }) {
             </code>{' '}
             in the repo and redeploy.{' '}
             <span className="text-silver/50">
-              (Set GALLERY_WEBAPP_URL to enable instant, redeploy-free hiding —
+              (Set GALLERY_WEBAPP_URL to enable instant, redeploy-free hiding;
               see apps-script/gallery.README.md.)
             </span>
           </p>
@@ -350,7 +350,7 @@ function PhotoGrid({ removals, mode, onLock }) {
               localMarks.length > 0 && (
                 <span className="text-silver/50">
                   {' '}
-                  ({localMarks.length} new — not deployed yet)
+                  ({localMarks.length} new, not deployed yet)
                 </span>
               )
             )}

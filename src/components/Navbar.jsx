@@ -2,20 +2,20 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle.jsx'
 import CartButton from './CartButton.jsx'
+import { useSiteSettings } from '../hooks/useSiteSettings.js'
 
 // `to` may be a route ("/ifmsa") or a home-section hash ("/#about").
 const LINKS = [
-  { to: '/#about', label: 'About' },
+  { to: '/', label: 'Home' },
   { to: '/exchange', label: 'Exchange' },
   { to: '/gallery', label: 'Gallery' },
   { to: '/ifmsa', label: 'IFMSA' },
   { to: '/merch', label: 'Merch' },
-  { to: '/social', label: 'Social' },
   { to: '/contact', label: 'Contact' },
 ]
 
-// Catchy launch CTA for the magazine, shown as a highlighted pill.
-const MAGAZINE_CTA = 'Check out our 1st AUSSS Magazine!'
+// Catchy CTA for the magazine, shown as a highlighted pill.
+const MAGAZINE_CTA = 'Read our latest AUSSS Magazine!'
 
 function parseTo(to) {
   const [pathname, hash] = to.split('#')
@@ -26,6 +26,9 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
+  const { settings } = useSiteSettings()
+  // Dev/EB can hide the Magazine CTA site-wide; default (and fallback) is shown.
+  const showMagazine = settings.magazineInHeader !== false
   const isHome = pathname === '/'
   // Inner pages have no dark hero behind the bar → always solid.
   const solid = scrolled || !isHome
@@ -96,18 +99,18 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
-          <li>
-            <Link
-              to="/magazine"
-              className="whitespace-nowrap rounded-full bg-medical px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-medical/20 transition-colors duration-300 hover:bg-medical-light"
-            >
-              {MAGAZINE_CTA}
-            </Link>
-          </li>
-          <li>
+          {showMagazine && (
+            <li>
+              <Link
+                to="/magazine"
+                className="whitespace-nowrap rounded-full bg-medical px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-medical/20 transition-colors duration-300 hover:bg-medical-light"
+              >
+                {MAGAZINE_CTA}
+              </Link>
+            </li>
+          )}
+          <li className="flex items-center gap-2">
             <CartButton tone={solid ? 'solid' : 'transparent'} />
-          </li>
-          <li>
             <ThemeToggle tone={solid ? 'solid' : 'transparent'} />
           </li>
           <li>
@@ -161,14 +164,16 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
-          <li className="pt-4">
-            <Link
-              to="/magazine"
-              className="block w-full rounded-full bg-medical py-3 text-center text-sm font-semibold text-white"
-            >
-              {MAGAZINE_CTA}
-            </Link>
-          </li>
+          {showMagazine && (
+            <li className="pt-4">
+              <Link
+                to="/magazine"
+                className="block w-full rounded-full bg-medical py-3 text-center text-sm font-semibold text-white"
+              >
+                {MAGAZINE_CTA}
+              </Link>
+            </li>
+          )}
           <li className="pt-3">
             <Link
               to="/members"

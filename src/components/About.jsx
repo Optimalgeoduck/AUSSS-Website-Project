@@ -40,15 +40,36 @@ export default function About() {
   return (
     <section id="about" className="relative bg-cream py-28 sm:py-36 dark:bg-forest-950">
       <div className="container-prose">
-        <div className="grid items-start gap-16 lg:grid-cols-12">
+        {/* Eyebrow on its own row, above the two-column layout. */}
+        <div className="reveal">
+          <span className="eyebrow">
+            <span className="h-px w-8 bg-medical" />
+            About the Society
+          </span>
+        </div>
+
+        <div className="mt-8 grid items-start gap-16 lg:grid-cols-12">
           <div className="reveal lg:col-span-5">
-            <span className="eyebrow">
-              <span className="h-px w-8 bg-medical" />
-              About the Society
-            </span>
-            <h2 className="heading-serif mt-5 text-4xl text-forest sm:text-5xl dark:text-medical-light">
+            <h2 className="heading-serif text-4xl text-forest sm:text-5xl dark:text-medical-light">
               Where clinical practice meets scientific inquiry.
             </h2>
+            <p className="heading-serif mt-8 text-2xl font-light leading-snug text-forest/80 sm:text-3xl dark:text-silver/80">
+              For{' '}
+              <span className="font-medium text-forest dark:text-medical-light">
+                55 years
+              </span>{' '}
+              AUSSS has actively{' '}
+              <span className="font-medium text-forest dark:text-medical-light">
+                redefined what is possible
+              </span>
+              . Here, boundaries are pushed and ceilings are shattered as our
+              members turn ideas into action. AUSSS is where your curiosity
+              grows into a{' '}
+              <span className="font-medium text-medical dark:text-medical-light">
+                calling for change
+              </span>
+              .
+            </p>
           </div>
 
           <div className="reveal space-y-6 text-lg leading-relaxed text-forest-900/75 lg:col-span-7 dark:text-silver/75">
@@ -57,15 +78,25 @@ export default function About() {
               Students&rsquo; Scientific Society (AUSSS)</strong> is an
               independent, non-profit, non-political and non-religious student
               society within the Faculty of Medicine, Ain Shams University, and
-              an autonomous affiliate member of IFMSA-Egypt.
+              an{' '}
+              <span className="font-semibold text-forest dark:text-medical-light">
+                autonomous affiliate member of IFMSA-Egypt
+              </span>
+              .
             </p>
             <p>
-              Through professional and research exchanges, projects, campaigns, and
-               peer to peer training
-       AUSSS empowers medical students to use
-              their knowledge for the benefit of society, and provides a forum
-              to discuss health, education, and science with peers across Egypt
-              and around the world.
+              Through professional and research exchanges, projects, campaigns
+              and peer-to-peer training, AUSSS empowers medical students to use
+              their knowledge{' '}
+              <span className="font-semibold text-forest dark:text-medical-light">
+                for the benefit of society
+              </span>
+              , and offers a forum to discuss health, education and science with
+              peers{' '}
+              <span className="font-semibold text-forest dark:text-medical-light">
+                across Egypt and around the world
+              </span>
+              .
             </p>
             <blockquote className="border-l-2 border-medical pl-6 font-serif text-xl italic text-forest dark:text-medical-light">
               “Our mission is to offer future physicians a comprehensive

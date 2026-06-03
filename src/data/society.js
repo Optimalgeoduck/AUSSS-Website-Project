@@ -64,6 +64,32 @@ export const committees = [
     color: '#0181c1',
     logo: '/assets/logos/SCOPE.png',
     group: 'Standing Committee',
+    // Official IFMSA mission + objectives (verbatim/close), rendered as a
+    // read-only "From IFMSA" section on the committee page. Not editable by
+    // officers — sourced straight from the standing committee's ifmsa.org page.
+    ifmsa: {
+      mission:
+        'The aim of SCOPE is to promote cultural understanding and co-operation amongst medical students and all health professionals, through the facilitation of international student exchanges.',
+      pillars: [
+        'Increase medical student mobility and broaden their horizons globally.',
+        'Ensure equal access to exchanges regardless of background or circumstances.',
+        'Let students experience healthcare in different cultural and educational systems.',
+        'Build learning in global health issues and epidemiology.',
+        'Keep exchanges affordable, minimising financial barriers.',
+        'Foster tolerance toward diversity in health and patient care.',
+      ],
+      source: 'https://ifmsa.org/standing-committees/professional-exchanges/',
+    },
+    nickname: 'SCOPEnguins',
+    mascot: {
+      emoji: '🐧',
+      animal: 'Penguin',
+      body: 'SCOPE’s community calls itself the SCOPEnguins, a nickname worn proudly across SCOPE channels worldwide. Penguins are some of nature’s great travellers: deeply social birds that journey far from home yet always move as one colony. A fitting emblem for the committee built on sending students across the world on exchange and folding them into a global family wherever they land.',
+      sources: [
+        { label: 'IFMSA SCOPE', href: 'https://ifmsa.org/standing-committees/professional-exchanges/' },
+        { label: 'IFMSA SCOPE team', href: 'https://ifmsa.org/teams/scope-team/' },
+      ],
+    },
     officer: 'Local Exchange Officer',
     tagline: 'Exchange the world, four-week clinical clerkships abroad.',
     // For committees with more than one officer, use `officers`
@@ -115,6 +141,28 @@ export const committees = [
     color: '#2e4a9c',
     logo: '/assets/logos/SCORE.png',
     group: 'Standing Committee',
+    ifmsa: {
+      mission:
+        'Our mission is to offer future physicians an opportunity to experience research and diversity in countries all over the world.',
+      pillars: [
+        'Let students take responsibility for their own learning by personal interest.',
+        'Introduce students to the basic principles of medical research.',
+        'Widen horizons through different approaches to healthcare and ethical research.',
+        'Enhance the academic quality of medical curricula.',
+        'Connect universities, research institutions and students worldwide.',
+      ],
+      source: 'https://ifmsa.org/standing-committees/research-exchanges/',
+    },
+    nickname: 'SCOREagles',
+    mascot: {
+      emoji: '🦅',
+      animal: 'Eagle',
+      body: 'Members of SCORE are the SCOREagles of IFMSA’s “Dark Blue Family”. The eagle suits a committee that, in its own words, treads new grounds and challenges the ordinary: sharp-eyed and far-ranging, carrying students into research clerkships and global-health discovery all around the world.',
+      sources: [
+        { label: 'IFMSA SCORE team', href: 'https://ifmsa.org/teams/score-team/' },
+        { label: 'IFMSA SCORE', href: 'https://ifmsa.org/standing-committees/research-exchanges/' },
+      ],
+    },
     officer: 'Local Officer on Research Exchange',
     officerAbbr: 'LORE',
     holder: 'Hassan Haitham',
@@ -156,6 +204,28 @@ export const committees = [
     color: '#100016',
     logo: '/assets/logos/SCOME.png',
     group: 'Standing Committee',
+    ifmsa: {
+      mission:
+        'SCOME is a platform that creates a shared environment where medical students contribute, reflect, and work on the development of Medical Education through student-led activities.',
+      pillars: [
+        'Education and capacity development for medical students.',
+        'Research on medical-education issues.',
+        'Meaningful youth engagement in education systems.',
+        'Advocacy for quality medical education.',
+        'Creating sustainable change in medical education globally.',
+      ],
+      source: 'https://ifmsa.org/standing-committees/medical-education/',
+    },
+    nickname: 'SCOMEdians',
+    mascot: {
+      emoji: '🐼',
+      animal: 'Panda',
+      body: 'SCOME members are the SCOMEdians, and the committee’s mascot is a panda named Minshi, a name said to mean “wisdom”, reflecting SCOME’s drive to safeguard academic quality in every corner of medical education. Calm, studious and quietly determined, the panda mirrors a committee that works patiently to shape how the world’s medical students are taught.',
+      sources: [
+        { label: 'IFMSA SCOME', href: 'https://ifmsa.org/standing-committees/medical-education/' },
+        { label: 'ASCEMCOL SCOME', href: 'https://www.ascemcol.org/committees-and-divisions/active-standing-committee/cpem-scome' },
+      ],
+    },
     officer: 'Local Officer on Medical Education',
     officerAbbr: 'LOME',
     holder: 'Sama ElKady',
@@ -211,6 +281,29 @@ export const committees = [
     color: '#5f903f',
     logo: '/assets/logos/SCORP.png',
     group: 'Standing Committee',
+    ifmsa: {
+      mission:
+        'The mission of SCORP is to empower and motivate medical students to actively promote and protect human rights and peace through advocacy, capacity building, and awareness raising.',
+      pillars: [
+        'Human rights and international humanitarian law.',
+        'Peacebuilding and conflict prevention.',
+        'Refugee and displaced-persons support.',
+        'Medical ethics in clinical practice.',
+        'Disaster and emergency humanitarian response.',
+        'Protection of vulnerable populations.',
+      ],
+      source: 'https://ifmsa.org/standing-committees/human-rights-and-peace/',
+    },
+    nickname: 'SCORPions',
+    mascot: {
+      emoji: '🦂',
+      animal: 'Scorpion',
+      body: 'SCORP’s advocates are the SCORPions, and the committee’s own magazine is called The SCORPion. Small but fearless, the scorpion stands up for those who go unheard: in the committee’s words, millions of people need SCORPions to stand up in their name. It is the emblem of medical students defending human rights, peace and the most vulnerable.',
+      sources: [
+        { label: 'IFMSA-Egypt SCORP', href: 'https://www.ifmsa-egypt.org.eg/standing-committees/scorp/' },
+        { label: 'The SCORPion (IFMSA)', href: 'https://issuu.com/ifmsa/docs/scorpion-1' },
+      ],
+    },
     officer: 'Local Officer on Human Rights & Peace',
     officerAbbr: 'LORP',
     holder: 'Wafaa Rasool',
@@ -244,6 +337,29 @@ export const committees = [
     color: '#f47d3b',
     logo: '/assets/logos/SCOPH.png',
     group: 'Standing Committee',
+    ifmsa: {
+      mission:
+        'The Standing Committee on Public Health promotes the development of medical students worldwide regarding Public Health issues through an international sharing-knowledge network, project management, community-based learning, capacity building, advocacy, exchange placements and access to external learning opportunities.',
+      pillars: [
+        'Disease prevention within communities.',
+        'Health promotion and education efforts.',
+        'Raising awareness of global public health issues.',
+        'Advocating health policy as the voice of medical students.',
+        'Developing students as future health professionals.',
+        'Collaborating with external public health organisations.',
+      ],
+      source: 'https://ifmsa.org/standing-committees/public-health/',
+    },
+    nickname: 'SCOPHeroes',
+    mascot: {
+      emoji: '🦸',
+      animal: 'Hero',
+      body: 'SCOPH members are the SCOPHeroes. Here the metaphor is the mascot. Dressed in SCOPH’s signature orange, SCOPHeroes set out to “save the nation” from public-health issues, running health-promotion, education and policy work across their communities. Every member is cast as an everyday hero for public health.',
+      sources: [
+        { label: 'IFMSA-Egypt SCOPH', href: 'https://www.ifmsa-egypt.org.eg/standing-committees/scoph/' },
+        { label: 'IFMSA SCOPH', href: 'https://ifmsa.org/standing-committees/public-health/' },
+      ],
+    },
     officer: 'Local Public Health Officer',
     officerAbbr: 'LPO',
     holder: 'Shahi Ezzeldin',
@@ -306,6 +422,28 @@ export const committees = [
     color: '#bd202a',
     logo: '/assets/logos/SCORA.png',
     group: 'Standing Committee',
+    ifmsa: {
+      mission:
+        'To provide our members with the tools necessary to advocate for sexual and reproductive health and rights within their respective communities in a culturally respected fashion.',
+      pillars: [
+        'Comprehensive Sexuality Education.',
+        'Maternal Health and Access to Safe Abortion.',
+        'Sexuality and Gender Identity.',
+        'Gender-Based Violence.',
+        'HIV and other STIs.',
+      ],
+      source:
+        'https://ifmsa.org/standing-committees/sexual-reproductive-health-rights-including-hiv-aids/',
+    },
+    nickname: 'SCORAngels',
+    mascot: {
+      emoji: '😇',
+      animal: 'Angel',
+      body: 'Everyone who volunteers in SCORA is a SCORAngel, one of the most beloved nicknames in IFMSA. The angel captures how SCORA works: caring, non-judgemental advocates who guard and champion sexual and reproductive health and rights, support people living with HIV, and meet their communities with compassion rather than stigma. SCORA’s colour is red.',
+      sources: [
+        { label: 'IFMSA SCORA', href: 'https://ifmsa.org/standing-committees/sexual-reproductive-health-rights-including-hiv-aids/' },
+      ],
+    },
     officer: 'Local Officer on SRHR & HIV/AIDS',
     officerAbbr: 'LORA',
     holder: 'Noha Khalil',
@@ -594,7 +732,8 @@ export const ifmsaScale = {
 export const ifmsaHistory = {
   founded: {
     year: '1951',
-    body: 'The International Federation of Medical Students’ Associations is founded — one of the world’s oldest and largest student-run organisations. Its work is organised through standing committees, each owning a field of global health. They were not all born at once: the federation grew committee by committee over the following four decades.',
+    href: 'https://ifmsa.org/our-story/',
+    body: 'The International Federation of Medical Students’ Associations is founded in Copenhagen in May 1951, one of the many international student organisations set up to rebuild cross-border cooperation in the wake of the Second World War. Nine European medical students’ associations (Denmark, England, Austria, West Germany, Finland, Norway, Sweden, the Netherlands and Switzerland) came together around a simple goal: to connect medical students across borders, empower them, and improve the world from a medical perspective. Student exchange became the federation’s founding pillar. From the start the work was organised through standing committees, each owning a field of global health, and they were not all born at once: IFMSA grew committee by committee over the following four decades.',
   },
   // Chronological — ordered by founding year.
   committees: [
@@ -604,7 +743,8 @@ export const ifmsaHistory = {
       name: 'Standing Committee on Professional Exchange',
       accent: '#0181c1',
       logo: '/assets/logos/SCOPE.png',
-      body: 'IFMSA’s very first standing committee, born with the federation itself. It started with just 8 European countries; by 1952 already 463 students had completed a clinical placement abroad. Today it is one of the largest student-run exchange programmes in the world — roughly 13,000 students a year across 100+ National Member Organisations — and is called the backbone of the federation, its longest-running project.',
+      href: 'https://ifmsa.org/standing-committees/professional-exchanges/',
+      body: 'IFMSA’s very first standing committee, born with the federation itself. It started with just 8 European countries; by 1952 already 463 students had completed a clinical placement abroad. Today it is one of the largest student-run exchange programmes in the world (roughly 13,000 students a year across 100+ National Member Organisations) and is called the backbone of the federation, its longest-running project.',
     },
     {
       abbr: 'SCOME',
@@ -612,7 +752,8 @@ export const ifmsaHistory = {
       name: 'Standing Committee on Medical Education',
       accent: '#a78bfa',
       logo: '/assets/logos/SCOME.png',
-      body: 'Also one of IFMSA’s original 1951 committees. From the start it has been the forum where medical students act as full stakeholders in their own education — reforming curricula, training educators, and carrying the student voice into medical-education systems as the first quality-check of their own training.',
+      href: 'https://ifmsa.org/standing-committees/medical-education/',
+      body: 'Also one of IFMSA’s original 1951 committees. From the start it has been the forum where medical students act as full stakeholders in their own education, reforming curricula, training educators, and carrying the student voice into medical-education systems as the first quality-check of their own training.',
     },
     {
       abbr: 'SCOPH',
@@ -620,7 +761,8 @@ export const ifmsaHistory = {
       name: 'Standing Committee on Public Health',
       accent: '#f47d3b',
       logo: '/assets/logos/SCOPH.png',
-      body: 'Founded by students determined to prevent ill-health and shape policy. Its focus widened over six decades from students’ own health to global public health — prevention, health promotion, and health-policy advocacy on issues from antimicrobial resistance to climate and mental health.',
+      href: 'https://ifmsa.org/standing-committees/public-health/',
+      body: 'Founded by students determined to prevent ill-health and shape policy. Its focus widened over six decades from students’ own health to global public health: prevention, health promotion, and health-policy advocacy on issues from antimicrobial resistance to climate and mental health.',
       renames: [
         { year: '1952', name: 'Standing Committee on Students’ Health (SCOSH)' },
         { year: '1963', name: 'Standing Committee on Health (SCOH)' },
@@ -633,7 +775,8 @@ export const ifmsaHistory = {
       name: 'Standing Committee on Human Rights and Peace',
       accent: '#5f903f',
       logo: '/assets/logos/SCORP.png',
-      body: 'Founded as the global refugee crisis came into the spotlight. Members soon realised relief alone was not enough — sustainable solutions meant addressing the root causes of conflict and human-rights abuses. Today it empowers students to promote and protect human rights, peace, refugee health, medical ethics and humanitarian aid.',
+      href: 'https://ifmsa.org/standing-committees/human-rights-and-peace/',
+      body: 'Founded as the global refugee crisis came into the spotlight. Members soon realised relief alone was not enough: sustainable solutions meant addressing the root causes of conflict and human-rights abuses. Today it empowers students to promote and protect human rights, peace, refugee health, medical ethics and humanitarian aid.',
       renames: [
         { year: '1983', name: 'Standing Committee on Refugees (SCOR)' },
         { year: '1995', name: 'Standing Committee on Refugees and Peace' },
@@ -646,7 +789,8 @@ export const ifmsaHistory = {
       name: 'Standing Committee on Research Exchange',
       accent: '#5b73d8',
       logo: '/assets/logos/SCORE.png',
-      body: 'The research counterpart to SCOPE, created to give future physicians an international research clerkship — basic-lab, clinical, or global-action projects. It now connects 65+ National Member Organisations and over 3,000 research projects, placing more than 2,400 students a year, each entirely coordinated by student volunteers.',
+      href: 'https://ifmsa.org/standing-committees/research-exchanges/',
+      body: 'The research counterpart to SCOPE, created to give future physicians an international research clerkship: basic-lab, clinical, or global-action projects. It now connects 65+ National Member Organisations and over 3,000 research projects, placing more than 2,400 students a year, each entirely coordinated by student volunteers.',
     },
     {
       abbr: 'SCORA',
@@ -654,12 +798,63 @@ export const ifmsaHistory = {
       name: 'Standing Committee on Sexual & Reproductive Health and Rights incl. HIV & AIDS',
       accent: '#e0454f',
       logo: '/assets/logos/SCORA.png',
+      href: 'https://ifmsa.org/standing-committees/sexual-reproductive-health-rights-including-hiv-aids/',
       body: 'Founded out of a will to act on HIV, sexually transmitted infections, and the stigma around them, supporting people living with HIV/AIDS. Its scope grew to cover comprehensive sexuality education, maternal health, gender and gender-based violence. Its members are known as “SCORAngels”.',
       renames: [
         { year: '1992', name: 'Standing Committee on AIDS / Reproductive Health' },
         { year: '2014', name: 'Standing Committee on Sexual & Reproductive Health incl. HIV/AIDS' },
         { year: '2019', name: 'Standing Committee on SRHR incl. HIV & AIDS (SCORA)' },
       ],
+    },
+  ],
+  // Beyond the six standing committees, IFMSA's work is carried by its support
+  // divisions — operational portfolios, each led by a Vice-President, that keep
+  // the federation running. Unlike the committees these aren't tied to a
+  // founding year, so they live in their own section rather than on the rail.
+  // Copy drawn only from official ifmsa.org pages (Our Leadership, Our
+  // Structure, Executive Board Support Teams, and each division's team page).
+  supportDivisions: [
+    {
+      abbr: 'VPA',
+      name: 'Activities & Programs',
+      accent: '#c084fc',
+      href: 'https://ifmsa.org/programs/',
+      body: 'Keeps IFMSA’s Programs from being fleeting initiatives, helping them grow stronger each cycle through organisational development, programme capacity and stronger networks. It also runs the Secretariat, “the administrative and legal backbone of IFMSA”, safeguarding the federation’s governance and compliance.',
+    },
+    {
+      abbr: 'VPCB',
+      name: 'Capacity Building',
+      accent: '#2dd4bf',
+      href: 'https://ifmsa.org/teams/cb-team/',
+      body: 'Called “the backbone of the federation”. Capacity Building inspires and empowers members through training and development: coordinating trainings, building workshops, engaging trainers and growing the skills and knowledge of IFMSA members across every region.',
+    },
+    {
+      abbr: 'VPPRC',
+      name: 'Public Relations & Communication',
+      accent: '#f59e0b',
+      href: 'https://ifmsa.org/teams/prc-team/',
+      body: '“The magic glue that holds our stories together.” PR & Communication shows the world who IFMSA is and what it stands for, managing visual campaigns and written content across platforms to connect and amplify the federation’s voices globally.',
+    },
+    {
+      abbr: 'VPEA',
+      name: 'External Affairs',
+      accent: '#38bdf8',
+      href: 'https://ifmsa.org/external-representation/',
+      body: 'Represents IFMSA’s 1.5 million medical students in international decision-making spaces, “where ideas become statements, statements become commitments, and commitments become action”. It coordinates advocacy, policy development and stakeholder engagement to amplify the student voice in global health.',
+    },
+    {
+      abbr: 'VPM',
+      name: 'Members',
+      accent: '#fb7185',
+      href: 'https://ifmsa.org/our-structure/',
+      body: 'Stewards the federation’s global membership. The Members division supports National Member Organisations in their governance, engagement and collaboration, fostering transparency and inclusivity and keeping IFMSA a sustainable, connected network.',
+    },
+    {
+      abbr: 'VPF',
+      name: 'Finance',
+      accent: '#34d399',
+      href: 'https://ifmsa.org/our-leadership/',
+      body: 'Safeguards the federation’s finances. Led by the Vice-President for Finance, who also serves as Treasurer, it handles financial management, budgeting and fiscal accountability so the rest of IFMSA’s work can run.',
     },
   ],
 }
