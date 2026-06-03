@@ -5,7 +5,7 @@
 // "reads" count + a working Like button. When left empty the feature is
 // dormant — no counters or Like button render, and no requests are made.
 export const MAGAZINE_WEBAPP_URL =
-  'https://script.google.com/macros/s/AKfycbyln_VW5Uzu5KeeDdbceOrPePUOGdgHZeEFjoBHBrA9HsocKJk2DHTA8hHylQtheX8BvQ/exec'
+  'https://script.google.com/macros/s/AKfycbymoTD2Y6N6Z9XmmQKz2MZ_O41pcRCfczE8l6GQmrJCt3XXbT1IBJCT19QeSEd7iIN0/exec'
 
 export const magazineEngagementEnabled = Boolean(MAGAZINE_WEBAPP_URL)
 

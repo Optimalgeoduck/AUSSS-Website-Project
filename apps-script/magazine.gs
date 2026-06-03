@@ -9,16 +9,19 @@
  *      Who has access: Anyone.
  *   3. Copy the /exec URL into src/data/magazineConfig.js.
  *
- * Storage: a sheet named "Engagement" with header row: id | views | likes
- * (created automatically on first write).
+ * Storage: a sheet named "Engagement" with header row:
+ *   id | views | likes | downloads
+ * (created automatically on first write; the downloads column is added on the
+ * fly to sheets that predate it).
  *
  * All actions are GET so the JSON reply is readable across Apps Script's 302
  * redirect (same approach as officers.gs reads). The client de-dupes likes
  * per browser via localStorage; the server just increments.
  *
- *   ?action=stats               → { ok, stats: { <id>: {views,likes}, ... } }
+ *   ?action=stats               → { ok, stats: { <id>: {views,likes,downloads}, ... } }
  *   ?action=view&id=issue-1     → increments views, returns that id's counts
  *   ?action=like&id=issue-1     → increments likes, returns that id's counts
+ *   ?action=download&id=issue-1 → increments downloads, returns that id's counts
  */
 
 var SHEET_NAME = 'Engagement'
@@ -35,10 +38,55 @@ function doGet(e) {
 
     if (action === 'view') return json_({ ok: true, id: id, counts: bump_(id, 'views') })
     if (action === 'like') return json_({ ok: true, id: id, counts: bump_(id, 'likes') })
+    if (action === 'download') return json_({ ok: true, id: id, counts: bump_(id, 'downloads') })
 
     return json_({ ok: false, error: 'Unknown action' })
   } catch (err) {
     return json_({ ok: false, error: String(err && err.message ? err.message : err) })
+  }
+}
+
+// Adds an "AUSSS Magazine" menu to the bound sheet's toolbar so the counts can
+// be reset without opening the Apps Script editor. Runs automatically each time
+// the spreadsheet is opened.
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu('AUSSS Magazine')
+    .addItem('Reset all counts to 0', 'resetCountsMenu')
+    .addToUi()
+}
+
+// Menu handler: confirm, then zero everything. Shows the result in a dialog.
+function resetCountsMenu() {
+  var ui = SpreadsheetApp.getUi()
+  var res = ui.alert(
+    'Reset magazine counts',
+    'Set views, likes, and downloads back to 0 for every issue? This cannot be undone.',
+    ui.ButtonSet.OK_CANCEL,
+  )
+  if (res !== ui.Button.OK) return
+  ui.alert(resetCounts())
+}
+
+// One-off admin helper: zero every counter (views, likes, downloads) for all
+// ids, keeping the rows. Run it from the "AUSSS Magazine" sheet menu, or from
+// the Apps Script editor (select resetCounts → Run). It is intentionally NOT
+// reachable as a web action so the counts can't be wiped via a URL. The
+// per-browser "already liked" flags live in visitors' localStorage and are
+// unaffected — a returning liker won't be able to re-like, which is expected.
+function resetCounts() {
+  var lock = LockService.getScriptLock()
+  lock.waitLock(10000)
+  try {
+    var sh = sheet_()
+    var last = sh.getLastRow()
+    if (last < 2) return 'No rows to reset.'
+    // Columns B:D (views, likes, downloads) for every data row.
+    sh.getRange(2, COLS.views, last - 1, 3).setValue(0)
+    SpreadsheetApp.flush()
+    return 'Reset ' + (last - 1) + ' row(s) to 0.'
+  } finally {
+    lock.releaseLock()
   }
 }
 
@@ -63,12 +111,20 @@ function ss_() {
   return created
 }
 
+// 1-based column for each counter.
+var COLS = { views: 2, likes: 3, downloads: 4 }
+
 function sheet_() {
   var ss = ss_()
   var sh = ss.getSheetByName(SHEET_NAME)
   if (!sh) {
     sh = ss.insertSheet(SHEET_NAME)
-    sh.appendRow(['id', 'views', 'likes'])
+    sh.appendRow(['id', 'views', 'likes', 'downloads'])
+    return sh
+  }
+  // Self-heal: add the downloads header to sheets created before it existed.
+  if (sh.getLastColumn() < COLS.downloads) {
+    sh.getRange(1, COLS.downloads).setValue('downloads')
   }
   return sh
 }
@@ -80,15 +136,20 @@ function readAll_() {
   for (var r = 1; r < values.length; r++) {
     var id = String(values[r][0] || '').trim()
     if (!id) continue
-    out[id] = { views: Number(values[r][1] || 0), likes: Number(values[r][2] || 0) }
+    out[id] = {
+      views: Number(values[r][1] || 0),
+      likes: Number(values[r][2] || 0),
+      downloads: Number(values[r][3] || 0),
+    }
   }
   return out
 }
 
-// Atomically increment one counter (views or likes) for an id and return the
-// id's resulting { views, likes }. A script lock avoids lost updates under
-// concurrent hits.
+// Atomically increment one counter (views | likes | downloads) for an id and
+// return the id's resulting { views, likes, downloads }. A script lock avoids
+// lost updates under concurrent hits.
 function bump_(id, which) {
+  var colIndex = COLS[which] || COLS.views
   var lock = LockService.getScriptLock()
   lock.waitLock(10000)
   try {
@@ -103,19 +164,22 @@ function bump_(id, which) {
     }
 
     if (rowIndex === -1) {
-      var views = which === 'views' ? 1 : 0
-      var likes = which === 'likes' ? 1 : 0
-      sh.appendRow([id, views, likes])
-      return { views: views, likes: likes }
+      var row = {
+        views: which === 'views' ? 1 : 0,
+        likes: which === 'likes' ? 1 : 0,
+        downloads: which === 'downloads' ? 1 : 0,
+      }
+      sh.appendRow([id, row.views, row.likes, row.downloads])
+      return row
     }
 
-    var colIndex = which === 'likes' ? 3 : 2 // 1-based: views=col2, likes=col3
     var next = Number(values[rowIndex][colIndex - 1] || 0) + 1
     sh.getRange(rowIndex + 1, colIndex).setValue(next)
 
     return {
-      views: colIndex === 2 ? next : Number(values[rowIndex][1] || 0),
-      likes: colIndex === 3 ? next : Number(values[rowIndex][2] || 0),
+      views: colIndex === COLS.views ? next : Number(values[rowIndex][1] || 0),
+      likes: colIndex === COLS.likes ? next : Number(values[rowIndex][2] || 0),
+      downloads: colIndex === COLS.downloads ? next : Number(values[rowIndex][3] || 0),
     }
   } finally {
     lock.releaseLock()

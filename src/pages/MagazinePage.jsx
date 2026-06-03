@@ -4,6 +4,7 @@ import { magazine } from '../data/magazine.js'
 import CanvaFrame from '../components/CanvaFrame.jsx'
 import ShareBar from '../components/ShareBar.jsx'
 import MagazineEngagement from '../components/MagazineEngagement.jsx'
+import { trackMagazineDownload } from '../hooks/useMagazineEngagement.js'
 import GalleryAurora from '../components/GalleryAurora.jsx'
 
 // The flipbook pulls in pdf.js + react-pageflip — lazy-load it so the page
@@ -91,6 +92,7 @@ function IssueView({ issue }) {
                   href={issue.download}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackMagazineDownload(issue.id)}
                   className="inline-flex items-center gap-2 rounded-full bg-medical px-5 py-2.5 text-sm font-semibold text-forest-950 transition-colors hover:bg-medical-light"
                 >
                   <DownloadIcon />

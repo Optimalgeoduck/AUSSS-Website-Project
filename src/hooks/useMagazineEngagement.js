@@ -19,6 +19,14 @@ async function apiGet(params) {
   return data
 }
 
+// Record a full-quality download. Fire-and-forget: the click opens the file in
+// a new tab, so we never block navigation and silently ignore failures. The
+// server just increments a per-issue download counter (action=download).
+export function trackMagazineDownload(issueId) {
+  if (!magazineEngagementEnabled || !issueId) return
+  apiGet({ action: 'download', id: issueId }).catch(() => {})
+}
+
 export function useMagazineEngagement(issueId) {
   const [counts, setCounts] = useState({ views: 0, likes: 0 })
   const [liked, setLiked] = useState(false)

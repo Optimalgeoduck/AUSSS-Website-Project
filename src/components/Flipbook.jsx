@@ -60,6 +60,10 @@ export default function Flipbook({ pages, title }) {
   }
 
   const baseW = 582
+  // On phones the frame is full-bleed, so let a single portrait page stretch
+  // wide enough to fill it (no parchment showing at the sides). Desktop keeps
+  // its exact two-page sizing.
+  const maxW = isMobile ? 1200 : 728
 
   return (
     <div className="flex w-full flex-col items-center">
@@ -70,9 +74,9 @@ export default function Flipbook({ pages, title }) {
           height={Math.round(baseW * ratio)}
           size="stretch"
           minWidth={300}
-          maxWidth={728}
+          maxWidth={maxW}
           minHeight={Math.round(300 * ratio)}
-          maxHeight={Math.round(728 * ratio)}
+          maxHeight={Math.round(maxW * ratio)}
           maxShadowOpacity={0.5}
           showCover
           mobileScrollSupport
