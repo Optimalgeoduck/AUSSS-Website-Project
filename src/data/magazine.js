@@ -33,7 +33,7 @@ export const magazine = {
   },
   // Full-quality copy for the Download button (hosted off-repo).
   download:
-    'https://drive.google.com/file/d/1PuSttZynpiFCy7R5td61qY-OO8Nbz015/view',
+    'https://drive.google.com/file/d/17zMEOGekcoC09X4NDcgBxFlgaA-FiXuw/view',
   // Canva "view" share link, kept as an "Open on Canva" fallback.
   canva: 'https://www.canva.com/design/DAHGTEatDDQ/0BPis3tFKLYKp4OCFfUVXw/view',
   // Optional aspect ratio (height ÷ width) for the Canva fallback frame.

@@ -62,25 +62,32 @@ export default function Flipbook({ pages, title }) {
           minHeight={Math.round(300 * ratio)}
           maxHeight={Math.round(650 * ratio)}
           maxShadowOpacity={0.5}
-          showCover={false}
+          showCover
           mobileScrollSupport
           usePortrait={isMobile}
           drawShadow
           flippingTime={700}
           className="mx-auto"
         >
-          {pages.map((url, i) => (
-            <div key={i} className="overflow-hidden rounded-[10px] bg-white">
-              <img
-                src={url}
-                alt={`${title}, page ${i + 1}`}
-                className="h-full w-full select-none"
-                draggable={false}
-                loading={i < 4 ? 'eager' : 'lazy'}
-                decoding="async"
-              />
-            </div>
-          ))}
+          {pages.map((url, i) => {
+            const isCover = i === 0 || i === pages.length - 1
+            return (
+              <div
+                key={i}
+                className="overflow-hidden rounded-[10px] bg-white"
+                data-density={isCover ? 'hard' : 'soft'}
+              >
+                <img
+                  src={url}
+                  alt={`${title}, page ${i + 1}`}
+                  className="h-full w-full select-none"
+                  draggable={false}
+                  loading={i < 4 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+              </div>
+            )
+          })}
         </HTMLFlipBook>
       </div>
 
