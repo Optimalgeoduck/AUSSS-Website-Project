@@ -27,7 +27,7 @@ export function splitPositions(raw) {
 }
 
 // "President" / "AUSSS President" → true, but NOT "Vice President".
-// Multi-position safe — true if any sub-position is a presidential role.
+// Multi-position safe, true if any sub-position is a presidential role.
 export function isPresidentPosition(pos) {
   return splitPositions(pos).some((part) => {
     const p = norm(part).replace(/^ausss\s+/, '')
@@ -119,7 +119,7 @@ for (const c of committees) {
 }
 
 // The membership sheet sometimes records the Public Health officer with the
-// informal abbreviation "LOPH" instead of the official "LPO" — alias it to the
+// informal abbreviation "LOPH" instead of the official "LPO", alias it to the
 // LPO entry so both resolve to the same result.
 const lpoEntry = index.get(norm('LPO'))
 if (lpoEntry) addAlias('LOPH', lpoEntry)

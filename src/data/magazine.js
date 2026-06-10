@@ -1,11 +1,11 @@
-// AUSSS magazine — a single edition, read in-page as a page-flipping book
+// AUSSS magazine, a single edition, read in-page as a page-flipping book
 // (drives /magazine).
 //
 // Publishing the edition:
 //   1. Rasterise the source PDF to web-sized page images by running
 //        _source/build-magazine.mjs
 //      (writes public/assets/magazine/issue-1/pages/NNN.jpg). Set `pages.count`
-//      below to the number it reports. The page flips through these images —
+//      below to the number it reports. The page flips through these images, 
 //      no big PDF download, no client-side pdf.js.
 //   2. (Optional) `download` is a full-quality copy hosted off-repo (e.g. a
 //      Google Drive link) for the "Download" button.

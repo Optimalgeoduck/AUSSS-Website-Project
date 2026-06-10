@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react'
 import useReveal from '../hooks/useReveal.js'
+import usePageTitle from '../hooks/usePageTitle.js'
 import { merchPages, merchPdf } from '../data/merch.js'
 import { availableProducts } from '../data/merchProducts.js'
 import ProductCard from '../components/ProductCard.jsx'
@@ -132,6 +133,7 @@ function SizeChartModal({ product, onClose }) {
 }
 
 export default function MerchPage() {
+  usePageTitle('Merch')
   useReveal()
   const [openPage, setOpenPage] = useState(null)
   const [chartFor, setChartFor] = useState(null)
@@ -175,7 +177,7 @@ export default function MerchPage() {
         </div>
       </header>
 
-      {/* Catalogue / booklet — comes first so visitors see the story before ordering */}
+      {/* Catalogue / booklet, comes first so visitors see the story before ordering */}
       <section className="pb-20">
         <div className="container-prose">
           <div className="reveal mx-auto max-w-2xl text-center">
@@ -228,7 +230,7 @@ export default function MerchPage() {
             </div>
           </div>
 
-          {/* Desktop: two-column staggered zigzag — right column is offset
+          {/* Desktop: two-column staggered zigzag, right column is offset
               down by half a page height so pages weave between each other. */}
           <div className="mx-auto mt-12 hidden max-w-4xl gap-6 sm:grid sm:grid-cols-2 lg:gap-10">
             <div className="flex flex-col gap-6 lg:gap-10">
@@ -259,7 +261,7 @@ export default function MerchPage() {
         </div>
       </section>
 
-      {/* Order cards — the real shop, at the bottom */}
+      {/* Order cards, the real shop, at the bottom */}
       <section className="border-t border-white/10 bg-forest-950 py-20">
         <div className="container-prose">
           <div className="reveal mx-auto mb-12 max-w-2xl text-center">

@@ -8,7 +8,7 @@ import { magazineCountersVisible } from '../data/magazineConfig.js'
 export default function MagazineEngagement({ issueId, className = '' }) {
   const { counts, liked, like, enabled } = useMagazineEngagement(issueId)
   if (!enabled) return null
-  // Tracking already fired in the hook above — just hide the visible counter.
+  // Tracking already fired in the hook above, just hide the visible counter.
   if (!magazineCountersVisible) return null
 
   return (

@@ -5,19 +5,21 @@ import {
   useGalleryRemovals,
   buildRemovalFile,
 } from '../hooks/useGalleryRemovals.js'
+import usePageTitle from '../hooks/usePageTitle.js'
 import { galleryLiveEnabled } from '../data/galleryConfig.js'
 
 // Dedicated gallery admin page (/gallery/admin).
 //
 // Shows every photo from every album on one screen. Click a photo to hide it.
 // When a backend is configured (galleryConfig.GALLERY_WEBAPP_URL), hiding is
-// LIVE — it writes to the Apps Script store and disappears for every visitor
+// LIVE, it writes to the Apps Script store and disappears for every visitor
 // within seconds, no redeploy. Writes are gated behind the admin key.
 //
 // With no backend configured, the page falls back to the export workflow:
 // mark photos, Download galleryRemovals.js, replace it in the repo, redeploy.
 
 export default function GalleryAdminPage() {
+  usePageTitle('Gallery admin')
   return galleryLiveEnabled ? <LiveAdmin /> : <ExportAdmin />
 }
 

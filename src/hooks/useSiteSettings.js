@@ -4,7 +4,7 @@ import { officersApiGet } from './useOfficerOverrides.js'
 
 // Global site settings, flipped by dev/EB officers and read by every visitor.
 // Backed by apps-script/officers.gs (Script Properties). Currently a single
-// flag: `magazineInHeader` — whether the Magazine CTA shows in the navbar.
+// flag: `magazineInHeader`, whether the Magazine CTA shows in the navbar.
 //
 // Reads are cached in localStorage so the navbar can render the right state
 // instantly on repeat visits (no flash); the first-ever load falls back to the

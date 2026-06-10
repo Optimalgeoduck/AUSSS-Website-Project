@@ -4,16 +4,17 @@ import {
   GALLERY_WEBAPP_URL,
   galleryLiveEnabled,
 } from '../data/galleryConfig.js'
+import { appsScriptGet } from '../lib/appsScriptGet.js'
 
 // Shared gallery-removal state for both the inline admin mode
 // (/gallery?admin=1) and the dedicated admin page (/gallery/admin).
 //
 // A photo's `full` path is the removal key. There are three layers, unioned
 // into the "effective" hidden set:
-//   1. committed — src/data/galleryRemovals.js, baked at build time (permanent).
-//   2. live      — fetched from the Apps Script backend, editable by the admin
+//   1. committed, src/data/galleryRemovals.js, baked at build time (permanent).
+//   2. live, fetched from the Apps Script backend, editable by the admin
 //                  page; takes effect for every visitor without a redeploy.
-//   3. localMarks — browser-only pending marks, used only as a fallback when no
+//   3. localMarks, browser-only pending marks, used only as a fallback when no
 //                  backend URL is configured (the old mark→export→redeploy flow).
 
 export const LS_KEY = 'ausss-gallery-removals' // pending marks (no-backend fallback)
@@ -34,14 +35,9 @@ export function readLocalMarks() {
   return readJSON(localStorage, LS_KEY)
 }
 
-// One GET to the backend; throws on a non-ok payload.
+// One GET to the backend; throws on a non-ok payload or after a timeout.
 async function api(params) {
-  const url = new URL(GALLERY_WEBAPP_URL)
-  Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v))
-  const res = await fetch(url.toString(), { method: 'GET' })
-  const data = await res.json()
-  if (!data.ok) throw new Error(data.error || 'Request failed')
-  return data
+  return appsScriptGet(GALLERY_WEBAPP_URL, params)
 }
 
 export async function fetchLiveList() {
@@ -52,9 +48,9 @@ export async function fetchLiveList() {
 
 /**
  * @param {'none'|'live'|'local'} write
- *   'none'  — read-only (public gallery): fetch + merge the live list, no edits.
- *   'live'  — admin page: toggles write straight to the backend.
- *   'local' — inline ?admin=1: toggles go to localStorage for later export.
+ *   'none', read-only (public gallery): fetch + merge the live list, no edits.
+ *   'live', admin page: toggles write straight to the backend.
+ *   'local', inline ?admin=1: toggles go to localStorage for later export.
  */
 export function useGalleryRemovals(write = 'none') {
   const [live, setLive] = useState(() =>
@@ -91,7 +87,10 @@ export function useGalleryRemovals(write = 'none') {
         }
       })
       .catch(() => {
-        /* keep cached/empty list */
+        // Keep the cached/empty list, but tell the admin UI the live sync
+        // failed so stale data isn't mistaken for the real list. The public
+        // gallery never renders `error`, so visitors are unaffected.
+        if (alive) setError('Could not load the live removal list — showing cached data.')
       })
       .finally(() => alive && setLoading(false))
     return () => {
@@ -127,7 +126,7 @@ export function useGalleryRemovals(write = 'none') {
   // Toggle a photo's removal. Behavior depends on `write` mode.
   const toggle = useCallback(
     async (full) => {
-      // Committed (in-source) removals are permanent — can't toggle live.
+      // Committed (in-source) removals are permanent, can't toggle live.
       if (committed.has(full)) return
 
       if (write === 'live') {
@@ -185,12 +184,17 @@ export function useGalleryRemovals(write = 'none') {
   const refresh = useCallback(async () => {
     if (!galleryLiveEnabled) return
     setLoading(true)
+    setError(null)
     try {
       const list = await fetchLiveList()
       setLive(list)
-      localStorage.setItem(CACHE_KEY, JSON.stringify(list))
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify(list))
+      } catch {
+        /* cache write is best-effort */
+      }
     } catch {
-      /* ignore */
+      setError('Could not refresh the live removal list — showing cached data.')
     } finally {
       setLoading(false)
     }
@@ -214,12 +218,12 @@ export function useGalleryRemovals(write = 'none') {
 }
 
 // Build the full contents of src/data/galleryRemovals.js from a set of
-// `full` paths — used by the export ("Copy"/"Download") actions.
+// `full` paths, used by the export ("Copy"/"Download") actions.
 export function buildRemovalFile(effective) {
   const all = [...effective].sort()
   return (
     `// Soft-delete list for gallery photos. Any photo whose \`full\` path\n` +
-    `// appears here is hidden from every visitor. Reversible — delete a line\n` +
+    `// appears here is hidden from every visitor. Reversible, delete a line\n` +
     `// to restore. Marked in admin mode and exported here.\n\n` +
     `export const removed = [\n` +
     all.map((p) => `  '${p}',`).join('\n') +

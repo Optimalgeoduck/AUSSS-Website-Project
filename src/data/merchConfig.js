@@ -16,12 +16,12 @@ export const ORDERS_WEBAPP_URL =
   'https://script.google.com/macros/s/AKfycbygftItgPl5_dOdQFlOllM8XzATj3SEgBoy4bVc1OIflJWmeBImzbWc5WkTDwEqmVJE/exec'
 
 // Order notifications go to this address. NOTE: the actual sending is done
-// from inside apps-script/orders.gs — this constant is here as documentation
+// from inside apps-script/orders.gs, this constant is here as documentation
 // only. To change the live destination, edit TEAM_EMAIL in orders.gs and
 // redeploy the script.
 export const TEAM_EMAIL = 'loreausss@gmail.com'
 
-// Currency used throughout the order flow. Display only — pricing is in
+// Currency used throughout the order flow. Display only, pricing is in
 // EGP regardless.
 export const CURRENCY = 'EGP'
 

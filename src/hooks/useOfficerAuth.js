@@ -75,12 +75,14 @@ export function useOfficerAuth() {
     if (!token) return { ok: false }
     try {
       const data = await officersApiGet({ action: 'validate', token })
-      setScope(data.scope || 'committee')
-      setSlug(data.slug)
-      setName(data.name || '')
+      // Re-persist so a refreshed scope/slug survives a page reload, not
+      // just this React session.
+      persist(token, data.scope, data.slug, data.name || '')
       return { ok: true, scope: data.scope, slug: data.slug, name: data.name }
-    } catch {
-      persist('', '', '', '')
+    } catch (err) {
+      // Only wipe the session when the backend explicitly rejected the
+      // token; a timeout/offline blip shouldn't log the officer out.
+      if (err?.rejected) persist('', '', '', '')
       return { ok: false }
     }
   }, [token, persist])

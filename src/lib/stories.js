@@ -25,7 +25,7 @@ export async function submitStory(payload) {
   // payload shape:
   //   { name, email, phone, destination, programme, year, story }
 
-  // The reference is generated client-side and shipped *to* the script — for
+  // The reference is generated client-side and shipped *to* the script, for
   // the same reason as orders.js: Apps Script's POST → 302 redirect strips
   // CORS headers, so the browser can't read the response across the hop.
   // Generating it here keeps the success page, sheet row, and email aligned.
@@ -38,7 +38,7 @@ export async function submitStory(payload) {
   }
 
   if (!STORIES_WEBAPP_URL) {
-    // Stub path — used in dev when STORIES_WEBAPP_URL is empty.
+    // Stub path, used in dev when STORIES_WEBAPP_URL is empty.
     // eslint-disable-next-line no-console
     console.info('[stories] stub submit', enriched)
     await new Promise((r) => setTimeout(r, 700)) // mimic network latency
@@ -48,7 +48,7 @@ export async function submitStory(payload) {
   try {
     // mode: 'no-cors' = fire-and-forget. The script runs (the email arrives);
     // the browser just can't read the JSON response across the redirect. The
-    // opaque response is fine — we already know the reference.
+    // opaque response is fine, we already know the reference.
     await fetch(STORIES_WEBAPP_URL, {
       method: 'POST',
       mode: 'no-cors',

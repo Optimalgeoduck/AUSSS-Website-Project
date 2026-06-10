@@ -14,6 +14,6 @@ export const STORIES_WEBAPP_URL =
   'https://script.google.com/macros/s/AKfycbz-s7xWbh-UrPAWr_dRRJ0bRVsPecbcVFxeRmW7K51Ilp0EucthKaWSl5lPror3m5co_Q/exec'
 
 // Story notifications go to this address. NOTE: the actual sending is done
-// from inside apps-script/stories.gs — this constant is documentation only.
+// from inside apps-script/stories.gs, this constant is documentation only.
 // To change the live destination, edit TEAM_EMAIL in stories.gs and redeploy.
 export const TEAM_EMAIL = 'loreausss@gmail.com'

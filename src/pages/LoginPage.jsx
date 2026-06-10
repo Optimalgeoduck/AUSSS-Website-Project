@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useOfficerAuth } from '../hooks/useOfficerAuth.js'
+import usePageTitle from '../hooks/usePageTitle.js'
 
 // Officer sign-in (/login). On success the token + committee slug land in
 // sessionStorage and we route to /account. Styling mirrors the centered key
 // gate in GalleryAdminPage.
 export default function LoginPage() {
+  usePageTitle('Officer login')
   const { login, liveEnabled } = useOfficerAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')

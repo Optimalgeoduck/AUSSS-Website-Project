@@ -1,5 +1,5 @@
 // A clean inline PDF embed. Hides the browser PDF viewer's toolbar and side
-// panel (#toolbar=0&navpanes=0 — honoured by Chromium's viewer) so the document
+// panel (#toolbar=0&navpanes=0, honoured by Chromium's viewer) so the document
 // sits flush in a branded frame. Uses <object> with an <iframe> fallback for
 // the widest browser support, and a final text fallback if neither can render.
 // fit: 'width' (default) scales the page to the frame width; 'page' fits a

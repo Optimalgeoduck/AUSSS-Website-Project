@@ -66,7 +66,7 @@ export const committees = [
     group: 'Standing Committee',
     // Official IFMSA mission + objectives (verbatim/close), rendered as a
     // read-only "From IFMSA" section on the committee page. Not editable by
-    // officers — sourced straight from the standing committee's ifmsa.org page.
+    // officers, sourced straight from the standing committee's ifmsa.org page.
     ifmsa: {
       mission:
         'The aim of SCOPE is to promote cultural understanding and co-operation amongst medical students and all health professionals, through the facilitation of international student exchanges.',
@@ -605,7 +605,7 @@ export const committees = [
   },
 ]
 
-// NOTE: the Hero's "Members" figure is dynamic — it reads MEMBERS_META.count
+// NOTE: the Hero's "Members" figure is dynamic, it reads MEMBERS_META.count
 // from src/data/members.generated.js (regenerated from the membership xlsx).
 
 // --- Slug helpers (used by the per-committee routes) ---------------------
@@ -735,7 +735,7 @@ export const ifmsaHistory = {
     href: 'https://ifmsa.org/our-story/',
     body: 'The International Federation of Medical Students’ Associations is founded in Copenhagen in May 1951, one of the many international student organisations set up to rebuild cross-border cooperation in the wake of the Second World War. Nine European medical students’ associations (Denmark, England, Austria, West Germany, Finland, Norway, Sweden, the Netherlands and Switzerland) came together around a simple goal: to connect medical students across borders, empower them, and improve the world from a medical perspective. Student exchange became the federation’s founding pillar. From the start the work was organised through standing committees, each owning a field of global health, and they were not all born at once: IFMSA grew committee by committee over the following four decades.',
   },
-  // Chronological — ordered by founding year.
+  // Chronological, ordered by founding year.
   committees: [
     {
       abbr: 'SCOPE',
@@ -808,7 +808,7 @@ export const ifmsaHistory = {
     },
   ],
   // Beyond the six standing committees, IFMSA's work is carried by its support
-  // divisions — operational portfolios, each led by a Vice-President, that keep
+  // divisions, operational portfolios, each led by a Vice-President, that keep
   // the federation running. Unlike the committees these aren't tied to a
   // founding year, so they live in their own section rather than on the rail.
   // Copy drawn only from official ifmsa.org pages (Our Leadership, Our
@@ -937,6 +937,6 @@ export const testimonials = [
       '/assets/exchange/sama-05.jpg',
     ],
     quote:
-      'Reflecting back, the experience exceeded all expectations. I never thought I’d come back with so many good memories that can fill a whole travel journal. What stands out the most is how amazingly beautiful Oman is — mountains, trees, people’s smiles and cheerfulness. The kindness and hospitality of the people made Oman feel like a home away from home; every encounter, from hospital to the local markets, was filled with warmth and openness. The cardiology team welcomed me into their daily routine and taught me skills I never thought I’d have at my age. Each day brought new learning opportunities that allowed me to grow personally and professionally in ways I never anticipated. This exchange was an unforgettable journey that will stay with me, and I would totally do it again!',
+      'Reflecting back, the experience exceeded all expectations. I never thought I’d come back with so many good memories that can fill a whole travel journal. What stands out the most is how amazingly beautiful Oman is, mountains, trees, people’s smiles and cheerfulness. The kindness and hospitality of the people made Oman feel like a home away from home; every encounter, from hospital to the local markets, was filled with warmth and openness. The cardiology team welcomed me into their daily routine and taught me skills I never thought I’d have at my age. Each day brought new learning opportunities that allowed me to grow personally and professionally in ways I never anticipated. This exchange was an unforgettable journey that will stay with me, and I would totally do it again!',
   },
 ]

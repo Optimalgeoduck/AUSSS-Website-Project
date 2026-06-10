@@ -1,4 +1,4 @@
-// Adapted from react-bits (MIT) — https://reactbits.dev/animations/image-trail
+// Adapted from react-bits (MIT), https://reactbits.dev/animations/image-trail
 // Single change from upstream: the useEffect returns a cleanup that breaks the
 // requestAnimationFrame chain and kills in-flight gsap tweens, so navigating
 // away from /gallery doesn't leave an animation loop running. The variant

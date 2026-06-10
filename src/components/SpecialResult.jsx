@@ -16,7 +16,7 @@ function buildHebaGarden() {
   const polar = (a, r) => [CX + r * Math.cos(deg(a)), CY - r * Math.sin(deg(a))]
   const fmt = (n) => n.toFixed(1)
 
-  // Mulberry32 — deterministic PRNG
+  // Mulberry32, deterministic PRNG
   let seed = 0x9e3779b9 >>> 0
   const rand = () => {
     seed = (seed + 0x6d2b79f5) >>> 0
@@ -44,9 +44,9 @@ function buildHebaGarden() {
 
   /* ── Main spiral ──────────────────────────────────────────────────── */
   // Start at 200° (emerges from behind her lower-left shoulder) and run
-  // an extra wrap so the tail lands at 270° — the bottom of the photo.
+  // an extra wrap so the tail lands at 270°, the bottom of the photo.
   // Total = 3 full turns + 70° = 3.194 turns.
-  const SPIRAL_DURATION = 7.0 // seconds — three wraps take a bit longer
+  const SPIRAL_DURATION = 7.0 // seconds, three wraps take a bit longer
   const SPIRAL_START_A = 200
   const SPIRAL_TURNS = 3.194
   const SPIRAL_START_R = 52 // hidden behind photo (r < PHOTO_R)
@@ -284,7 +284,7 @@ function President({ onReveal, otherPositions }) {
             className="h-full w-full object-cover"
           />
         </div>
-        {/* Crown perched on his head — slight tilt for personality */}
+        {/* Crown perched on his head, slight tilt for personality */}
         <svg
           viewBox="0 0 24 24"
           className="absolute -top-5 left-1/2 h-10 w-10 -translate-x-1/2 -rotate-[14deg] text-[#E7C763] drop-shadow-[0_2px_6px_rgba(0,0,0,0.55)] sm:-top-6 sm:h-12 sm:w-12"
@@ -342,7 +342,7 @@ function Heba({ onReveal }) {
           import('gsap/ScrollTrigger'),
         ])
       } catch {
-        // GSAP couldn't load — reveal the (static) garden so the CSS pre-hide
+        // GSAP couldn't load, reveal the (static) garden so the CSS pre-hide
         // doesn't leave it permanently invisible.
         if (!cancelled) root.classList.add('hb-ready')
         return
@@ -359,7 +359,7 @@ function Heba({ onReveal }) {
         const sparkleEls = Array.from(root.querySelectorAll('.hb-sparkle'))
 
         // Prep all stem paths so they can be drawn via stroke-dashoffset
-        // opacity:1 here matters — the CSS pre-hide (see index.css) sets these
+        // opacity:1 here matters, the CSS pre-hide (see index.css) sets these
         // to opacity:0 to kill the load flash, and the timeline only animates
         // strokeDashoffset, so without restoring opacity they'd draw invisibly.
         if (spiralEl) {
@@ -495,7 +495,7 @@ function Heba({ onReveal }) {
           aria-hidden="true"
         >
           <defs>
-            {/* Leaf — central vein + three pairs of side veins for detail */}
+            {/* Leaf, central vein + three pairs of side veins for detail */}
             <symbol id="hb-leaf-sym" viewBox="-7 -10 14 20">
               <path
                 d="M 0,-9 C 5.5,-7.5 6.5,4 0,9.5 C -6.5,4 -5.5,-7.5 0,-9 Z"
@@ -523,7 +523,7 @@ function Heba({ onReveal }) {
               </g>
             </symbol>
 
-            {/* Rose — three layered petal rings, soft outline, highlights */}
+            {/* Rose, three layered petal rings, soft outline, highlights */}
             <symbol id="hb-rose-sym" viewBox="-10 -10 20 20">
               <g>
                 <circle cx="0" cy="-5" r="4.2" fill="#F2B1B1" />
@@ -631,7 +631,7 @@ function Heba({ onReveal }) {
               </g>
             </symbol>
 
-            {/* Bud — pink teardrop, highlight, green calyx with stem */}
+            {/* Bud, pink teardrop, highlight, green calyx with stem */}
             <symbol id="hb-bud-sym" viewBox="-5 -8 10 16">
               <path
                 d="M 0,-6 C 4,-5 4,3 0,5.5 C -4,3 -4,-5 0,-6 Z"
@@ -676,7 +676,7 @@ function Heba({ onReveal }) {
           </defs>
 
           {/* One main spiral wraps around the photo. Branches sprout off
-              it at sampled points as the spiral draws — each branch has a
+              it at sampled points as the spiral draws, each branch has a
               startTime in seconds matching where the spiral reaches it. */}
           <g stroke="#E2BF6C" strokeLinecap="round" fill="none">
             <path
@@ -697,7 +697,7 @@ function Heba({ onReveal }) {
             ))}
           </g>
 
-          {/* One leaf per branch — wrapped in a positioning group so GSAP
+          {/* One leaf per branch, wrapped in a positioning group so GSAP
               can scale the <use> without fighting the SVG transform */}
           <g style={{ color: '#A8CFAB' }}>
             {HEBA_GARDEN.branches.map((b, i) => (
@@ -734,7 +734,7 @@ function Heba({ onReveal }) {
             ))}
           </g>
 
-          {/* One flower per branch tip — mix of roses, daisies, buds */}
+          {/* One flower per branch tip, mix of roses, daisies, buds */}
           <g>
             {HEBA_GARDEN.branches.map((b, i) => {
               const sym =
@@ -790,7 +790,7 @@ function Heba({ onReveal }) {
             })}
           </g>
 
-          {/* Sparkle dots — each lights up as the spiral wraps past it */}
+          {/* Sparkle dots, each lights up as the spiral wraps past it */}
           <g fill="#FAE2A0">
             {HEBA_GARDEN.sparkles.map((s, i) => (
               <circle

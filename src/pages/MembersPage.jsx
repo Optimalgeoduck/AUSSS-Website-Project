@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import useReveal from '../hooks/useReveal.js'
+import usePageTitle from '../hooks/usePageTitle.js'
 import {
   lookupMember,
   adviceFor,
@@ -33,7 +34,7 @@ const STATUS_COLOR = {
 // GA cells can be "", "0", "3", ">2", "2+", "≥1" … parse safely.
 function parseGA(value) {
   const s = String(value ?? '').trim()
-  if (!s) return { display: '—', num: 0, atLeast: false, known: false }
+  if (!s) return { display: ', ', num: 0, atLeast: false, known: false }
   const digits = s.match(/\d+/)
   const num = digits ? parseInt(digits[0], 10) : 0
   const atLeast = /[>≥]|\+|more|over|at least/i.test(s)
@@ -118,9 +119,10 @@ function GuidanceCard({ advice, accent }) {
 
 export default function MembersPage() {
   useReveal()
+  usePageTitle('Members')
   useEffect(() => {
     preloadMembers() // warm the dataset while the user types
-    // Browsers try to restore scroll position on refresh — but here the
+    // Browsers try to restore scroll position on refresh, but here the
     // result card isn't restored, so the user lands on a half-scrolled
     // empty page. Disable restoration and snap to the top.
     if ('scrollRestoration' in window.history) {
@@ -133,7 +135,7 @@ export default function MembersPage() {
   const [result, setResult] = useState(null)
   const [reveal, setReveal] = useState(false) // "show status anyway" on special pages
   const resultRef = useRef(null)
-  // After a fresh result lands, glide down to it. Adaptive — if the card
+  // After a fresh result lands, glide down to it. Adaptive, if the card
   // fits in the viewport beneath the sticky header, vertically centre it so
   // both top and bottom content are visible at once; if it's taller, just
   // align the top to the header offset so the user starts at the headline.
@@ -159,6 +161,9 @@ export default function MembersPage() {
   const submit = async (e) => {
     e.preventDefault()
     if (!form.name.trim() && !form.email.trim()) return
+    // Guard re-entry: an Enter-key submit can fire while a lookup is already
+    // running, and two in-flight lookups could land out of order.
+    if (busy) return
     setBusy(true)
     setResult(null)
     setReveal(false)
@@ -313,8 +318,8 @@ export default function MembersPage() {
                     </p>
                     <div className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] sm:grid-cols-4">
                       {[
-                        ['Year joined', statusRecord.yearJoined || '—'],
-                        ['Years spent', statusRecord.yearsSpent || '—'],
+                        ['Year joined', statusRecord.yearJoined || ', '],
+                        ['Years spent', statusRecord.yearsSpent || ', '],
                         ['Local GAs', parseGA(statusRecord.lgas).display],
                         ['National GAs', parseGA(statusRecord.ngas).display],
                       ].map(([k, v]) => (
@@ -430,7 +435,7 @@ export default function MembersPage() {
             </div>
           )}
 
-          {/* Governance — only render alongside an actual membership status
+          {/* Governance, only render alongside an actual membership status
               card (so it doesn't crowd the special TO/EB/Heba cards or the
               not-found / error states). */}
           {found && (

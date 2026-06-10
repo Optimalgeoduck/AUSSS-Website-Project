@@ -75,7 +75,7 @@ function CommitteeCard({ c, i, ov }) {
       ? c.officers
       : [{ name: c.holder, abbr: c.officerAbbr, photo: c.photo }]
   // The officer photo edited in /account (override keyed by slug) applies to
-  // the lead officer — so it shows here on the home page, not just the
+  // the lead officer, so it shows here on the home page, not just the
   // committee page.
   const people =
     ov && ov.photo

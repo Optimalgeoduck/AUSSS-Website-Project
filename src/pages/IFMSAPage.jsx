@@ -1,4 +1,5 @@
 import useReveal from '../hooks/useReveal.js'
+import usePageTitle from '../hooks/usePageTitle.js'
 import { Link } from 'react-router-dom'
 import { ifmsa, ifmsaScale } from '../data/society.js'
 import CountUp from '../components/CountUp.jsx'
@@ -29,6 +30,7 @@ function StatBand({ title, items }) {
 }
 
 export default function IFMSAPage() {
+  usePageTitle('IFMSA')
   useReveal()
 
   return (

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { readableAccent, rgba } from '../lib/color.js'
 
-// Shared presentational pieces for the committee page — also reused by the
+// Shared presentational pieces for the committee page, also reused by the
 // officer editor's live preview, so what officers see while editing is the
 // exact same component that renders on the public page (no drift).
 

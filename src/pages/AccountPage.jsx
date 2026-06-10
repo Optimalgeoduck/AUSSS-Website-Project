@@ -3,6 +3,7 @@ import { Navigate, Link, useNavigate } from 'react-router-dom'
 import { committeeBySlug, committees, slugFor } from '../data/society.js'
 import { driveImg } from '../lib/img.js'
 import { useOfficerAuth } from '../hooks/useOfficerAuth.js'
+import usePageTitle from '../hooks/usePageTitle.js'
 import {
   useOfficerOverrides,
   postOfficerSave,
@@ -59,6 +60,7 @@ function resizeImage(file, max = 512) {
 }
 
 export default function AccountPage() {
+  usePageTitle('Officer account')
   const auth = useOfficerAuth()
   const { overrides, loading, refresh } = useOfficerOverrides()
   const [status, setStatus] = useState('checking') // checking|ready|unauthed|disabled
@@ -196,7 +198,7 @@ function Picker({ auth, onPick, onLogout }) {
                   onClick={() => onPick(s)}
                   className="group flex w-full flex-col items-center gap-3 rounded-2xl border border-white/10 bg-forest-800 p-5 text-center transition-colors hover:border-medical/40"
                 >
-                  {/* Committee logo PNGs are solid white — show them on a dark
+                  {/* Committee logo PNGs are solid white, show them on a dark
                       chip (accent border), not a white one, so they're visible. */}
                   <span
                     className="grid h-16 w-16 place-items-center overflow-hidden rounded-xl border bg-forest-950 p-1.5"
@@ -496,7 +498,7 @@ function Editor({ auth, committee, targetSlug, override, refresh, onBack, onLogo
           />
         </Field>
 
-        {/* What we do — opt-in, off by default. The preset list stays
+        {/* What we do, opt-in, off by default. The preset list stays
             pre-filled so officers can edit it before turning the section on. */}
         <Field
           label="What we do"

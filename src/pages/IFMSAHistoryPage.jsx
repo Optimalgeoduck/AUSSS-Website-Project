@@ -1,4 +1,5 @@
 import useReveal from '../hooks/useReveal.js'
+import usePageTitle from '../hooks/usePageTitle.js'
 import { Link } from 'react-router-dom'
 import { ifmsaHistory } from '../data/society.js'
 
@@ -63,6 +64,7 @@ function TimelineItem({ year, accent, children, isFounding = false }) {
 }
 
 export default function IFMSAHistoryPage() {
+  usePageTitle('IFMSA history')
   useReveal()
   const { founded, committees, supportDivisions } = ifmsaHistory
 
@@ -185,7 +187,7 @@ export default function IFMSAHistoryPage() {
           ))}
         </div>
 
-        {/* Support divisions — not on the rail; they aren't tied to a founding
+        {/* Support divisions, not on the rail; they aren't tied to a founding
             year. Operational portfolios that carry IFMSA alongside the six
             standing committees. */}
         {supportDivisions?.length > 0 && (

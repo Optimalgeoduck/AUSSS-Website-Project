@@ -3,7 +3,7 @@ import HTMLFlipBook from 'react-pageflip'
 import useMediaQuery from '../hooks/useMediaQuery.js'
 
 // A page-flipping reader: the magazine's pre-rendered page images turned into a
-// book with a real page-curl — a two-page spread on desktop, a single page on
+// book with a real page-curl, a two-page spread on desktop, a single page on
 // mobile. Images are pre-built from the full-quality PDF (see
 // _source/build-magazine.mjs), so there's no big download and no client pdf.js.
 export default function Flipbook({ pages, title }) {
@@ -29,7 +29,7 @@ export default function Flipbook({ pages, title }) {
 
   // Preload + decode every page up front. Without this, flipping to a page
   // whose image hasn't downloaded/decoded yet exposes the bare white page for a
-  // frame — a white flash on every flip. Decoding ahead of time keeps each flip
+  // frame, a white flash on every flip. Decoding ahead of time keeps each flip
   // landing on a ready image.
   useEffect(() => {
     for (const url of pages) {

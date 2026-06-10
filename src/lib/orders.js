@@ -65,7 +65,7 @@ export async function submitOrder(payload) {
   }
 
   if (!ORDERS_WEBAPP_URL) {
-    // Stub path — used in dev when ORDERS_WEBAPP_URL is empty.
+    // Stub path, used in dev when ORDERS_WEBAPP_URL is empty.
     // eslint-disable-next-line no-console
     console.info('[orders] stub submit', enriched)
     await new Promise((r) => setTimeout(r, 700)) // mimic network latency
@@ -75,7 +75,7 @@ export async function submitOrder(payload) {
   try {
     // mode: 'no-cors' = fire-and-forget. The script DID run (we see emails
     // arriving), the browser just can't read the JSON response across the
-    // redirect. The opaque response is fine — we already know the reference.
+    // redirect. The opaque response is fine, we already know the reference.
     await fetch(ORDERS_WEBAPP_URL, {
       method: 'POST',
       mode: 'no-cors',

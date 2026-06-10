@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
 import useReveal from '../hooks/useReveal.js'
+import usePageTitle from '../hooks/usePageTitle.js'
 import PdfFrame from '../components/PdfFrame.jsx'
 
 const CONSTITUTION_PDF = '/assets/docs/AUSSS-Constitution-and-Bylaws.pdf'
 const SECGEN_EMAIL = 'ausss.secgen@gmail.com'
 
-// How the document is amended — summarised straight from the Constitution &
+// How the document is amended, summarised straight from the Constitution &
 // Bylaws (section references in parentheses), so members know the real process.
 const AMENDMENT_STEPS = [
   {
@@ -37,6 +38,7 @@ const AMENDMENT_STEPS = [
 // The AUSSS Constitution & Bylaws, embedded in-page so "View document" reads
 // it here rather than bouncing the user out to a new browser tab.
 export default function ConstitutionPage() {
+  usePageTitle('Constitution')
   useReveal()
 
   return (
@@ -113,7 +115,7 @@ export default function ConstitutionPage() {
           />
         </div>
 
-        {/* How it's amended — a quick brief drawn from the document itself. */}
+        {/* How it's amended, a quick brief drawn from the document itself. */}
         <section className="reveal mx-auto mt-16 max-w-3xl">
           <span className="eyebrow">
             <span className="h-px w-8 bg-medical" />

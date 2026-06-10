@@ -1,4 +1,4 @@
-// Aurora WebGL background — copy-pasted from react-bits
+// Aurora WebGL background, copy-pasted from react-bits
 // (reactbits.dev/backgrounds/aurora), single dep `ogl`. Renders an animated
 // "northern lights" glow on a transparent canvas. Props: colorStops (3 hex),
 // amplitude, blend, speed. Used as the gallery hero ambient backdrop.

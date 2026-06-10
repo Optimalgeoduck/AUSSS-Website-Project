@@ -3,6 +3,7 @@ import {
   OFFICERS_WEBAPP_URL,
   officersLiveEnabled,
 } from '../data/officersConfig.js'
+import { appsScriptGet } from '../lib/appsScriptGet.js'
 
 // Live officer overrides, keyed by committee slug.
 //
@@ -24,15 +25,10 @@ function readCache() {
   }
 }
 
-// One GET to the backend; throws on a non-ok payload. Responses are readable
-// across Apps Script's 302 redirect because they're GET requests.
+// One GET to the backend; throws on a non-ok payload or after a timeout so a
+// hung Apps Script can't leave the login button spinning forever.
 export async function officersApiGet(params) {
-  const url = new URL(OFFICERS_WEBAPP_URL)
-  Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v))
-  const res = await fetch(url.toString(), { method: 'GET' })
-  const data = await res.json()
-  if (!data.ok) throw new Error(data.error || 'Request failed')
-  return data
+  return appsScriptGet(OFFICERS_WEBAPP_URL, params)
 }
 
 // Write path. Apps Script POST replies aren't readable cross-origin, so this

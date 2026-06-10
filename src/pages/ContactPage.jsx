@@ -1,4 +1,5 @@
 import useReveal from '../hooks/useReveal.js'
+import usePageTitle from '../hooks/usePageTitle.js'
 import { Link } from 'react-router-dom'
 import {
   executiveBoard,
@@ -54,6 +55,7 @@ function Group({ title, children }) {
 }
 
 export default function ContactPage() {
+  usePageTitle('Contact')
   useReveal()
 
   const standing = committees.filter((c) => !isSupport(c.group))
@@ -105,7 +107,7 @@ export default function ContactPage() {
       </header>
 
       <div className="container-prose space-y-14 pb-28 sm:pb-36">
-        {/* Follow us — merged in from the former /social page. */}
+        {/* Follow us, merged in from the former /social page. */}
         <section className="reveal">
           <h2 className="heading-serif text-2xl text-white sm:text-3xl">
             Follow AUSSS

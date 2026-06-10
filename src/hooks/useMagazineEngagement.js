@@ -3,6 +3,7 @@ import {
   MAGAZINE_WEBAPP_URL,
   magazineEngagementEnabled,
 } from '../data/magazineConfig.js'
+import { appsScriptGet } from '../lib/appsScriptGet.js'
 
 // View + like counts for one magazine issue, backed by apps-script/magazine.gs.
 // All calls are GET (readable across Apps Script's redirect). Likes are
@@ -11,12 +12,7 @@ import {
 const likedKey = (id) => `ausss-mag-liked-${id}`
 
 async function apiGet(params) {
-  const url = new URL(MAGAZINE_WEBAPP_URL)
-  Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v))
-  const res = await fetch(url.toString(), { method: 'GET' })
-  const data = await res.json()
-  if (!data.ok) throw new Error(data.error || 'Request failed')
-  return data
+  return appsScriptGet(MAGAZINE_WEBAPP_URL, params)
 }
 
 // Record a full-quality download. Fire-and-forget: the click opens the file in
@@ -62,7 +58,7 @@ export function useMagazineEngagement(issueId) {
           if (alive && d.stats && d.stats[issueId]) setCounts(d.stats[issueId])
         }
       } catch {
-        /* leave counts at 0 — the page still works */
+        /* leave counts at 0, the page still works */
       } finally {
         if (alive) setReady(true)
       }

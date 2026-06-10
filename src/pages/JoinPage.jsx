@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import useReveal from '../hooks/useReveal.js'
+import usePageTitle from '../hooks/usePageTitle.js'
 import { committees, slugFor } from '../data/society.js'
 import { readableAccent, rgba } from '../lib/color.js'
 
@@ -31,6 +32,7 @@ const WHY = [
 ]
 
 export default function JoinPage() {
+  usePageTitle('Join us')
   useReveal()
   const standing = committees.filter((c) => c.group === 'Standing Committee')
   const divisions = committees.filter((c) => c.group === 'Support Division')
@@ -119,6 +121,15 @@ export default function JoinPage() {
             Six standing committees and four support divisions, tap any to see
             what they do.
           </p>
+          <div className="mt-6 flex justify-center">
+            <Link
+              to="/sorting"
+              className="inline-flex items-center gap-2 rounded-full border border-medical/40 bg-medical/10 px-6 py-2.5 text-sm font-semibold text-medical-light transition-colors hover:border-medical hover:text-white"
+            >
+              Not sure where you fit? Take the Sorting Quiz
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
 
           <p className="mt-10 text-xs font-semibold uppercase tracking-[0.24em] text-medical-light">
             Standing committees

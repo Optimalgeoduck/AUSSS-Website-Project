@@ -1,5 +1,6 @@
 import { useParams, Navigate, Link } from 'react-router-dom'
 import useReveal from '../hooks/useReveal.js'
+import usePageTitle from '../hooks/usePageTitle.js'
 import { committeeBySlug, slugFor } from '../data/society.js'
 import { readableAccent, rgba } from '../lib/color.js'
 import { driveImg } from '../lib/img.js'
@@ -9,6 +10,7 @@ import { PersonCard, SectionLabel } from '../components/committeeUi.jsx'
 export default function CommitteePage() {
   const { slug } = useParams()
   const c = committeeBySlug(slug)
+  usePageTitle(c?.name || 'Committees')
   const { overrides } = useOfficerOverrides()
   useReveal()
 
@@ -139,7 +141,7 @@ export default function CommitteePage() {
           </section>
         )}
 
-        {/* IFMSA mission & pillars — read-only, straight from the official
+        {/* IFMSA mission & pillars, read-only, straight from the official
             standing-committee page on ifmsa.org. Deliberately NOT merged with
             officer overrides (`ov`), so officers can edit their own copy above
             but never this canonical IFMSA framing. */}
@@ -235,7 +237,7 @@ export default function CommitteePage() {
           </section>
         )}
 
-        {/* Mascot & nickname — the committee's informal identity, pulled from
+        {/* Mascot & nickname, the committee's informal identity, pulled from
             official IFMSA / NMO sources. Read-only (not an officer override).
             Sits just before the team as a light, human note on the community. */}
         {c.mascot && (

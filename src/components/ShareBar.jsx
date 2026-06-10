@@ -38,7 +38,7 @@ export default function ShareBar({ url, title, className = '' }) {
     try {
       await navigator.share({ title, text, url: target })
     } catch (err) {
-      // The user dismissing the share sheet rejects with AbortError — ignore it.
+      // The user dismissing the share sheet rejects with AbortError, ignore it.
       if (err && err.name !== 'AbortError') {
         // Any other failure is non-fatal; the fallback buttons still work.
         console.warn('Web Share failed:', err)
@@ -51,7 +51,7 @@ export default function ShareBar({ url, title, className = '' }) {
     if (!target) return
     let ok = false
 
-    // Preferred path — the async Clipboard API. Requires a secure context
+    // Preferred path, the async Clipboard API. Requires a secure context
     // (HTTPS / localhost); the live site is HTTPS on Netlify, so this is the
     // normal path in modern browsers, including mobile Safari/Chrome.
     try {

@@ -1,5 +1,6 @@
 import { useState, lazy, Suspense, Component } from 'react'
 import useReveal from '../hooks/useReveal.js'
+import usePageTitle from '../hooks/usePageTitle.js'
 import { magazine } from '../data/magazine.js'
 import CanvaFrame from '../components/CanvaFrame.jsx'
 import ShareBar from '../components/ShareBar.jsx'
@@ -7,13 +8,14 @@ import MagazineEngagement from '../components/MagazineEngagement.jsx'
 import { trackMagazineDownload } from '../hooks/useMagazineEngagement.js'
 import GalleryAurora from '../components/GalleryAurora.jsx'
 
-// The flipbook pulls in pdf.js + react-pageflip — lazy-load it so the page
+// The flipbook pulls in pdf.js + react-pageflip, lazy-load it so the page
 // shell paints immediately and the heavy reader streams in after.
 const Flipbook = lazy(() => import('../components/Flipbook.jsx'))
 
 // The magazine is a single edition read in-page as a page-flipping PDF.
 // /magazine shows that one edition.
 export default function MagazinePage() {
+  usePageTitle('Magazine')
   useReveal()
   if (!magazine) return <EmptyShelf />
   return <IssueView issue={magazine} />
@@ -126,7 +128,7 @@ function IssueView({ issue }) {
 }
 
 // Picks the reader: the page-flipping PDF if one is set, else the Canva embed,
-// else a placeholder — so nothing 404s during a draft.
+// else a placeholder, so nothing 404s during a draft.
 function MagazineReader({ issue }) {
   const p = issue.pages
   if (p?.count) {
@@ -165,7 +167,7 @@ function MagazineReader({ issue }) {
   )
 }
 
-// If the flip reader (pdf.js / react-pageflip) throws, don't blank the page —
+// If the flip reader (pdf.js / react-pageflip) throws, don't blank the page, 
 // fall back to a friendly panel with the open/download links.
 class ReaderBoundary extends Component {
   constructor(props) {

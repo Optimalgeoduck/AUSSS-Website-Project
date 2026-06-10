@@ -1,4 +1,4 @@
-// Google Analytics 4 (GA4) integration — DORMANT by default.
+// Google Analytics 4 (GA4) integration, DORMANT by default.
 //
 // Paste a GA4 Measurement ID like 'G-XXXXXXXXXX' here to enable analytics.
 // While this is empty the feature is fully dormant: no script tag is injected,

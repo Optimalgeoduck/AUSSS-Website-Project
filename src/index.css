@@ -85,7 +85,7 @@
   background: #8fb4d4;
 }
 
-/* Heba "Grandma" card — the photo-only hover scale (vines are a SVG
+/* Heba "Grandma" card, the photo-only hover scale (vines are a SVG
    sibling so they stay perfectly aligned). The bloom/grow animation is
    driven by GSAP + ScrollTrigger inside the component. */
 .heba-photo {
@@ -117,7 +117,7 @@
   opacity: 1;
 }
 
-/* Magazine flipbook frame — a vintage gold-on-parchment border (inspired by
+/* Magazine flipbook frame, a vintage gold-on-parchment border (inspired by
    classic stationery): a warm, paper-grained matte, an antique-gold double
    rule, and a small diamond at each corner. The book sits mounted inside it. */
 .magazine-frame {

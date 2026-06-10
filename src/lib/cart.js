@@ -10,6 +10,20 @@ import { productById } from '../data/merchProducts.js'
 
 const STORAGE_KEY = 'ausss-cart-v1'
 
+// Per-line quantity ceiling. Group orders go through DMs anyway; this just
+// stops typos/abuse from inflating the cart unbounded.
+export const MAX_QTY = 20
+
+// Lines silently dropped at load because their product left the catalogue.
+// The checkout page reads this once to tell the user instead of letting the
+// cart shrink without explanation.
+let droppedLines = []
+export function takeDroppedLines() {
+  const d = droppedLines
+  droppedLines = []
+  return d
+}
+
 function readInitial() {
   if (typeof window === 'undefined') return { items: [] }
   try {
@@ -18,7 +32,8 @@ function readInitial() {
     const parsed = JSON.parse(raw)
     if (!parsed || !Array.isArray(parsed.items)) return { items: [] }
     // Drop lines whose product no longer exists (catalogue edits) so a stale
-    // cart can never block checkout.
+    // cart can never block checkout, but remember them for a user notice.
+    droppedLines = parsed.items.filter((it) => !productById[it.productId])
     return {
       items: parsed.items.filter((it) => productById[it.productId]),
     }
@@ -57,11 +72,16 @@ export function addToCart({ productId, size = '', design = '', qty = 1 }) {
   if (existing) {
     state = {
       items: state.items.map((it) =>
-        it === existing ? { ...it, qty: it.qty + qty } : it,
+        it === existing ? { ...it, qty: Math.min(MAX_QTY, it.qty + qty) } : it,
       ),
     }
   } else {
-    state = { items: [...state.items, { productId, size, design, qty }] }
+    state = {
+      items: [
+        ...state.items,
+        { productId, size, design, qty: Math.min(MAX_QTY, qty) },
+      ],
+    }
   }
   emit()
 }
@@ -72,7 +92,7 @@ export function updateQty({ productId, size = '', design = '', qty }) {
     items: state.items
       .map((it) =>
         lineKey(it.productId, it.size, it.design) === key
-          ? { ...it, qty: Math.max(0, qty) }
+          ? { ...it, qty: Math.max(0, Math.min(MAX_QTY, qty)) }
           : it,
       )
       .filter((it) => it.qty > 0),
@@ -121,14 +141,14 @@ export function useCartCount() {
   return cartCount(s)
 }
 
-// Tiny formatter — EGP first, no decimals (the catalogue is round numbers).
+// Tiny formatter, EGP first, no decimals (the catalogue is round numbers).
 export function formatEGP(n) {
   return `${Number(n || 0).toLocaleString('en-EG')} EGP`
 }
 
 export { lineKey }
 
-// ── Drawer open/close — shared state so any button can toggle it ─────────
+// ── Drawer open/close, shared state so any button can toggle it ─────────
 let drawerOpen = false
 const drawerListeners = new Set()
 function drawerSubscribe(cb) {

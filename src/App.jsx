@@ -21,6 +21,7 @@ const ShareStoryPage = lazy(() => import('./pages/ShareStoryPage.jsx'))
 const GalleryPage = lazy(() => import('./pages/GalleryPage.jsx'))
 const GalleryAdminPage = lazy(() => import('./pages/GalleryAdminPage.jsx'))
 const JoinPage = lazy(() => import('./pages/JoinPage.jsx'))
+const SortingPage = lazy(() => import('./pages/SortingPage.jsx'))
 
 // Brand-coloured placeholder shown while a lazy chunk is in flight. Matches
 // the dark hero so there's no white flash on inner-page navigation.
@@ -50,6 +51,9 @@ export default function App() {
                 <Route path="/gallery/admin" element={<GalleryAdminPage />} />
                 <Route path="/gallery/:slug" element={<GalleryPage />} />
                 <Route path="/join" element={<JoinPage />} />
+                <Route path="/sorting" element={<SortingPage />} />
+                {/* Friendly alias people will guess/type. */}
+                <Route path="/quiz" element={<Navigate to="/sorting" replace />} />
                 <Route path="/ifmsa" element={<IFMSAPage />} />
                 <Route path="/ifmsa/history" element={<IFMSAHistoryPage />} />
                 <Route path="/magazine" element={<MagazinePage />} />
@@ -59,7 +63,7 @@ export default function App() {
                 <Route path="/constitution" element={<ConstitutionPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/account" element={<AccountPage />} />
-                {/* Social merged into Contact — keep the old URL working. */}
+                {/* Social merged into Contact, keep the old URL working. */}
                 <Route path="/social" element={<Navigate to="/contact" replace />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>

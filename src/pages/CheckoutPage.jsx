@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import useReveal from '../hooks/useReveal.js'
+import usePageTitle from '../hooks/usePageTitle.js'
 import {
   useCart,
   cartSubtotal,
   cartCount,
   clearCart,
   formatEGP,
+  takeDroppedLines,
 } from '../lib/cart.js'
 import { productById } from '../data/merchProducts.js'
 import { submitOrder, fileToBase64 } from '../lib/orders.js'
@@ -34,10 +36,14 @@ const MAX_NOTES_LENGTH = 280
 
 export default function CheckoutPage() {
   useReveal()
+  usePageTitle('Checkout')
   const navigate = useNavigate()
   const cart = useCart()
   const count = cartCount(cart)
   const subtotal = cartSubtotal(cart)
+  // Lines the cart store dropped because their product left the catalogue —
+  // surfaced once so the user isn't surprised by a smaller order.
+  const [droppedCount] = useState(() => takeDroppedLines().length)
 
   const [contact, setContact] = useState({
     name: '',
@@ -57,7 +63,7 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false)
   const [result, setResult] = useState(null) // { ok, reference, error, stub }
 
-  // Only redirect away if the page was loaded with an empty cart — i.e.
+  // Only redirect away if the page was loaded with an empty cart, i.e.
   // the user bookmarked /merch/checkout after a previous order. Don't
   // redirect when the cart empties as a side effect of a successful
   // submit: the cart store re-renders synchronously and would fire this
@@ -87,8 +93,14 @@ export default function CheckoutPage() {
     if (!contact.name.trim()) next.name = 'Required'
     if (!contact.email.trim() || !/^\S+@\S+\.\S+$/.test(contact.email))
       next.email = 'Enter a valid email'
-    if (!contact.phone.trim() || contact.phone.replace(/\D/g, '').length < 8)
-      next.phone = 'Enter a valid phone / WhatsApp number'
+    // Numbers in local Egyptian format must be a full mobile (01x + 8 digits);
+    // anything else (international WhatsApp) just needs a plausible length.
+    const phoneDigits = contact.phone.replace(/\D/g, '')
+    const phoneOk = phoneDigits.startsWith('0')
+      ? /^01[0125][0-9]{8}$/.test(phoneDigits)
+      : phoneDigits.length >= 10
+    if (!contact.phone.trim() || !phoneOk)
+      next.phone = 'Enter a valid phone / WhatsApp number (e.g. 01x xxxx xxxx)'
     if (!contact.isMember) next.isMember = 'Pick one'
     if (contact.isMember === 'No' && !contact.lc.trim())
       next.lc = 'Tell us which LC'
@@ -98,7 +110,19 @@ export default function CheckoutPage() {
     if (!screenshot)
       next.screenshot = `Upload the ${selectedMethod?.label || 'payment'} receipt`
     setErrors(next)
-    return Object.keys(next).length === 0
+    return next
+  }
+
+  // Bring the first invalid field into view; on a long mobile form the
+  // error text is often above the fold when the submit button is tapped.
+  const FIELD_ORDER = ['name', 'email', 'phone', 'isMember', 'lc', 'year', 'notes', 'screenshot']
+  const focusFirstError = (next) => {
+    const first = FIELD_ORDER.find((k) => next[k])
+    if (!first) return
+    const el = document.getElementById(first)
+    if (!el) return
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    if (typeof el.focus === 'function') el.focus({ preventScroll: true })
   }
 
   const onScreenshotChange = (e) => {
@@ -123,7 +147,14 @@ export default function CheckoutPage() {
 
   const onSubmit = async (e) => {
     e.preventDefault()
-    if (!validate()) return
+    // The button is disabled while submitting, but an Enter-key implicit
+    // submission can still fire — guard against double orders.
+    if (submitting) return
+    const invalid = validate()
+    if (Object.keys(invalid).length > 0) {
+      focusFirstError(invalid)
+      return
+    }
     setSubmitting(true)
 
     let screenshotBase64
@@ -172,6 +203,14 @@ export default function CheckoutPage() {
       </header>
 
       <div className="container-prose pb-24">
+        {droppedCount > 0 && (
+          <p className="mx-auto mb-8 max-w-2xl rounded-xl border border-amber-400/30 bg-amber-400/10 px-4 py-3 text-center text-sm text-amber-200">
+            {droppedCount === 1
+              ? 'One item from a previous visit is no longer available and was removed from your cart.'
+              : `${droppedCount} items from a previous visit are no longer available and were removed from your cart.`}{' '}
+            Please double-check your order below.
+          </p>
+        )}
         <div className="grid gap-10 lg:grid-cols-12">
           {/* Form */}
           <form
@@ -589,7 +628,7 @@ function CopyableValue({ value }) {
       setCopied(true)
       setTimeout(() => setCopied(false), 1500)
     } catch (_) {
-      // Older browsers — let users copy manually.
+      // Older browsers, let users copy manually.
     }
   }
   return (
@@ -657,6 +696,14 @@ function OrderSuccess({ result, contact }) {
               {result.reference}
             </span>
           </div>
+          <p className="mx-auto mt-4 max-w-sm text-xs leading-relaxed text-silver/55">
+            Keep this reference. If you don&rsquo;t hear from us within 48
+            hours,{' '}
+            <Link to="/contact" className="font-semibold text-medical-light hover:text-white">
+              reach out
+            </Link>{' '}
+            and mention it so we can find your order.
+          </p>
           {result.stub && (
             <p className="mt-5 text-[11px] uppercase tracking-[0.16em] text-medical-light/70">
               Dev preview · backend not connected

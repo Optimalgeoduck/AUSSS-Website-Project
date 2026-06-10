@@ -2,7 +2,7 @@ import useMediaQuery from '../hooks/useMediaQuery.js'
 import Aurora from './Aurora.jsx'
 
 // Brand-tinted Aurora backdrop shared across the gallery pages (index hero +
-// album subpages). Reduce-motion safe — renders nothing when the user prefers
+// album subpages). Reduce-motion safe, renders nothing when the user prefers
 // reduced motion. Fills its nearest positioned ancestor; pass `className` to
 // tweak placement/opacity per page.
 export default function GalleryAurora({

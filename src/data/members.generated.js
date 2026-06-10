@@ -1,4 +1,4 @@
-// AUTO-GENERATED — do not edit. Source: interim membership xlsx.
+// AUTO-GENERATED, do not edit. Source: interim membership xlsx.
 // Privacy: keys are SHA-256(name) / SHA-256(email); no names or emails
 // are stored here. Values are arrays (handles shared names).
 export const MEMBERS_META = {"count":581,"asOf":"As of 20/05/2026","generatedAt":"2026-05-22"}

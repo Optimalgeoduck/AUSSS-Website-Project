@@ -1,27 +1,30 @@
+import { useRef } from 'react'
 import { Link } from 'react-router-dom'
-import NetworkBackground from './NetworkBackground.jsx'
+import ECGBackground from './ECGBackground.jsx'
 import CountUp from './CountUp.jsx'
 import { MEMBERS_META } from '../data/members.generated.js'
 
 export default function Hero() {
+  // The ECG baseline anchors just below this CTA row on every viewport.
+  const ctaRef = useRef(null)
+  // The logo img: the trace's big spikes sync to its printed ECG spikes.
+  const logoRef = useRef(null)
   return (
     <section
       id="home"
-      className="relative flex min-h-screen items-center overflow-hidden bg-forest-950"
+      // select-none + no touch callout: tapping/holding to play with the ECG
+      // shouldn't select text or pop the long-press image menu on mobile.
+      // min-h-svh (not screen/100vh): on phones 100vh changes as the URL bar
+      // collapses, reflowing the whole page on scroll — svh stays stable.
+      className="relative flex min-h-svh select-none items-center overflow-hidden bg-black"
+      style={{ WebkitTouchCallout: 'none' }}
     >
-      {/* Layered scientific backdrop */}
-      <div className="absolute inset-0 bg-gradient-to-b from-forest-950 via-forest-900 to-forest-800" />
-      <NetworkBackground />
-      <div
-        className="absolute inset-0 opacity-[0.07]"
-        style={{
-          backgroundImage:
-            'radial-gradient(circle, #C9D6DF 1px, transparent 1px)',
-          backgroundSize: '38px 38px',
-        }}
-      />
-      <div className="absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-medical/10 blur-3xl" />
-      <div className="absolute -right-40 bottom-1/4 h-96 w-96 rounded-full bg-forest-500/20 blur-3xl" />
+      {/* Black stage: near-black base easing into forest at the bottom so
+          the seam into the next section still blends. The canvas draws the
+          stage lights and the ECG trace. */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-black to-forest-950" />
+      {/* Baseline lays across the middle of the CTA row. */}
+      <ECGBackground anchorRef={ctaRef} logoRef={logoRef} band={0.68} />
 
       <div className="container-prose relative z-10 py-32 text-center">
         <p className="animate-fade-in mb-4 inline-flex items-center gap-2 rounded-full border border-medical/40 bg-medical/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-medical-light">
@@ -39,8 +42,10 @@ export default function Hero() {
           Savers, Change Makers
         </h1>
         <img
+          ref={logoRef}
           src="/assets/brand/ausss-vertical-white.png"
           alt="AUSSS"
+          draggable={false}
           className="animate-fade-up mx-auto h-52 w-auto sm:h-64 lg:h-80"
         />
 
@@ -59,6 +64,7 @@ export default function Hero() {
         </p>
 
         <div
+          ref={ctaRef}
           className="animate-fade-up mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
           style={{ animationDelay: '0.3s' }}
         >

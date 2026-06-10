@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import useReveal from '../hooks/useReveal.js'
 import useMediaQuery from '../hooks/useMediaQuery.js'
+import usePageTitle from '../hooks/usePageTitle.js'
 import ImageTrail from '../components/ImageTrail.jsx'
 import GalleryAurora from '../components/GalleryAurora.jsx'
 import { albums as rawAlbums, trail } from '../data/gallery.js'
@@ -34,6 +35,7 @@ export default function GalleryPage() {
   const removals = useGalleryRemovals(isAdmin ? 'local' : 'none')
 
   const album = slug ? rawAlbums.find((a) => a.slug === slug) : null
+  usePageTitle(album ? album.title : 'Gallery')
   if (slug && !album) return <NotFoundAlbum slug={slug} />
 
   return album ? (
@@ -276,6 +278,7 @@ function AlbumView({ album, isAdmin, removals }) {
                 alt={`${album.title}, ${featuredPhoto.label || 'featured photo'}`}
                 width={featuredPhoto.w}
                 height={featuredPhoto.h}
+                decoding="async"
                 className={`max-h-[72vh] w-full object-contain transition-transform duration-700 group-hover:scale-[1.02] ${
                   removals.effective.has(featuredPhoto.full) ? 'opacity-30 grayscale' : ''
                 }`}
@@ -400,7 +403,7 @@ function AdminBar({ removals }) {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch {
-      // Clipboard blocked — dump to console as a fallback.
+      // Clipboard blocked, dump to console as a fallback.
       // eslint-disable-next-line no-console
       console.log(file)
       setCopied(true)

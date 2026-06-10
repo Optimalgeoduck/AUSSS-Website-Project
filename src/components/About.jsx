@@ -72,7 +72,7 @@ export default function About() {
             </p>
           </div>
 
-          <div className="reveal space-y-6 text-lg leading-relaxed text-forest-900/75 lg:col-span-7 dark:text-silver/75">
+          <div className="reveal space-y-6 text-lg leading-relaxed text-forest-900/90 lg:col-span-7 dark:text-silver/75">
             <p>
               The <strong className="text-forest dark:text-medical-light">Ain Shams University
               Students&rsquo; Scientific Society (AUSSS)</strong> is an
@@ -137,7 +137,7 @@ export default function About() {
                 <h3 className="heading-serif mt-6 text-xl text-forest dark:text-medical-light">
                   {p.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-forest-900/65 dark:text-silver/65">
+                <p className="mt-3 text-sm leading-relaxed text-forest-900/80 dark:text-silver/65">
                   {p.body}
                 </p>
                 {p.to && (

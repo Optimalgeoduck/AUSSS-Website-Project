@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { addToCart, formatEGP } from '../lib/cart.js'
 
 export default function ProductCard({ product, onOpenSizeChart }) {
@@ -10,6 +10,9 @@ export default function ProductCard({ product, onOpenSizeChart }) {
   )
   const [design, setDesign] = useState('')
   const [feedback, setFeedback] = useState('')
+  // Reset on every add so rapid re-adds don't cut the message short.
+  const feedbackTimer = useRef()
+  useEffect(() => () => clearTimeout(feedbackTimer.current), [])
 
   const canAdd = (!needsSize || size) && (!needsDesign || design)
 
@@ -21,7 +24,8 @@ export default function ProductCard({ product, onOpenSizeChart }) {
     }
     addToCart({ productId: product.id, size, design })
     setFeedback('Added to cart')
-    setTimeout(() => setFeedback(''), 1500)
+    clearTimeout(feedbackTimer.current)
+    feedbackTimer.current = setTimeout(() => setFeedback(''), 1500)
   }
 
   return (

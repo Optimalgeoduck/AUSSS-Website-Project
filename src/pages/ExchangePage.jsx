@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import useReveal from '../hooks/useReveal.js'
+import usePageTitle from '../hooks/usePageTitle.js'
 import { exchange, testimonials } from '../data/society.js'
 import { rgba } from '../lib/color.js'
 
 export default function ExchangePage() {
+  usePageTitle('Exchange')
   useReveal()
   const [dir, setDir] = useState('outgoing')
   const active = exchange.directions[dir]

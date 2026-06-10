@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle.jsx'
 import CartButton from './CartButton.jsx'
 import { useSiteSettings } from '../hooks/useSiteSettings.js'
@@ -34,7 +34,14 @@ export default function Navbar() {
   const solid = scrolled || !isHome
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
+    const onScroll = () => {
+      // On home the bar stays transparent over the black hero and only goes
+      // solid once the hero scrolls out and the green sections reach the bar
+      // (96px = the h-24 header). Other pages are always solid via !isHome.
+      const hero = document.getElementById('home')
+      const threshold = hero ? hero.offsetHeight - 96 : 24
+      setScrolled(window.scrollY > threshold)
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -43,6 +50,21 @@ export default function Navbar() {
   useEffect(() => {
     setOpen(false)
   }, [pathname])
+
+  // Keyboard users: entering the drawer lands on its first link; closing it
+  // returns focus to the toggle so they aren't dropped at the page top.
+  const firstMobileLinkRef = useRef(null)
+  const menuToggleRef = useRef(null)
+  const drawerWasOpen = useRef(false)
+  useEffect(() => {
+    if (open) {
+      firstMobileLinkRef.current?.focus()
+      drawerWasOpen.current = true
+    } else if (drawerWasOpen.current) {
+      menuToggleRef.current?.focus()
+      drawerWasOpen.current = false
+    }
+  }, [open])
 
   // Lock background scroll while the mobile menu is open so the page
   // behind the drawer can't move under the touch gesture.
@@ -86,17 +108,27 @@ export default function Navbar() {
         <ul className="hidden items-center gap-9 md:flex">
           {LINKS.map((l) => (
             <li key={l.to}>
-              <Link
+              <NavLink
                 to={parseTo(l.to)}
+                end={l.to === '/'}
                 className={`group relative text-sm font-medium transition-colors ${
                   solid
                     ? 'text-forest-900 hover:text-forest dark:text-white dark:hover:text-white'
                     : 'text-white hover:text-white'
                 }`}
               >
-                {l.label}
-                <span className="absolute -bottom-1.5 left-0 h-px w-0 bg-medical transition-all duration-300 group-hover:w-full" />
-              </Link>
+                {({ isActive }) => (
+                  <>
+                    {l.label}
+                    {/* Underline: full width on the active page, grows on hover elsewhere. */}
+                    <span
+                      className={`absolute -bottom-1.5 left-0 h-px bg-medical transition-all duration-300 ${
+                        isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                      }`}
+                    />
+                  </>
+                )}
+              </NavLink>
             </li>
           ))}
           {showMagazine && (
@@ -131,6 +163,7 @@ export default function Navbar() {
           <CartButton tone={solid ? 'solid' : 'transparent'} className="h-9 w-9" />
           <ThemeToggle tone={solid ? 'solid' : 'transparent'} className="h-9 w-9" />
         <button
+          ref={menuToggleRef}
           onClick={() => setOpen((v) => !v)}
           className={solid ? 'text-forest dark:text-silver' : 'text-white'}
           aria-label="Toggle menu"
@@ -148,20 +181,32 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile drawer */}
+      {/* border-t only while open: a border isn't clipped by max-h-0, so a
+          closed drawer would paint a stray 1px line under the header. */}
       <div
-        className={`overflow-hidden border-t border-forest-600/10 bg-cream transition-[max-height] duration-500 md:hidden dark:border-white/10 dark:bg-forest-950 ${
-          open ? 'max-h-[calc(100dvh-6rem)]' : 'max-h-0'
+        className={`overflow-hidden bg-cream transition-[max-height] duration-500 md:hidden dark:bg-forest-950 ${
+          open
+            ? 'max-h-[calc(100dvh-6rem)] border-t border-forest-600/10 dark:border-white/10'
+            : 'max-h-0'
         }`}
       >
         <ul className="container-prose flex max-h-[calc(100dvh-6rem)] flex-col overflow-y-auto overscroll-contain py-4">
-          {LINKS.map((l) => (
+          {LINKS.map((l, i) => (
             <li key={l.to}>
-              <Link
+              <NavLink
                 to={parseTo(l.to)}
-                className="block w-full border-b border-forest-600/10 py-4 text-left text-base font-medium text-forest-900 dark:border-white/10 dark:text-silver"
+                end={l.to === '/'}
+                ref={i === 0 ? firstMobileLinkRef : undefined}
+                className={({ isActive }) =>
+                  `block w-full border-b border-forest-600/10 py-4 text-left text-base dark:border-white/10 ${
+                    isActive
+                      ? 'font-semibold text-medical dark:text-medical-light'
+                      : 'font-medium text-forest-900 dark:text-silver'
+                  }`
+                }
               >
                 {l.label}
-              </Link>
+              </NavLink>
             </li>
           ))}
           {showMagazine && (

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import useReveal from '../hooks/useReveal.js'
+import usePageTitle from '../hooks/usePageTitle.js'
 import { submitStory } from '../lib/stories.js'
 import { STORIES_OPEN, STORIES_WEBAPP_URL } from '../data/storiesConfig.js'
 
@@ -13,6 +14,7 @@ const PROGRAMME_OPTIONS = [
 const MAX_STORY_LENGTH = 2500
 
 export default function ShareStoryPage() {
+  usePageTitle('Share your story')
   useReveal()
 
   const [form, setForm] = useState({
