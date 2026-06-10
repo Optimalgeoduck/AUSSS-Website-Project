@@ -18,9 +18,10 @@ import { useEffect, useRef } from 'react'
 //     the resting rate. iOS needs motion permission, requested on first tap.
 //
 // Perf: canvas 2D, no deps, no shadowBlur (per-frame Gaussian blur is slow on
-// mobile — glow is layered strokes instead). Points are bucketed into 8 alpha
-// levels so the stroke count stays flat regardless of trail length. The RAF
-// loop pauses when the tab is hidden or the hero is scrolled out of view.
+// mobile — glow is layered strokes instead). The trail draws at two alpha
+// levels (bright head, one faded tail step) so the stroke count stays flat
+// regardless of trail length. The RAF loop pauses when the tab is hidden or
+// the hero is scrolled out of view.
 
 // PQRST as a sum of Gaussians over normalized beat phase t ∈ [0, 1).
 // Decays to ~0 between beats, giving the flatline for free.
@@ -46,9 +47,12 @@ function waveY(t) {
 const LAYERS = [
   ['#5B8DB8', 10, 0.06], // medical
   ['#8FB4D4', 4, 0.16], // medical-light
-  ['#EEF2F5', 1.6, 0.55], // silver-light
+  ['#EEF2F5', 1.6, 0.50], // silver-light
 ]
-const BUCKETS = 8 // trail alpha quantization → max strokes/frame stays flat
+// Two-level trail: full brightness for the newest ~75% of its life, then one
+// short faded step until it expires — exactly one visible fade.
+const BUCKET_ALPHAS = [0.2, 1] // faded tail, full-bright head
+const FULL_LIFE = 0.74 // fraction of trailLife at full brightness
 
 
 // Where the printed ECG sits inside the logo PNG (fractions of the rendered
@@ -56,7 +60,7 @@ const BUCKETS = 8 // trail alpha quantization → max strokes/frame stays flat
 const LOGO_SPIKE_XS = [0.31, 0.68]
 const LOGO_LINE_Y = 0.5
 
-const BASE_BPM = 64
+const BASE_BPM = 60
 const MAX_BPM = 150
 const TAP_DEBOUNCE_MS = 10
 const HOLD_FLATLINE_MS = 350
@@ -98,7 +102,7 @@ export default function ECGBackground({
     let y0 = 0 // trace baseline (px)
     let ampPx = 0 // R-peak amplitude of ordinary beats (px)
     let speed = 0 // sweep speed (px/s)
-    let trailLife = 1 // trail fade duration (ms)
+    let trailLife = 0.1 // trail fade duration (ms)
 
     // Faint star field, kept to the truly black upper stage (above the trace
     // and the gradient at the bottom). Each star lives briefly — fading in,
@@ -160,7 +164,7 @@ export default function ECGBackground({
       }
       ampPx = Math.min(height * amplitude, 80)
       speed = Math.max(width / 9, 110)
-      trailLife = ((0.72 * width) / speed) * 1000
+      trailLife = ((0.52 * width) / speed) * 1000
       logoAnchors = []
       const logo = logoRef?.current
       if (logo) {
@@ -195,9 +199,8 @@ export default function ECGBackground({
     }
 
     const bucketOf = (p, now) => {
-      const alpha = 1 - (now - p.t) / trailLife
-      if (alpha <= 0) return 0
-      return Math.min(BUCKETS - 1, Math.floor(alpha * BUCKETS))
+      const lin = 1 - (now - p.t) / trailLife
+      return lin > 1 - FULL_LIFE ? 1 : 0
     }
 
     // Stroke the whole trail as one pass of `color`. Points are time-ordered,
@@ -220,7 +223,7 @@ export default function ECGBackground({
         for (let k = i + 1; k <= end; k++) {
           const b = k < end ? bucketOf(points[k], now) : -1
           if (b !== segBucket) {
-            ctx.globalAlpha = alphaFactor * ((segBucket + 0.5) / BUCKETS)
+            ctx.globalAlpha = alphaFactor * BUCKET_ALPHAS[segBucket]
             ctx.beginPath()
             ctx.moveTo(points[segStart].x + dx, points[segStart].y + dy)
             for (let m = segStart + 1; m < k; m++) {
