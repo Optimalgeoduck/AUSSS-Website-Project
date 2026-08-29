@@ -1,8 +1,8 @@
 import { useRef } from 'react'
-import { Link } from 'react-router-dom'
 import ECGBackground from './ECGBackground.jsx'
 import CountUp from './CountUp.jsx'
-import { MEMBERS_META } from '../data/members.generated.js'
+import Button from './ui/Button.jsx'
+import { MEMBERS_META } from '../data/membersMeta.js'
 
 export default function Hero() {
   // The ECG baseline anchors just below this CTA row on every viewport.
@@ -45,6 +45,9 @@ export default function Hero() {
           ref={logoRef}
           src="/assets/brand/ausss-vertical-white.png"
           alt="AUSSS"
+          // This is the LCP element — hint the browser to fetch it first.
+          fetchPriority="high"
+          decoding="async"
           draggable={false}
           className="animate-fade-up mx-auto h-52 w-auto sm:h-64 lg:h-80"
         />
@@ -68,18 +71,12 @@ export default function Hero() {
           className="animate-fade-up mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
           style={{ animationDelay: '0.3s' }}
         >
-          <Link
-            to="/join"
-            className="group relative w-full overflow-hidden rounded-full bg-white px-8 py-4 text-sm font-semibold text-forest transition-transform hover:scale-[1.03] sm:w-auto"
-          >
-            <span className="relative z-10">Join the Society</span>
-          </Link>
-          <a
-            href="#about"
-            className="w-full rounded-full border border-white/25 px-8 py-4 text-sm font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
-          >
+          <Button to="/join" size="lg" className="w-full sm:w-auto">
+            Join the Society
+          </Button>
+          <Button href="#about" variant="outline" size="lg" className="w-full sm:w-auto">
             Discover Our Mission
-          </a>
+          </Button>
         </div>
 
         <div

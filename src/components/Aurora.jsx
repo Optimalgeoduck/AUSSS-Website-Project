@@ -153,10 +153,15 @@ export default function Aurora(props) {
       delete geometry.attributes.uv
     }
 
-    const colorStopsArray = colorStops.map((hex) => {
-      const c = new Color(hex)
-      return [c.r, c.g, c.b]
-    })
+    // Parse the hex stops once and re-parse only when they actually change,
+    // instead of allocating three Color objects every single frame.
+    const parseStops = (stops) =>
+      stops.map((hex) => {
+        const c = new Color(hex)
+        return [c.r, c.g, c.b]
+      })
+    let lastStopsKey = colorStops.join(',')
+    const colorStopsArray = parseStops(colorStops)
 
     program = new Program(gl, {
       vertex: VERT,
@@ -174,25 +179,65 @@ export default function Aurora(props) {
     ctn.appendChild(gl.canvas)
 
     let animateId = 0
-    const update = (t) => {
-      animateId = requestAnimationFrame(update)
+    const drawFrame = (t) => {
       const { time = t * 0.01, speed = 1.0 } = propsRef.current
       program.uniforms.uTime.value = time * speed * 0.1
       program.uniforms.uAmplitude.value = propsRef.current.amplitude ?? 1.0
       program.uniforms.uBlend.value = propsRef.current.blend ?? blend
       const stops = propsRef.current.colorStops ?? colorStops
-      program.uniforms.uColorStops.value = stops.map((hex) => {
-        const c = new Color(hex)
-        return [c.r, c.g, c.b]
-      })
+      const key = stops.join(',')
+      if (key !== lastStopsKey) {
+        program.uniforms.uColorStops.value = parseStops(stops)
+        lastStopsKey = key
+      }
       renderer.render({ scene: mesh })
     }
-    animateId = requestAnimationFrame(update)
+    const update = (t) => {
+      animateId = requestAnimationFrame(update)
+      drawFrame(t)
+    }
+
+    // Don't burn the GPU when the canvas is scrolled off-screen or the tab is
+    // hidden. Honour prefers-reduced-motion by drawing a single static frame.
+    const reduceMotion = window.matchMedia?.(
+      '(prefers-reduced-motion: reduce)',
+    ).matches
+    let inView = true
+    const running = () => animateId !== 0
+    const start = () => {
+      if (!running() && !reduceMotion) animateId = requestAnimationFrame(update)
+    }
+    const stop = () => {
+      if (running()) {
+        cancelAnimationFrame(animateId)
+        animateId = 0
+      }
+    }
+    const sync = () =>
+      inView && !document.hidden ? start() : stop()
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        inView = entry.isIntersecting
+        sync()
+      },
+      { threshold: 0 },
+    )
+    io.observe(gl.canvas)
+    const onVisibility = () => sync()
+    document.addEventListener('visibilitychange', onVisibility)
 
     resize()
+    if (reduceMotion) {
+      drawFrame(0) // one static frame, no loop
+    } else {
+      sync()
+    }
 
     return () => {
-      cancelAnimationFrame(animateId)
+      stop()
+      io.disconnect()
+      document.removeEventListener('visibilitychange', onVisibility)
       window.removeEventListener('resize', resize)
       if (ctn && gl.canvas.parentNode === ctn) {
         ctn.removeChild(gl.canvas)
