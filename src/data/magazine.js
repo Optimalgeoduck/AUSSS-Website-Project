@@ -2,28 +2,106 @@
 // (drives /magazine).
 //
 // ── Multiple issues ──────────────────────────────────────────────────────────
-// Issues live in the `issues` array below, NEWEST FIRST. The page shows the
-// latest published issue by default and, once there are two or more published
-// issues, shows a small issue switcher. Adding a new edition = prepend a new
-// object to `issues` (and build its page images — see the runbook / step 1).
+// Issues live in the `issues` array below, NEWEST FIRST. /magazine opens on the
+// latest published edition and shows a switcher listing every edition. Adding a
+// new one = prepend an object here (and build its page images — see below).
 //
 // Publishing an edition:
 //   1. Rasterise the source PDF to web-sized page images by running
 //        node _source/build-magazine.mjs <issue-id> "<path-to.pdf>"
-//      e.g.  node _source/build-magazine.mjs issue-7 "C:/…/Vol7.pdf"
 //      (writes public/assets/magazine/<issue-id>/pages/NNN.jpg). Set
-//      `pages.count` on that issue to the number it reports.
-//   2. (Optional) `download` is a full-quality copy hosted off-repo (e.g. a
-//      Google Drive link) for the "Download" button.
-//   3. (Optional) `canva` keeps an "Open on Canva" link to the live design.
-//   4. (Optional) point `cover` at a cover image (the top-left thumbnail),
-//      e.g. /assets/magazine/<issue-id>/cover.jpg.
+//      `pages.count` to the number it reports; `base` to that folder.
+//   2. (Optional) `download` — a full-quality copy hosted off-repo (Drive link).
+//   3. (Optional) `canva` — an "Open on Canva" link to the live design.
+//   4. The header thumbnail is page 1 automatically; no cover file needed.
 //
-// A "draft" issue (no `pages.count` and no `canva`) is treated as UNPUBLISHED:
-// it never appears in the switcher and never renders, so it's safe to scaffold
-// an entry here before its images/links exist — nothing 404s.
+// ── Missing back-issues ──────────────────────────────────────────────────────
+// A `missing: true` edition is one we haven't tracked down a copy of yet. It
+// still gets a slot in the switcher (so readers see the gap) and renders a
+// "we're still locating this" placeholder pointing at ARCHIVE_CONTACT, instead
+// of a reader.
+//
+// A "draft" issue (no pages, no canva, not missing) is UNPUBLISHED: it never
+// appears and never renders, so it's safe to scaffold before its images exist.
 
-// The current (published) edition — unchanged from the original single issue.
+// Who to reach about missing editions — shown on the placeholder for any
+// `missing` edition. "LORE" is AUSSS's magazine/heritage archive.
+// TODO: confirm the team name + contact address are how you want them shown.
+export const ARCHIVE_CONTACT = {
+  team: 'LORE',
+  email: 'loreausss@gmail.com',
+}
+
+// ── Vol 1 ────────────────────────────────────────────────────────────────────
+const issueOne = {
+  id: 'vol-1',
+  title: 'Volume 1',
+  switcherLabel: 'Vol 1',
+  date: '',
+  blurb: '',
+  cover: null, // thumbnail derives from page 1
+  pages: { base: '/assets/magazine/vol-1/pages', count: 32, pad: 3, ext: 'jpg' },
+  download:
+    'https://drive.google.com/file/d/12ancWzotqyaZ4hf0mvw9mH6IowHS6xHO/view',
+  canva: '',
+  aspect: null,
+}
+
+// ── Vol 2 — MISSING ──────────────────────────────────────────────────────────
+const issueTwo = {
+  id: 'vol-2',
+  title: 'Volume 2',
+  switcherLabel: 'Vol 2',
+  missing: true,
+  date: '',
+  blurb: '',
+  cover: null,
+  aspect: null,
+}
+
+// ── Vol 3 ────────────────────────────────────────────────────────────────────
+const issueThree = {
+  id: 'vol-3',
+  title: 'Volume 3',
+  switcherLabel: 'Vol 3',
+  date: '',
+  blurb: '',
+  cover: null,
+  pages: { base: '/assets/magazine/vol-3/pages', count: 42, pad: 3, ext: 'jpg' },
+  download:
+    'https://drive.google.com/file/d/1SQoJCpbFo2naY_1hw2h_77h0cXRTi679/view',
+  canva: '',
+  aspect: null,
+}
+
+// ── Vol 4 — MISSING ──────────────────────────────────────────────────────────
+const issueFour = {
+  id: 'vol-4',
+  title: 'Volume 4',
+  switcherLabel: 'Vol 4',
+  missing: true,
+  date: '',
+  blurb: '',
+  cover: null,
+  aspect: null,
+}
+
+// ── Vol 5 ────────────────────────────────────────────────────────────────────
+const issueFive = {
+  id: 'vol-5',
+  title: 'Volume 5',
+  switcherLabel: 'Vol 5',
+  date: '',
+  blurb: '',
+  cover: null,
+  pages: { base: '/assets/magazine/vol-5/pages', count: 19, pad: 3, ext: 'jpg' },
+  download:
+    'https://drive.google.com/file/d/1jmY2TL1r8UuqKXePgxQgHYqXJWTjuwyU/view',
+  canva: '',
+  aspect: null,
+}
+
+// ── Vol 6 — "The Story of Origin" (id kept as issue-1 for analytics) ──────────
 const issueSix = {
   id: 'issue-1',
   title: 'The Story of Origin, Vol 6',
@@ -32,8 +110,6 @@ const issueSix = {
   blurb:
     'The sixth volume of the AUSSS Magazine. Read it in full below or download it, and don’t forget to share it with your friends.',
   cover: '/assets/magazine/issue-1/cover.jpg',
-  // Web-sized page images flipped through in-page (built from the full-quality
-  // PDF by _source/build-magazine.mjs).
   pages: {
     base: '/assets/magazine/issue-1/pages',
     count: 30,
@@ -45,14 +121,10 @@ const issueSix = {
     'https://drive.google.com/file/d/17zMEOGekcoC09X4NDcgBxFlgaA-FiXuw/view',
   // Canva "view" share link, kept as an "Open on Canva" fallback.
   canva: 'https://www.canva.com/design/DAHGTEatDDQ/0BPis3tFKLYKp4OCFfUVXw/view',
-  // Optional aspect ratio (height ÷ width) for the Canva fallback frame.
   aspect: null,
 }
 
-// The latest (published) edition — Vol 7, "Summer". Built from
-// _source/Summer volume 7.pdf into public/assets/magazine/issue-2/pages via
-// build-magazine.mjs. Because it's prepended (newest first) it's the default
-// edition on /magazine, with Vol 6 available in the issue switcher.
+// ── Vol 7 — "Summer" (id kept as issue-2 for analytics) ───────────────────────
 const issueSeven = {
   id: 'issue-2',
   title: 'Summer',
@@ -63,7 +135,7 @@ const issueSeven = {
   date: 'Volume 7 · A CBSD production',
   blurb:
     'The seventh volume of the AUSSS Magazine. Read it in full below or download it, and don’t forget to share it with your friends.',
-  cover: '/assets/magazine/issue-2/cover.jpg', // falls back to a gradient if missing
+  cover: '/assets/magazine/issue-2/cover.jpg',
   pages: {
     base: '/assets/magazine/issue-2/pages',
     count: 23, // built from _source/Summer volume 7.pdf (build-magazine.mjs)
@@ -76,21 +148,37 @@ const issueSeven = {
   aspect: null,
 }
 
-// Newest first. When issueSeven is published it becomes the default edition.
-export const issues = [issueSeven, issueSix]
+// Newest first — this is the shelf order shown in the switcher.
+export const issues = [
+  issueSeven,
+  issueSix,
+  issueFive,
+  issueFour,
+  issueThree,
+  issueTwo,
+  issueOne,
+]
 
-// An issue is "published" (visible) once it has flipbook pages OR a Canva embed.
+// An issue is "published" (readable) once it has flipbook pages OR a Canva embed.
 export function isPublished(issue) {
   return Boolean(issue && (issue.pages?.count || issue.canva))
 }
 
+// A "missing" issue is a known back-issue we haven't found a copy of yet.
+export function isMissing(issue) {
+  return Boolean(issue && issue.missing)
+}
+
 export const publishedIssues = issues.filter(isPublished)
+
+// Everything that gets a slot on the shelf / switcher: real editions plus the
+// known-missing ones (so readers can see the gaps). Excludes bare drafts.
+export const shelfIssues = issues.filter((i) => isPublished(i) || isMissing(i))
 
 // Look up one issue by id (e.g. for the engagement counters / deep links).
 export function getIssue(id) {
   return issues.find((i) => i.id === id) || null
 }
 
-// Back-compat default: the latest published edition. MagazinePage renders this
-// when no specific issue is selected, so single-issue behaviour is unchanged.
+// Back-compat default: the latest published edition. MagazinePage opens here.
 export const magazine = publishedIssues[0] || null

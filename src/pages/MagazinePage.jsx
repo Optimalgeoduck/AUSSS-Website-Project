@@ -1,7 +1,7 @@
 import { useState, lazy, Suspense, Component } from 'react'
 import useReveal from '../hooks/useReveal.js'
 import usePageTitle from '../hooks/usePageTitle.js'
-import { magazine, publishedIssues } from '../data/magazine.js'
+import { magazine, shelfIssues, isMissing, ARCHIVE_CONTACT } from '../data/magazine.js'
 import CanvaFrame from '../components/CanvaFrame.jsx'
 import ShareBar from '../components/ShareBar.jsx'
 import MagazineEngagement from '../components/MagazineEngagement.jsx'
@@ -22,14 +22,9 @@ export default function MagazinePage() {
   // Default to the latest published edition; `selected` tracks the switcher.
   const [selectedId, setSelectedId] = useState(magazine?.id ?? null)
   if (!magazine) return <EmptyShelf />
-  const issue =
-    publishedIssues.find((i) => i.id === selectedId) || magazine
+  const issue = shelfIssues.find((i) => i.id === selectedId) || magazine
   return (
-    <IssueView
-      issue={issue}
-      issues={publishedIssues}
-      onSelect={setSelectedId}
-    />
+    <IssueView issue={issue} issues={shelfIssues} onSelect={setSelectedId} />
   )
 }
 
@@ -40,17 +35,20 @@ function IssueSwitcher({ issues, currentId, onSelect }) {
     <div className="mt-6 flex flex-wrap items-center gap-2" role="group" aria-label="Choose an edition">
       {issues.map((it) => {
         const active = it.id === currentId
+        const missing = isMissing(it)
+        const style = active
+          ? 'border-medical/40 bg-medical/15 text-medical-light'
+          : missing
+            ? 'border-dashed border-white/15 bg-transparent text-silver/40 hover:border-white/30 hover:text-silver/70'
+            : 'border-white/15 bg-forest-800 text-silver/70 hover:border-medical/40 hover:text-white'
         return (
           <button
             key={it.id}
             type="button"
             onClick={() => onSelect(it.id)}
             aria-pressed={active}
-            className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors ${
-              active
-                ? 'border-medical/40 bg-medical/15 text-medical-light'
-                : 'border-white/15 bg-forest-800 text-silver/70 hover:border-medical/40 hover:text-white'
-            }`}
+            title={missing ? 'We’re still locating this edition' : undefined}
+            className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors ${style}`}
           >
             {it.switcherLabel || it.title}
           </button>
@@ -126,9 +124,11 @@ function IssueView({ issue, issues, onSelect }) {
               <h1 className="heading-serif text-4xl text-white sm:text-5xl">
                 {issue.title}
               </h1>
-              <p className="mt-2 text-xs font-semibold uppercase tracking-[0.24em] text-medical-light">
-                {issue.date}
-              </p>
+              {issue.date && (
+                <p className="mt-2 text-xs font-semibold uppercase tracking-[0.24em] text-medical-light">
+                  {issue.date}
+                </p>
+              )}
             </div>
           </div>
           <IssueSwitcher issues={issues} currentId={issue.id} onSelect={onSelect} />
@@ -164,8 +164,12 @@ function IssueView({ issue, issues, onSelect }) {
               )}
             </div>
           )}
-          <MagazineEngagement issueId={issue.id} className="mt-6" />
-          <ShareBar title={issue.title} className="mt-6" />
+          {!isMissing(issue) && (
+            <>
+              <MagazineEngagement issueId={issue.id} className="mt-6" />
+              <ShareBar title={issue.title} className="mt-6" />
+            </>
+          )}
         </div>
       </header>
 
@@ -180,6 +184,7 @@ function IssueView({ issue, issues, onSelect }) {
 // Picks the reader: the page-flipping PDF if one is set, else the Canva embed,
 // else a placeholder, so nothing 404s during a draft.
 function MagazineReader({ issue }) {
+  if (isMissing(issue)) return <MissingPanel issue={issue} />
   const p = issue.pages
   if (p?.count) {
     const urls = Array.from({ length: p.count }, (_, i) => {
@@ -219,7 +224,38 @@ function MagazineReader({ issue }) {
   )
 }
 
-// If the flip reader (pdf.js / react-pageflip) throws, don't blank the page, 
+// Placeholder for a known back-issue we haven't tracked down a copy of yet.
+function MissingPanel({ issue }) {
+  const { team, email } = ARCHIVE_CONTACT
+  return (
+    <div className="flex aspect-[1/1] w-full flex-col items-center justify-center rounded-2xl border border-dashed border-white/15 bg-white/[0.03] p-8 text-center sm:aspect-[4/3]">
+      <span className="text-silver/45">
+        <MagazineIcon />
+      </span>
+      <h3 className="heading-serif mt-4 text-2xl text-white">
+        We’re still locating this edition
+      </h3>
+      <p className="mt-3 max-w-md text-sm leading-relaxed text-silver/60">
+        We haven’t tracked down a copy of {issue.title} of the AUSSS Magazine
+        yet. If you have it — or know who might — please help us complete the
+        archive.
+      </p>
+      {email && (
+        <a
+          href={`mailto:${email}?subject=${encodeURIComponent(
+            `AUSSS Magazine — ${issue.title}`,
+          )}`}
+          className="mt-5 inline-flex items-center gap-2 rounded-full bg-medical px-5 py-2.5 text-sm font-semibold text-forest-950 transition-colors hover:bg-medical-light"
+        >
+          Contact {team}
+        </a>
+      )}
+      {email && <p className="mt-3 text-xs text-silver/40">{email}</p>}
+    </div>
+  )
+}
+
+// If the flip reader (pdf.js / react-pageflip) throws, don't blank the page,
 // fall back to a friendly panel with the open/download links.
 class ReaderBoundary extends Component {
   constructor(props) {
