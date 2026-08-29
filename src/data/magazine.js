@@ -97,17 +97,17 @@ const issueFive = {
   aspect: null,
 }
 
-// ── Vol 6 — "The Story of Origin" (id kept as issue-1 for analytics) ──────────
+// ── Vol 6 — "The Story of Origin" ───────────────────────────────────────────
 const issueSix = {
-  id: 'issue-1',
+  id: 'vol-6',
   title: 'The Story of Origin, Vol. 6',
   // Human-readable cover line; kept as a string so it renders verbatim.
   date: 'A CBSD production',
   blurb:
     'The sixth volume of the AUSSS Magazine. Read it in full below or download it, and don’t forget to share it with your friends.',
-  cover: '/assets/magazine/issue-1/cover.jpg',
+  cover: '/assets/magazine/vol-6/cover.jpg',
   pages: {
-    base: '/assets/magazine/issue-1/pages',
+    base: '/assets/magazine/vol-6/pages',
     count: 30,
     pad: 3, // zero-padding in the filenames, e.g. 001.jpg
     ext: 'jpg',
@@ -120,9 +120,9 @@ const issueSix = {
   aspect: null,
 }
 
-// ── Vol 7 — "Summer" (id kept as issue-2 for analytics) ───────────────────────
+// ── Vol 7 — "Summer" ─────────────────────────────────────────────────────────
 const issueSeven = {
-  id: 'issue-2',
+  id: 'vol-7',
   title: 'Summer',
   // Label for the edition-switcher button (falls back to `title`). Kept
   // separate so the page header can stay a clean "Summer" while the switcher
@@ -131,9 +131,9 @@ const issueSeven = {
   date: 'Volume 7 · A CBSD production',
   blurb:
     'The seventh volume of the AUSSS Magazine. Read it in full below or download it, and don’t forget to share it with your friends.',
-  cover: '/assets/magazine/issue-2/cover.jpg',
+  cover: '/assets/magazine/vol-7/cover.jpg',
   pages: {
-    base: '/assets/magazine/issue-2/pages',
+    base: '/assets/magazine/vol-7/pages',
     count: 23, // built from _source/Summer volume 7.pdf (build-magazine.mjs)
     pad: 3,
     ext: 'jpg',
