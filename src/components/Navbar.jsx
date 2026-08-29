@@ -15,7 +15,7 @@ const LINKS = [
 ]
 
 // Catchy CTA for the magazine, shown as a highlighted pill.
-const MAGAZINE_CTA = 'Read our latest AUSSS Magazine!'
+const MAGAZINE_CTA = 'Read the Latest issue of the AUSSS Magazine'
 
 function parseTo(to) {
   const [pathname, hash] = to.split('#')
