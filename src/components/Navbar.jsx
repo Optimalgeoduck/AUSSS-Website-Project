@@ -7,9 +7,9 @@ import { useSiteSettings } from '../hooks/useSiteSettings.js'
 // `to` may be a route ("/ifmsa") or a home-section hash ("/#about").
 const LINKS = [
   { to: '/', label: 'Home' },
+  { to: '/ifmsa', label: 'IFMSA' },
   { to: '/exchange', label: 'Exchange' },
   { to: '/gallery', label: 'Gallery' },
-  { to: '/ifmsa', label: 'IFMSA' },
   { to: '/merch', label: 'Merch' },
   { to: '/contact', label: 'Contact' },
 ]
