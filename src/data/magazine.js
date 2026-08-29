@@ -25,11 +25,11 @@
 // appears and never renders, so it's safe to scaffold before its images exist.
 
 // Who to reach about missing editions — shown on the placeholder for any
-// `missing` edition. "LORE" is AUSSS's magazine/heritage archive.
-// TODO: confirm the team name + contact address are how you want them shown.
+// `missing` edition. CBSD produces the magazine, so its inbox owns archive
+// requests (matches aussscbsdd in src/data/society.js).
 export const ARCHIVE_CONTACT = {
-  team: 'LORE',
-  email: 'loreausss@gmail.com',
+  team: 'CBSD',
+  email: 'aussscbsdd@gmail.com',
 }
 
 // ── Vol 1 ────────────────────────────────────────────────────────────────────
