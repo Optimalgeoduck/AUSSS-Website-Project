@@ -1,0 +1,14 @@
+{
+  "name": "AUSSS — Ain Shams University Students' Scientific Society",
+  "short_name": "AUSSS",
+  "description": "Life Savers, Change Makers. Empowering medical research and student exchange.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#021c12",
+  "theme_color": "#021c12",
+  "icons": [
+    { "src": "/favicon.png", "sizes": "128x128", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

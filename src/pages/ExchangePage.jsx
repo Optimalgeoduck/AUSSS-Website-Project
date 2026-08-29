@@ -6,7 +6,10 @@ import { exchange, testimonials } from '../data/society.js'
 import { rgba } from '../lib/color.js'
 
 export default function ExchangePage() {
-  usePageTitle('Exchange')
+  usePageTitle(
+    'Exchange',
+    'Clinical (SCOPE) and research (SCORE) exchanges with AUSSS — go abroad, host incoming students, and join the global IFMSA network.',
+  )
   useReveal()
   const [dir, setDir] = useState('outgoing')
   const active = exchange.directions[dir]
@@ -206,12 +209,16 @@ export default function ExchangePage() {
             </>
           ) : (
             <div className="mx-auto mt-8 max-w-2xl rounded-2xl border border-dashed border-white/15 bg-white/[0.03] p-8 text-center">
-              <p className="text-sm leading-relaxed text-silver/60">
-                Did an exchange with AUSSS? Your story goes here.
+              <p className="heading-serif text-xl text-white">
+                Be the first story here
+              </p>
+              <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-silver/70">
+                Went abroad or hosted an incoming student with AUSSS? Share how
+                it went — your story helps the next student take the leap.
               </p>
               <Link
                 to="/exchange/share"
-                className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+                className="mt-5 inline-flex items-center gap-2 rounded-full bg-medical px-5 py-2.5 text-sm font-semibold text-forest-950 transition-colors hover:bg-medical-light"
               >
                 Share your experience
               </Link>

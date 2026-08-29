@@ -27,6 +27,9 @@ export default function Home() {
       <ExecutiveBoard />
       <TeamOfficials />
 
+      {/* Only render the calendar once a calendar ID is configured, so we never
+          ship a permanent "coming soon" section to every visitor. */}
+      {society.calendarId && (
       <section
         id="calendar"
         className="relative overflow-hidden bg-forest-950 py-28 sm:py-36"
@@ -62,6 +65,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      )}
     </>
   )
 }

@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Admin / account surfaces — keep them out of search results. (This is a
+# convenience, not a security control; the real protection is server-side.)
+Disallow: /gallery/admin
+Disallow: /login
+Disallow: /account
+
+Sitemap: https://www.ausss.org/sitemap.xml
