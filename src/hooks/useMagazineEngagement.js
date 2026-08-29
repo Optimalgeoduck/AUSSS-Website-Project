@@ -27,8 +27,10 @@ export function useMagazineEngagement(issueId) {
   const [counts, setCounts] = useState({ views: 0, likes: 0 })
   const [liked, setLiked] = useState(false)
   const [ready, setReady] = useState(!magazineEngagementEnabled)
-  // Count at most one view per mount, even under React strict-mode double-run.
-  const viewedRef = useRef(false)
+  // Count at most one view per volume per mount (strict-mode double-run safe).
+  // A Set keyed by issueId so switching editions still records a view for each
+  // volume individually, instead of only the first one opened this session.
+  const viewedRef = useRef(new Set())
 
   // Remembered "already liked" state for this browser.
   useEffect(() => {
@@ -49,8 +51,8 @@ export function useMagazineEngagement(issueId) {
     let alive = true
     ;(async () => {
       try {
-        if (!viewedRef.current) {
-          viewedRef.current = true
+        if (!viewedRef.current.has(issueId)) {
+          viewedRef.current.add(issueId)
           const d = await apiGet({ action: 'view', id: issueId })
           if (alive && d.counts) setCounts(d.counts)
         } else {
