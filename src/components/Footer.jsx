@@ -1,7 +1,13 @@
+import { lazy, Suspense } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { socials } from '../data/society.js'
 import SocialIcon from './SocialIcon.jsx'
-import GalleryAurora from './GalleryAurora.jsx'
+import SignupForm from './SignupForm.jsx'
+import { NEWSLETTER_OPEN } from '../data/signupsConfig.js'
+
+// The aurora pulls in `ogl` (a full WebGL renderer, ~90 KB). It only ever
+// shows on /magazine, so load it lazily instead of in every page's bundle.
+const GalleryAurora = lazy(() => import('./GalleryAurora.jsx'))
 
 export default function Footer() {
   // On the magazine page only, a faint aurora (bright at the top, fading down)
@@ -11,7 +17,9 @@ export default function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-white/10 bg-forest-950 py-14">
       {onMagazine && (
-        <GalleryAurora opacityClass="opacity-30" amplitude={1.1} blend={0.55} />
+        <Suspense fallback={null}>
+          <GalleryAurora opacityClass="opacity-30" amplitude={1.1} blend={0.55} />
+        </Suspense>
       )}
       <div className="container-prose relative z-10">
         <div className="flex flex-col items-center gap-10 text-center">
@@ -44,7 +52,10 @@ export default function Footer() {
             </div>
           </div>
 
-          <nav className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-silver/70">
+          <nav
+            aria-label="Footer"
+            className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-silver/70"
+          >
             <Link to="/" className="transition-colors hover:text-white">Home</Link>
             <Link to="/merch" className="transition-colors hover:text-white">Merch</Link>
             <Link to="/ifmsa" className="transition-colors hover:text-white">IFMSA</Link>
@@ -60,8 +71,26 @@ export default function Footer() {
           </nav>
         </div>
 
+        {NEWSLETTER_OPEN && (
+          <div className="mt-12 flex flex-col items-center gap-4 border-t border-white/10 pt-10 text-center">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-silver/55">
+              The AUSSS Digest
+            </p>
+            <p className="max-w-md text-sm text-silver/70">
+              Society news, magazine drops and recruitment alerts — straight to
+              your inbox, no spam.
+            </p>
+            <SignupForm
+              kind="newsletter"
+              layout="inline"
+              submitLabel="Subscribe"
+              successText="Subscribed — watch your inbox."
+            />
+          </div>
+        )}
+
         <div className="mt-10 pt-4">
-          <p className="mb-5 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-silver/40">
+          <p className="mb-5 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-silver/55">
             Find us
           </p>
           <div className="mx-auto grid max-w-3xl items-stretch gap-6 md:grid-cols-2">
@@ -117,7 +146,7 @@ export default function Footer() {
             >
               <img
                 src="/assets/ifmsa/ifmsa-egypt-horizontal-white.png"
-                alt="IFMSA-Egypt"
+                alt=""
                 loading="lazy"
                 decoding="async"
                 className="h-10 w-auto opacity-60 transition-opacity hover:opacity-100 sm:h-12"
@@ -131,7 +160,7 @@ export default function Footer() {
             >
               <img
                 src="/assets/ifmsa/ifmsa-horizontal-white.png"
-                alt="IFMSA"
+                alt=""
                 loading="lazy"
                 decoding="async"
                 className="h-9 w-auto opacity-60 transition-opacity hover:opacity-100 sm:h-11"

@@ -3,6 +3,10 @@ import useReveal from '../hooks/useReveal.js'
 import usePageTitle from '../hooks/usePageTitle.js'
 import { committees, slugFor } from '../data/society.js'
 import { readableAccent, rgba } from '../lib/color.js'
+import SignupForm from '../components/SignupForm.jsx'
+import { WAITLIST_OPEN } from '../data/signupsConfig.js'
+import FAQ from '../components/FAQ.jsx'
+import { joinFaqs } from '../data/faq.js'
 
 const WHY = [
   {
@@ -32,7 +36,10 @@ const WHY = [
 ]
 
 export default function JoinPage() {
-  usePageTitle('Join us')
+  usePageTitle(
+    'Join us',
+    'Become part of AUSSS — Ain Shams University Students’ Scientific Society. Join our committees for research, public health, and global student exchange.',
+  )
   useReveal()
   const standing = committees.filter((c) => c.group === 'Standing Committee')
   const divisions = committees.filter((c) => c.group === 'Support Division')
@@ -166,19 +173,37 @@ export default function JoinPage() {
               Membership opens each intake.
             </p>
             <p className="relative mx-auto mt-4 max-w-xl text-base leading-relaxed text-silver/75">
-              Recruitment isn’t open right now. When the next registration
-              window opens, it will be announced on our official channels,
-              follow along so you don’t miss it.
+              Recruitment isn’t open right now. Leave your email and we’ll let
+              you know the moment the next registration window opens — no spam,
+              just the one heads-up.
             </p>
-            <div className="relative mt-8 flex flex-wrap justify-center gap-4">
+            {WAITLIST_OPEN && (
+              <div className="relative mt-8">
+                <SignupForm
+                  kind="waitlist"
+                  withName
+                  submitLabel="Notify me when it opens"
+                  successText="You’re on the list — we’ll email you when registration opens."
+                />
+              </div>
+            )}
+            <div className="relative mt-6 flex flex-wrap justify-center gap-4">
               <Link
-                to="/social"
-                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-forest transition-colors hover:bg-silver-light"
+                to="/contact"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-medical-light transition-colors hover:text-white"
               >
-                Follow our channels
+                Or follow our channels →
               </Link>
             </div>
           </div>
+        </section>
+
+        {/* FAQ */}
+        <section className="reveal mx-auto max-w-3xl">
+          <h2 className="heading-serif text-center text-3xl text-white">
+            Frequently asked
+          </h2>
+          <FAQ items={joinFaqs} className="mt-8" />
         </section>
 
         <div className="reveal text-center">
