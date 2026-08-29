@@ -58,6 +58,10 @@ const issueSix = {
 const issueSeven = {
   id: 'issue-2',
   title: 'Summer',
+  // Label for the edition-switcher button (falls back to `title`). Kept
+  // separate so the page header can stay a clean "Summer" while the switcher
+  // still spells out the volume.
+  switcherLabel: 'Summer, Vol 7',
   date: 'Volume 7 · A CBSD production',
   blurb:
     'The seventh volume of the AUSSS Magazine. Read it in full below or download it, and don’t forget to share it with your friends.',

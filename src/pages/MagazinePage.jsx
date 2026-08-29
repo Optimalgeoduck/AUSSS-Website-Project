@@ -52,7 +52,7 @@ function IssueSwitcher({ issues, currentId, onSelect }) {
                 : 'border-white/15 bg-forest-800 text-silver/70 hover:border-medical/40 hover:text-white'
             }`}
           >
-            {it.title}
+            {it.switcherLabel || it.title}
           </button>
         )
       })}
