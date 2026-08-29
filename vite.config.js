@@ -3,11 +3,18 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  // Allow access via LAN IP and temporary demo tunnels
-  // (Cloudflare quick tunnel / localtunnel). Safe to keep; only affects
-  // the dev/preview server, never the production bundle.
-  server: { host: true, allowedHosts: true },
-  preview: { host: true, allowedHosts: true },
+  // Bind to the LAN IP and allow temporary demo tunnels, but keep Vite's
+  // Host-header check on (a bare `allowedHosts: true` disables it, opening a
+  // DNS-rebinding path to the dev server). Scope it to localhost + the tunnel
+  // providers we actually use; add more hosts here if you switch providers.
+  server: {
+    host: true,
+    allowedHosts: ['localhost', '.trycloudflare.com', '.loca.lt', '.ngrok-free.app'],
+  },
+  preview: {
+    host: true,
+    allowedHosts: ['localhost', '.trycloudflare.com', '.loca.lt', '.ngrok-free.app'],
+  },
   build: {
     rollupOptions: {
       output: {
