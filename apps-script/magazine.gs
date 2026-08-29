@@ -36,6 +36,13 @@ function doGet(e) {
     var id = String(p.id || '').trim()
     if (!id) return json_({ ok: false, error: 'Missing id' })
 
+    // Cap total counter writes per rolling minute so a script can't run the
+    // numbers (or the Sheets write quota) away. Over the cap we return the
+    // current counts without incrementing — the UI still renders fine.
+    if (action === 'view' || action === 'like' || action === 'download') {
+      if (flooding_()) return json_({ ok: true, id: id, counts: peek_(id), throttled: true })
+    }
+
     if (action === 'view') return json_({ ok: true, id: id, counts: bump_(id, 'views') })
     if (action === 'like') return json_({ ok: true, id: id, counts: bump_(id, 'likes') })
     if (action === 'download') return json_({ ok: true, id: id, counts: bump_(id, 'downloads') })
@@ -88,6 +95,25 @@ function resetCounts() {
   } finally {
     lock.releaseLock()
   }
+}
+
+// Global per-minute write cap (Script Properties). ~600 legit hits/min is far
+// above real traffic but blunts a scripted flood.
+var GLOBAL_MAX_PER_MIN = 600
+
+function flooding_() {
+  var props = PropertiesService.getScriptProperties()
+  var winKey = 'rate_' + Math.floor(Date.now() / 60000)
+  var n = Number(props.getProperty(winKey) || 0)
+  if (n >= GLOBAL_MAX_PER_MIN) return true
+  props.setProperty(winKey, String(n + 1))
+  return false
+}
+
+// Read an id's current counts without incrementing (used when throttled).
+function peek_(id) {
+  var all = readAll_()
+  return all[id] || { views: 0, likes: 0, downloads: 0 }
 }
 
 function json_(obj) {

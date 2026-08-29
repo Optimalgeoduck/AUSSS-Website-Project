@@ -5,6 +5,7 @@ import {
   galleryLiveEnabled,
 } from '../data/galleryConfig.js'
 import { appsScriptGet } from '../lib/appsScriptGet.js'
+import { appsScriptPostClaim, UNKNOWN_ACTION } from '../lib/appsScriptPost.js'
 
 // Shared gallery-removal state for both the inline admin mode
 // (/gallery?admin=1) and the dedicated admin page (/gallery/admin).
@@ -115,10 +116,23 @@ export function useGalleryRemovals(write = 'none') {
   }, [])
 
   const checkKey = useCallback(async (k) => {
+    // Key travels in the POST body, not the URL. Fall back to the legacy GET
+    // only if the backend predates `claim` support.
     try {
-      const data = await api({ action: 'check', key: k })
+      const data = await appsScriptPostClaim(GALLERY_WEBAPP_URL, {
+        action: 'check',
+        key: k,
+      })
       return Boolean(data.ok)
-    } catch {
+    } catch (err) {
+      if (err.code === UNKNOWN_ACTION) {
+        try {
+          const data = await api({ action: 'check', key: k })
+          return Boolean(data.ok)
+        } catch {
+          return false
+        }
+      }
       return false
     }
   }, [])
@@ -138,7 +152,21 @@ export function useGalleryRemovals(write = 'none') {
           wasRemoved ? prev.filter((p) => p !== full) : [...prev, full],
         )
         try {
-          const data = await api({ action, path: full, key: adminKey })
+          let data
+          try {
+            // Admin key in the POST body, not the URL.
+            data = await appsScriptPostClaim(GALLERY_WEBAPP_URL, {
+              action,
+              path: full,
+              key: adminKey,
+            })
+          } catch (postErr) {
+            if (postErr.code === UNKNOWN_ACTION) {
+              data = await api({ action, path: full, key: adminKey })
+            } else {
+              throw postErr
+            }
+          }
           if (Array.isArray(data.removed)) {
             setLive(data.removed)
             try {

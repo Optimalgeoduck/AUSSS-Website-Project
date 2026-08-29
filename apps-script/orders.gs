@@ -69,6 +69,71 @@ var HEADERS = [
   'Submitted At (client)',
 ]
 
+// ── Server-side price book ───────────────────────────────────────────────
+// The subtotal is RECOMPUTED here from these prices — never trusted from the
+// client. Keep in sync with src/data/merchProducts.js. Unknown product IDs
+// count as 0 and flag the order for manual review.
+var PRICES = {
+  'tshirt-55': 300,
+  jacket: 650,
+  'bucket-hat': 150,
+  notebook: 40,
+}
+var MAX_LINE_QTY = 20
+
+function computeSubtotal_(items) {
+  var total = 0
+  var unknown = false
+  ;(items || []).forEach(function (it) {
+    var price = PRICES[String(it && it.productId)]
+    if (typeof price !== 'number') {
+      unknown = true
+      return
+    }
+    var qty = Math.max(0, Math.min(MAX_LINE_QTY, Number(it.qty) || 0))
+    total += price * qty
+  })
+  return { total: total, unknown: unknown }
+}
+
+// ── Abuse guards ───────────────────────────────────────────────────────────
+// Apps Script doesn't expose the client IP, so we can't rate-limit per user.
+// Instead: (1) drop exact-duplicate submissions inside a short window (stops
+// accidental double-clicks and naive replay), and (2) cap total submissions
+// per rolling minute so a flood can't run the sheet/quota away.
+var DEDUPE_TTL_MS = 90000
+var GLOBAL_MAX_PER_MIN = 20
+
+function sha1_(s) {
+  return Utilities.computeDigest(
+    Utilities.DigestAlgorithm.SHA_1,
+    String(s),
+    Utilities.Charset.UTF_8,
+  )
+    .map(function (b) {
+      return ('0' + (b & 0xff).toString(16)).slice(-2)
+    })
+    .join('')
+}
+
+// Returns 'dup', 'flood', or '' (ok). Best-effort via Script Properties.
+function abuseCheck_(payload) {
+  var props = PropertiesService.getScriptProperties()
+  var now = Date.now()
+  var c = payload.contact || {}
+  var fp = sha1_([c.email, c.phone, payload.itemsSummary].join('|'))
+  var seen = props.getProperty('seen_' + fp)
+  if (seen && now - Number(seen) < DEDUPE_TTL_MS) return 'dup'
+
+  var winKey = 'rate_' + Math.floor(now / 60000)
+  var n = Number(props.getProperty(winKey) || 0)
+  if (n >= GLOBAL_MAX_PER_MIN) return 'flood'
+
+  props.setProperty('seen_' + fp, String(now))
+  props.setProperty(winKey, String(n + 1))
+  return ''
+}
+
 // ── Helpers ──────────────────────────────────────────────────────────────
 
 function json_(obj) {
@@ -217,6 +282,23 @@ function doPost(e) {
       return json_({ ok: false, error: 'Cart is empty' })
     }
 
+    var abuse = abuseCheck_(payload)
+    if (abuse === 'dup') {
+      // Treat a duplicate as success so the buyer doesn't re-submit again.
+      return json_({ ok: true, reference: payload.reference || '', duplicate: true })
+    }
+    if (abuse === 'flood') {
+      return json_({ ok: false, error: 'Too many orders right now — please retry shortly' })
+    }
+
+    // Recompute the price server-side; never trust payload.subtotal.
+    var priced = computeSubtotal_(payload.items)
+    var clientSubtotal = Number(payload.subtotal || 0)
+    var priceFlag =
+      priced.unknown || priced.total !== clientSubtotal
+        ? '⚠ price mismatch (client said ' + clientSubtotal + ', server ' + priced.total + ')'
+        : ''
+
     // Prefer the client-supplied reference so the buyer's success page,
     // the sheet row, the email, and the receipt filename all match. Fall
     // back to a server-generated one if the client didn't send one.
@@ -242,14 +324,17 @@ function doPost(e) {
       contact.isMember === 'No' ? contact.lc || '' : '',
       contact.year || '',
       payload.paymentMethod || '',
-      Number(payload.subtotal || 0),
+      priced.total,
       payload.itemsSummary || '',
       JSON.stringify(payload.items || []),
       receiptUrl,
-      contact.notes || '',
+      (priceFlag ? priceFlag + ' — ' : '') + (contact.notes || ''),
       payload.submittedAt || '',
     ])
 
+    // Email the authoritative (server) subtotal, flagging any mismatch.
+    payload.subtotal = priced.total
+    payload.priceFlag = priceFlag
     sendNotification_(reference, payload, receiptUrl)
 
     return json_({ ok: true, reference: reference })

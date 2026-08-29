@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
-import { officersLiveEnabled } from '../data/officersConfig.js'
+import { OFFICERS_WEBAPP_URL, officersLiveEnabled } from '../data/officersConfig.js'
 import { officersApiGet } from './useOfficerOverrides.js'
+import { appsScriptPostClaim, UNKNOWN_ACTION } from '../lib/appsScriptPost.js'
 
 // Global site settings, flipped by dev/EB officers and read by every visitor.
 // Backed by apps-script/officers.gs (Script Properties). Currently a single
@@ -31,16 +32,36 @@ export async function fetchSiteSettings() {
   return { ...DEFAULTS, ...(data.settings || {}) }
 }
 
-// Dev/EB write. GET so the reply (the saved settings) is readable across Apps
-// Script's redirect, so the toggle can confirm right away. Returns the saved
-// settings; throws on a non-ok payload (e.g. expired session / not allowed).
+// Dev/EB write. The session token travels in the POST body (not the URL), then
+// we re-read the public settings to confirm the change landed. Returns the
+// saved settings; throws if the confirm read shows the value didn't take.
 export async function saveSiteSettings(token, patch) {
-  const params = { action: 'setsettings', token }
+  const body = { action: 'setsettings', token }
   if (typeof patch.magazineInHeader === 'boolean') {
-    params.magazineInHeader = patch.magazineInHeader ? 'true' : 'false'
+    body.magazineInHeader = patch.magazineInHeader
   }
-  const data = await officersApiGet(params)
-  return { ...DEFAULTS, ...(data.settings || {}) }
+  try {
+    await appsScriptPostClaim(OFFICERS_WEBAPP_URL, body)
+  } catch (err) {
+    // Old backend without claim/POST support → fall back to the legacy GET.
+    if (err.code === UNKNOWN_ACTION) {
+      const params = { action: 'setsettings', token }
+      if (typeof patch.magazineInHeader === 'boolean') {
+        params.magazineInHeader = patch.magazineInHeader ? 'true' : 'false'
+      }
+      const data = await officersApiGet(params)
+      return { ...DEFAULTS, ...(data.settings || {}) }
+    }
+    throw err
+  }
+  const confirmed = await fetchSiteSettings()
+  if (
+    typeof patch.magazineInHeader === 'boolean' &&
+    confirmed.magazineInHeader !== patch.magazineInHeader
+  ) {
+    throw new Error('Setting did not save — check your session and try again.')
+  }
+  return confirmed
 }
 
 export function useSiteSettings() {

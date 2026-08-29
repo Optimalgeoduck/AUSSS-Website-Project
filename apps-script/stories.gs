@@ -55,6 +55,41 @@ var HEADERS = [
   'Submitted At (client)',
 ]
 
+// ── Abuse guards ───────────────────────────────────────────────────────────
+// Apps Script can't see the client IP, so we drop exact-duplicate submissions
+// in a short window and cap total submissions per rolling minute.
+var DEDUPE_TTL_MS = 90000
+var GLOBAL_MAX_PER_MIN = 15
+
+function sha1_(s) {
+  return Utilities.computeDigest(
+    Utilities.DigestAlgorithm.SHA_1,
+    String(s),
+    Utilities.Charset.UTF_8,
+  )
+    .map(function (b) {
+      return ('0' + (b & 0xff).toString(16)).slice(-2)
+    })
+    .join('')
+}
+
+// Returns 'dup', 'flood', or '' (ok).
+function abuseCheck_(payload) {
+  var props = PropertiesService.getScriptProperties()
+  var now = Date.now()
+  var fp = sha1_([payload.email, payload.phone, payload.story].join('|'))
+  var seen = props.getProperty('seen_' + fp)
+  if (seen && now - Number(seen) < DEDUPE_TTL_MS) return 'dup'
+
+  var winKey = 'rate_' + Math.floor(now / 60000)
+  var n = Number(props.getProperty(winKey) || 0)
+  if (n >= GLOBAL_MAX_PER_MIN) return 'flood'
+
+  props.setProperty('seen_' + fp, String(now))
+  props.setProperty(winKey, String(n + 1))
+  return ''
+}
+
 // ── Helpers ──────────────────────────────────────────────────────────────
 
 function json_(obj) {
@@ -144,6 +179,14 @@ function doPost(e) {
     }
     if (!payload.story) {
       return json_({ ok: false, error: 'Story is empty' })
+    }
+
+    var abuse = abuseCheck_(payload)
+    if (abuse === 'dup') {
+      return json_({ ok: true, reference: payload.reference || '', duplicate: true })
+    }
+    if (abuse === 'flood') {
+      return json_({ ok: false, error: 'Too many submissions right now — please retry shortly' })
     }
 
     // Prefer the client-supplied reference so the success page, sheet row,

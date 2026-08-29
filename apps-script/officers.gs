@@ -131,6 +131,68 @@ function readToken_(token) {
   }
 }
 
+// ── Claim store (keeps secrets out of the request URL) ──────────────────────
+// The client POSTs credentials (in the body), we stash the JSON reply under
+// the client-chosen one-time nonce, and the client reads it back via
+// GET ?action=claim&nonce=…. See src/lib/appsScriptPost.js.
+var CLAIM_TTL_MS = 120000
+
+function putClaim_(nonce, result) {
+  if (!nonce) return
+  PropertiesService.getScriptProperties().setProperty(
+    'claim_' + nonce,
+    JSON.stringify({ result: result, exp: Date.now() + CLAIM_TTL_MS }),
+  )
+}
+
+// Returns the stored result once (then deletes it), { ok:false, pending:true }
+// if the POST hasn't been processed yet, or an expiry error.
+function readClaim_(nonce) {
+  if (!nonce) return { ok: false, error: 'Missing nonce' }
+  var props = PropertiesService.getScriptProperties()
+  var raw = props.getProperty('claim_' + nonce)
+  if (!raw) return { ok: false, pending: true }
+  props.deleteProperty('claim_' + nonce)
+  try {
+    var c = JSON.parse(raw)
+    if (!c || !c.exp || Date.now() > c.exp) return { ok: false, error: 'Expired' }
+    return c.result
+  } catch (e) {
+    return { ok: false, error: 'Bad claim' }
+  }
+}
+
+// ── Brute-force throttle ────────────────────────────────────────────────────
+// Counts failed logins per email in a rolling window; locks the account out
+// for a cool-off once the limit is hit. Best-effort (Script Properties).
+var LOGIN_MAX_FAILS = 6
+var LOGIN_WINDOW_MS = 600000 // 10 minutes
+
+function loginThrottle_(email) {
+  var key = 'fail_' + sha256_(norm_(email))
+  var props = PropertiesService.getScriptProperties()
+  var raw = props.getProperty(key)
+  var rec = { n: 0, first: Date.now() }
+  if (raw) {
+    try {
+      rec = JSON.parse(raw)
+    } catch (e) {
+      /* reset */
+    }
+  }
+  if (Date.now() - rec.first > LOGIN_WINDOW_MS) rec = { n: 0, first: Date.now() }
+  return {
+    locked: rec.n >= LOGIN_MAX_FAILS,
+    fail: function () {
+      rec.n += 1
+      props.setProperty(key, JSON.stringify(rec))
+    },
+    clear: function () {
+      props.deleteProperty(key)
+    },
+  }
+}
+
 // ── Site settings (global toggles in Script Properties) ─────────────────────
 // A tiny global KV any dev/EB account can flip; read publicly by the site.
 // Currently just `magazineInHeader` (show the Magazine CTA in the navbar).
@@ -244,6 +306,11 @@ function doGet(e) {
       return json_({ ok: true, overrides: readOverrides_() })
     }
 
+    // Read back the result of a POSTed login/setsettings (see doPost).
+    if (action === 'claim') {
+      return json_(readClaim_(p.nonce))
+    }
+
     // Public read of the global site settings (e.g. magazineInHeader).
     if (action === 'settings') {
       return json_({ ok: true, settings: readSettings_() })
@@ -299,6 +366,51 @@ function doPost(e) {
     var raw = e && e.postData && e.postData.contents
     var payload = raw ? JSON.parse(raw) : {}
     var action = String(payload.action || '').toLowerCase()
+
+    // Login over POST so the password never appears in a URL. The reply is
+    // stashed for the client's follow-up ?action=claim&nonce=… (see helpers).
+    if (action === 'login') {
+      var throttle = loginThrottle_(payload.email)
+      var result
+      if (throttle.locked) {
+        result = { ok: false, error: 'Too many attempts — try again later' }
+      } else {
+        var acct = findAccount_(payload.email)
+        var good =
+          acct &&
+          acct.passwordHash &&
+          sha256_(acct.salt + String(payload.password || '')) === acct.passwordHash
+        if (!good) {
+          throttle.fail()
+          result = { ok: false, error: 'Invalid email or password' }
+        } else {
+          throttle.clear()
+          result = {
+            ok: true,
+            token: issueToken_(acct),
+            scope: acct.scope,
+            slug: acct.slug,
+            name: acct.displayName,
+          }
+        }
+      }
+      putClaim_(payload.nonce, result)
+      return json_({ ok: true })
+    }
+
+    // Dev/EB site-settings write over POST (token in the body, not the URL).
+    // The client re-reads ?action=settings to confirm, so no claim is needed.
+    if (action === 'setsettings') {
+      var st = readToken_(payload.token)
+      if (st && (st.scope === 'all' || st.scope === 'dev')) {
+        var patch = {}
+        if (typeof payload.magazineInHeader !== 'undefined') {
+          patch.magazineInHeader = Boolean(payload.magazineInHeader)
+        }
+        writeSettings_(patch)
+      }
+      return json_({ ok: true })
+    }
 
     if (action !== 'save') return json_({ ok: false, error: 'Unknown action' })
 

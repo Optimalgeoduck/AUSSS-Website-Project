@@ -19,12 +19,66 @@
  * Deploy: see gallery.README.md.
  */
 
-// CHANGE THIS to your own secret before deploying. It's the password the
-// admin page asks for. Anyone with this key can hide/show photos, so keep it
-// off public channels. It is never baked into the website bundle.
-var ADMIN_KEY = 'change-me-to-a-long-random-string';
-
+// The admin key lives in Script Properties, NOT in this file — so it's never
+// committed to git or shipped in the bundle. Set it once:
+//   Apps Script editor → Project Settings → Script Properties →
+//   add  ADMIN_KEY = <a long random string>
+// (or run setAdminKey() below once). If the property is unset the endpoint
+// refuses every write rather than falling back to a guessable default.
+var PROP_ADMIN_KEY = 'ADMIN_KEY';
 var PROP_KEY = 'GALLERY_REMOVALS';
+
+function adminKey_() {
+  return String(
+    PropertiesService.getScriptProperties().getProperty(PROP_ADMIN_KEY) || '',
+  );
+}
+
+// One-time setup helper: edit the value, Run → setAdminKey, then delete it.
+function setAdminKey() {
+  PropertiesService.getScriptProperties().setProperty(
+    PROP_ADMIN_KEY,
+    'CHANGE_ME_TO_A_LONG_RANDOM_STRING',
+  );
+}
+
+// ── Claim store (keeps the admin key out of request URLs) ───────────────────
+var CLAIM_TTL_MS = 120000;
+
+function putClaim_(nonce, result) {
+  if (!nonce) return;
+  PropertiesService.getScriptProperties().setProperty(
+    'claim_' + nonce,
+    JSON.stringify({ result: result, exp: Date.now() + CLAIM_TTL_MS }),
+  );
+}
+
+function readClaim_(nonce) {
+  if (!nonce) return { ok: false, error: 'Missing nonce' };
+  var props = PropertiesService.getScriptProperties();
+  var raw = props.getProperty('claim_' + nonce);
+  if (!raw) return { ok: false, pending: true };
+  props.deleteProperty('claim_' + nonce);
+  try {
+    var c = JSON.parse(raw);
+    if (!c || !c.exp || Date.now() > c.exp) return { ok: false, error: 'Expired' };
+    return c.result;
+  } catch (e) {
+    return { ok: false, error: 'Bad claim' };
+  }
+}
+
+// Apply an add/remove and return the new list. Shared by GET (legacy) + POST.
+function applyChange_(action, path) {
+  var list = getList();
+  if (action === 'add') {
+    if (list.indexOf(path) === -1) list.push(path);
+  } else {
+    list = list.filter(function (x) { return x !== path; });
+  }
+  setList(list);
+  return list;
+}
 
 function doGet(e) {
   var p = (e && e.parameter) || {};
@@ -35,23 +89,20 @@ function doGet(e) {
       return json({ ok: true, removed: getList() });
     }
 
+    // Read back the result of a POSTed check/add/remove (see doPost).
+    if (action === 'claim') {
+      return json(readClaim_(p.nonce));
+    }
+
     if (action === 'check') {
-      return json({ ok: keyOk(p) });
+      return json({ ok: keyOk(p.key) });
     }
 
     if (action === 'add' || action === 'remove') {
-      if (!keyOk(p)) return json({ ok: false, error: 'Wrong admin key' });
+      if (!keyOk(p.key)) return json({ ok: false, error: 'Wrong admin key' });
       var path = String(p.path || '').trim();
       if (!path) return json({ ok: false, error: 'Missing path' });
-
-      var list = getList();
-      if (action === 'add') {
-        if (list.indexOf(path) === -1) list.push(path);
-      } else {
-        list = list.filter(function (x) { return x !== path; });
-      }
-      setList(list);
-      return json({ ok: true, removed: list });
+      return json({ ok: true, removed: applyChange_(action, path) });
     }
 
     return json({ ok: false, error: 'Unknown action' });
@@ -60,8 +111,41 @@ function doGet(e) {
   }
 }
 
-function keyOk(p) {
-  return String(p.key || '') === ADMIN_KEY;
+// Writes (and the key check) go through POST so the admin key travels in the
+// body, never the URL. The reply is stashed for the client's ?action=claim.
+function doPost(e) {
+  try {
+    var raw = e && e.postData && e.postData.contents;
+    var payload = raw ? JSON.parse(raw) : {};
+    var action = String(payload.action || '').toLowerCase();
+    var result;
+
+    if (action === 'check') {
+      result = { ok: keyOk(payload.key) };
+    } else if (action === 'add' || action === 'remove') {
+      if (!keyOk(payload.key)) {
+        result = { ok: false, error: 'Wrong admin key' };
+      } else {
+        var path = String(payload.path || '').trim();
+        result = path
+          ? { ok: true, removed: applyChange_(action, path) }
+          : { ok: false, error: 'Missing path' };
+      }
+    } else {
+      result = { ok: false, error: 'Unknown action' };
+    }
+
+    putClaim_(payload.nonce, result);
+    return json({ ok: true });
+  } catch (err) {
+    return json({ ok: false, error: String(err) });
+  }
+}
+
+// Constant-time-ish equality on the configured key. Refuses if unconfigured.
+function keyOk(key) {
+  var expected = adminKey_();
+  return expected.length > 0 && String(key || '') === expected;
 }
 
 function getList() {

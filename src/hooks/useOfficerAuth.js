@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
-import { officersLiveEnabled } from '../data/officersConfig.js'
+import { OFFICERS_WEBAPP_URL, officersLiveEnabled } from '../data/officersConfig.js'
 import { officersApiGet } from './useOfficerOverrides.js'
+import { appsScriptPostClaim, UNKNOWN_ACTION } from '../lib/appsScriptPost.js'
 
 // Officer auth: a short-lived token (issued by officers.gs on login) kept in
 // sessionStorage, scoped to the officer's single committee slug. Mirrors the
@@ -53,12 +54,25 @@ export function useOfficerAuth() {
       if (!officersLiveEnabled) {
         return { ok: false, error: 'The officer editor isn’t set up yet.' }
       }
+      const creds = {
+        action: 'login',
+        email: String(email || '').trim(),
+        password: String(password || ''),
+      }
       try {
-        const data = await officersApiGet({
-          action: 'login',
-          email: String(email || '').trim(),
-          password: String(password || ''),
-        })
+        let data
+        try {
+          // Secure path: password travels in the POST body, never the URL.
+          data = await appsScriptPostClaim(OFFICERS_WEBAPP_URL, creds)
+        } catch (err) {
+          // Backend not yet redeployed with `claim` support → fall back to the
+          // legacy GET so login keeps working through the transition.
+          if (err.code === UNKNOWN_ACTION) {
+            data = await officersApiGet(creds)
+          } else {
+            throw err
+          }
+        }
         persist(data.token, data.scope, data.slug, data.name || '')
         return { ok: true, scope: data.scope, slug: data.slug, name: data.name }
       } catch (err) {
