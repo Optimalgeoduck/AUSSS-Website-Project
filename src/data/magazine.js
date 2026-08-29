@@ -37,7 +37,7 @@ const issueOne = {
   id: 'vol-1',
   title: 'Volume 1',
   switcherLabel: 'Vol 1',
-  date: '',
+  date: 'Vol. 01 · March', // masthead reads "The Magazine · Vol. 01 · March"
   blurb: '',
   cover: null, // thumbnail derives from page 1
   pages: { base: '/assets/magazine/vol-1/pages', count: 32, pad: 3, ext: 'jpg' },
@@ -62,9 +62,9 @@ const issueTwo = {
 // ── Vol 3 ────────────────────────────────────────────────────────────────────
 const issueThree = {
   id: 'vol-3',
-  title: 'Volume 3',
-  switcherLabel: 'Vol 3',
-  date: '',
+  title: 'Palestine', // themed solidarity issue (فلسطين / Dome of the Rock / Gaza)
+  switcherLabel: 'Palestine, Vol 3',
+  date: 'Vol. 03 · December',
   blurb: '',
   cover: null,
   pages: { base: '/assets/magazine/vol-3/pages', count: 42, pad: 3, ext: 'jpg' },
@@ -91,7 +91,7 @@ const issueFive = {
   id: 'vol-5',
   title: 'Volume 5',
   switcherLabel: 'Vol 5',
-  date: '',
+  date: '5th Edition', // masthead reads "AUSSS Magazine · 5th Edition"
   blurb: '',
   cover: null,
   pages: { base: '/assets/magazine/vol-5/pages', count: 19, pad: 3, ext: 'jpg' },
