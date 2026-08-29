@@ -36,7 +36,6 @@ export const ARCHIVE_CONTACT = {
 const issueOne = {
   id: 'vol-1',
   title: 'Volume 1',
-  switcherLabel: 'Vol 1',
   date: 'Vol. 01 · March', // masthead reads "The Magazine · Vol. 01 · March"
   blurb: '',
   cover: null, // thumbnail derives from page 1
@@ -51,7 +50,6 @@ const issueOne = {
 const issueTwo = {
   id: 'vol-2',
   title: 'Volume 2',
-  switcherLabel: 'Vol 2',
   missing: true,
   date: '',
   blurb: '',
@@ -63,7 +61,7 @@ const issueTwo = {
 const issueThree = {
   id: 'vol-3',
   title: 'Palestine', // themed solidarity issue (فلسطين / Dome of the Rock / Gaza)
-  switcherLabel: 'Palestine, Vol 3',
+  switcherLabel: 'Palestine, Vol. 3',
   date: 'Vol. 03 · December',
   blurb: '',
   cover: null,
@@ -78,7 +76,6 @@ const issueThree = {
 const issueFour = {
   id: 'vol-4',
   title: 'Volume 4',
-  switcherLabel: 'Vol 4',
   missing: true,
   date: '',
   blurb: '',
@@ -90,7 +87,6 @@ const issueFour = {
 const issueFive = {
   id: 'vol-5',
   title: 'Volume 5',
-  switcherLabel: 'Vol 5',
   date: '5th Edition', // masthead reads "AUSSS Magazine · 5th Edition"
   blurb: '',
   cover: null,
@@ -104,7 +100,7 @@ const issueFive = {
 // ── Vol 6 — "The Story of Origin" (id kept as issue-1 for analytics) ──────────
 const issueSix = {
   id: 'issue-1',
-  title: 'The Story of Origin, Vol 6',
+  title: 'The Story of Origin, Vol. 6',
   // Human-readable cover line; kept as a string so it renders verbatim.
   date: 'A CBSD production',
   blurb:
@@ -131,7 +127,7 @@ const issueSeven = {
   // Label for the edition-switcher button (falls back to `title`). Kept
   // separate so the page header can stay a clean "Summer" while the switcher
   // still spells out the volume.
-  switcherLabel: 'Summer, Vol 7',
+  switcherLabel: 'Summer, Vol. 7',
   date: 'Volume 7 · A CBSD production',
   blurb:
     'The seventh volume of the AUSSS Magazine. Read it in full below or download it, and don’t forget to share it with your friends.',
