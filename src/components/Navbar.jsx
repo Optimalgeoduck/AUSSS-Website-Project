@@ -15,7 +15,7 @@ const LINKS = [
 ]
 
 // Catchy CTA for the magazine, shown as a highlighted pill.
-const MAGAZINE_CTA = 'Read the Latest issue of the AUSSS Magazine'
+const MAGAZINE_CTA = 'Read the latest issue of the AUSSS Magazine'
 
 function parseTo(to) {
   const [pathname, hash] = to.split('#')
@@ -108,7 +108,7 @@ export default function Navbar() {
           />
         </Link>
 
-        <ul className="hidden items-center gap-9 md:flex">
+        <ul className="hidden items-center gap-6 md:flex lg:gap-7">
           {LINKS.map((l) => (
             <li key={l.to}>
               <NavLink
