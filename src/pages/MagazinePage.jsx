@@ -85,6 +85,16 @@ function Cover({ src, alt, label }) {
   )
 }
 
+// The header thumbnail is the magazine's actual first page. Derive it from the
+// built flipbook pages so every edition shows page 1 automatically (no separate
+// cover file to keep in sync); fall back to the `cover` field for a Canva-only
+// draft that has no pages yet.
+function firstPageSrc(issue) {
+  const p = issue.pages
+  if (p?.count) return `${p.base}/${String(1).padStart(p.pad, '0')}.${p.ext}`
+  return issue.cover || null
+}
+
 // ── The edition, Canva embedded ──────────────────────────────────────────────
 function IssueView({ issue, issues, onSelect }) {
   return (
@@ -109,8 +119,8 @@ function IssueView({ issue, issues, onSelect }) {
         />
         <div className="container-prose relative">
           <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:items-end sm:text-left">
-            <div className="aspect-[3/4] w-28 shrink-0 overflow-hidden rounded-xl border border-white/10 bg-forest-800">
-              <Cover src={issue.cover} alt={`${issue.title} cover`} label={issue.title} />
+            <div className="aspect-[1300/1839] w-28 shrink-0 overflow-hidden rounded-xl border border-white/10 bg-forest-800">
+              <Cover src={firstPageSrc(issue)} alt={`${issue.title} cover`} label={issue.title} />
             </div>
             <div>
               <h1 className="heading-serif text-4xl text-white sm:text-5xl">
