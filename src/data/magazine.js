@@ -53,8 +53,6 @@ const issueSix = {
 // _source/Summer volume 7.pdf into public/assets/magazine/issue-2/pages via
 // build-magazine.mjs. Because it's prepended (newest first) it's the default
 // edition on /magazine, with Vol 6 available in the issue switcher.
-// (No off-repo `download` link yet — the Download button stays hidden until one
-// is added; the flipbook + "Open on Canva" fallback still work.)
 const issueSeven = {
   id: 'issue-2',
   title: 'Summer',
@@ -72,7 +70,8 @@ const issueSeven = {
     pad: 3,
     ext: 'jpg',
   },
-  download: '', // TODO: off-repo full-quality link (Google Drive, etc.), else the Download button hides
+  download:
+    'https://drive.google.com/file/d/1bI7nD273A_3t8vtUwUtBlL7jOaU6IsW9/view',
   canva: 'https://canva.link/buxysnx205xfisq',
   aspect: null,
 }
