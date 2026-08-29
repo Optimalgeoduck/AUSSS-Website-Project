@@ -1,7 +1,7 @@
 import { useState, lazy, Suspense, Component } from 'react'
 import useReveal from '../hooks/useReveal.js'
 import usePageTitle from '../hooks/usePageTitle.js'
-import { magazine } from '../data/magazine.js'
+import { magazine, publishedIssues } from '../data/magazine.js'
 import CanvaFrame from '../components/CanvaFrame.jsx'
 import ShareBar from '../components/ShareBar.jsx'
 import MagazineEngagement from '../components/MagazineEngagement.jsx'
@@ -12,13 +12,52 @@ import GalleryAurora from '../components/GalleryAurora.jsx'
 // shell paints immediately and the heavy reader streams in after.
 const Flipbook = lazy(() => import('../components/Flipbook.jsx'))
 
-// The magazine is a single edition read in-page as a page-flipping PDF.
-// /magazine shows that one edition.
+// /magazine shows the latest published edition by default. Once two or more
+// editions are published (see src/data/magazine.js) a small switcher lets
+// readers move between them; with a single edition it renders nothing, so the
+// single-issue experience is unchanged.
 export default function MagazinePage() {
   usePageTitle('Magazine')
   useReveal()
+  // Default to the latest published edition; `selected` tracks the switcher.
+  const [selectedId, setSelectedId] = useState(magazine?.id ?? null)
   if (!magazine) return <EmptyShelf />
-  return <IssueView issue={magazine} />
+  const issue =
+    publishedIssues.find((i) => i.id === selectedId) || magazine
+  return (
+    <IssueView
+      issue={issue}
+      issues={publishedIssues}
+      onSelect={setSelectedId}
+    />
+  )
+}
+
+// Compact edition switcher — only rendered when 2+ editions are published.
+function IssueSwitcher({ issues, currentId, onSelect }) {
+  if (!issues || issues.length < 2) return null
+  return (
+    <div className="mt-6 flex flex-wrap items-center gap-2" role="group" aria-label="Choose an edition">
+      {issues.map((it) => {
+        const active = it.id === currentId
+        return (
+          <button
+            key={it.id}
+            type="button"
+            onClick={() => onSelect(it.id)}
+            aria-pressed={active}
+            className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors ${
+              active
+                ? 'border-medical/40 bg-medical/15 text-medical-light'
+                : 'border-white/15 bg-forest-800 text-silver/70 hover:border-medical/40 hover:text-white'
+            }`}
+          >
+            {it.title}
+          </button>
+        )
+      })}
+    </div>
+  )
 }
 
 // ── Cover thumbnail (image, or a gradient placeholder when none yet) ─────────
@@ -47,7 +86,7 @@ function Cover({ src, alt, label }) {
 }
 
 // ── The edition, Canva embedded ──────────────────────────────────────────────
-function IssueView({ issue }) {
+function IssueView({ issue, issues, onSelect }) {
   return (
     <article className="relative overflow-hidden bg-forest-950">
       {/* The gallery's WebGL aurora, flipped to rise from the bottom of the
@@ -82,6 +121,7 @@ function IssueView({ issue }) {
               </p>
             </div>
           </div>
+          <IssueSwitcher issues={issues} currentId={issue.id} onSelect={onSelect} />
           {issue.blurb && (
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-silver/75">
               {issue.blurb}
@@ -137,7 +177,9 @@ function MagazineReader({ issue }) {
       return `${p.base}/${n}.${p.ext || 'jpg'}`
     })
     return (
-      <ReaderBoundary issue={issue}>
+      // key by issue id so switching editions remounts the reader cleanly
+      // (fresh page-flip state + aspect probe).
+      <ReaderBoundary issue={issue} key={issue.id}>
         <Suspense fallback={<ReaderLoading />}>
           <Flipbook pages={urls} title={issue.title} />
         </Suspense>
