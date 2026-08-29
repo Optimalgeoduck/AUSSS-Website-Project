@@ -60,6 +60,7 @@ function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('AUSSS Magazine')
     .addItem('Reset all counts to 0', 'resetCountsMenu')
+    .addItem('Migrate ids (issue-1→vol-6, issue-2→vol-7)', 'relabelIdsMenu')
     .addToUi()
 }
 
@@ -92,6 +93,80 @@ function resetCounts() {
     sh.getRange(2, COLS.views, last - 1, 3).setValue(0)
     SpreadsheetApp.flush()
     return 'Reset ' + (last - 1) + ' row(s) to 0.'
+  } finally {
+    lock.releaseLock()
+  }
+}
+
+// Menu handler for the id migration: confirm, run, show the result.
+function relabelIdsMenu() {
+  var ui = SpreadsheetApp.getUi()
+  var res = ui.alert(
+    'Migrate magazine ids',
+    'Rename the old rows issue-1 → vol-6 and issue-2 → vol-7 (merging counts if ' +
+      'a vol-6/vol-7 row already exists)? Safe to run once.',
+    ui.ButtonSet.OK_CANCEL,
+  )
+  if (res !== ui.Button.OK) return
+  ui.alert(relabelIds())
+}
+
+// One-off migration: after the site renamed its two generic ids (issue-1→vol-6,
+// issue-2→vol-7), carry the historical counts over. If the destination row
+// already exists (the live site may have started a fresh vol-6/vol-7 row), the
+// old row's counts are ADDED into it and the old row is deleted; otherwise the
+// old row is simply renamed. Idempotent — re-running after migration is a no-op.
+// Run from the "AUSSS Magazine" sheet menu, or select relabelIds → Run in the
+// Apps Script editor (result is written to the execution log).
+function relabelIds() {
+  var pairs = [['issue-1', 'vol-6'], ['issue-2', 'vol-7']]
+  var lock = LockService.getScriptLock()
+  lock.waitLock(10000)
+  try {
+    var sh = sheet_()
+    var log = []
+    pairs.forEach(function (pair) {
+      var oldId = pair[0]
+      var newId = pair[1]
+      // Re-read each iteration: a prior deleteRow shifts row indices.
+      var values = sh.getDataRange().getValues()
+      var oldRow = -1
+      var newRow = -1
+      for (var r = 1; r < values.length; r++) {
+        var id = String(values[r][0] || '').trim()
+        if (id === oldId) oldRow = r
+        else if (id === newId) newRow = r
+      }
+      if (oldRow === -1) {
+        log.push(oldId + ': not found — skipped')
+        return
+      }
+      var o = {
+        v: Number(values[oldRow][1] || 0),
+        l: Number(values[oldRow][2] || 0),
+        d: Number(values[oldRow][3] || 0),
+      }
+      if (newRow === -1) {
+        sh.getRange(oldRow + 1, 1).setValue(newId)
+        log.push(oldId + ' → ' + newId + ' renamed (v' + o.v + ' l' + o.l + ' d' + o.d + ')')
+      } else {
+        var n = {
+          v: Number(values[newRow][1] || 0),
+          l: Number(values[newRow][2] || 0),
+          d: Number(values[newRow][3] || 0),
+        }
+        sh.getRange(newRow + 1, COLS.views, 1, 3).setValues([[n.v + o.v, n.l + o.l, n.d + o.d]])
+        sh.deleteRow(oldRow + 1)
+        log.push(
+          oldId + ' merged into ' + newId +
+            ' (now v' + (n.v + o.v) + ' l' + (n.l + o.l) + ' d' + (n.d + o.d) + ')',
+        )
+      }
+    })
+    SpreadsheetApp.flush()
+    var msg = log.join('\n')
+    Logger.log(msg)
+    return msg
   } finally {
     lock.releaseLock()
   }
