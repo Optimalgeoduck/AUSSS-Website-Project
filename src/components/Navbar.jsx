@@ -85,7 +85,10 @@ export default function Navbar() {
           : 'border-b border-transparent bg-transparent'
       }`}
     >
-      <nav className="container-prose flex h-24 items-center justify-between">
+      <nav
+        aria-label="Main navigation"
+        className="container-prose flex h-24 items-center justify-between"
+      >
         <Link to="/" className="group flex items-center" aria-label="AUSSS home">
           {/* Black logo only when bar is solid AND light mode; white otherwise. */}
           <img
@@ -168,6 +171,7 @@ export default function Navbar() {
           className={solid ? 'text-forest dark:text-silver' : 'text-white'}
           aria-label="Toggle menu"
           aria-expanded={open}
+          aria-controls="mobile-nav"
         >
           <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="1.8">
             {open ? (
@@ -184,6 +188,10 @@ export default function Navbar() {
       {/* border-t only while open: a border isn't clipped by max-h-0, so a
           closed drawer would paint a stray 1px line under the header. */}
       <div
+        id="mobile-nav"
+        aria-label="Mobile navigation"
+        aria-hidden={!open}
+        inert={!open ? '' : undefined}
         className={`overflow-hidden bg-cream transition-[max-height] duration-500 md:hidden dark:bg-forest-950 ${
           open
             ? 'max-h-[calc(100dvh-6rem)] border-t border-forest-600/10 dark:border-white/10'

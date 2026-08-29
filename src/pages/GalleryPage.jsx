@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import useReveal from '../hooks/useReveal.js'
 import useMediaQuery from '../hooks/useMediaQuery.js'
 import usePageTitle from '../hooks/usePageTitle.js'
+import useFocusTrap from '../hooks/useFocusTrap.js'
 import ImageTrail from '../components/ImageTrail.jsx'
 import GalleryAurora from '../components/GalleryAurora.jsx'
 import { albums as rawAlbums, trail } from '../data/gallery.js'
@@ -167,7 +168,7 @@ function GalleryIndex({ isAdmin, removals }) {
   )
 }
 
-function AlbumCard({ a, isAdmin }) {
+const AlbumCard = memo(function AlbumCard({ a, isAdmin }) {
   return (
     <Link
       to={`/gallery/${a.slug}${isAdmin ? '?admin=1' : ''}`}
@@ -201,7 +202,7 @@ function AlbumCard({ a, isAdmin }) {
       )}
     </Link>
   )
-}
+})
 
 // ───────────────────────── Album view ─────────────────────────
 
@@ -279,6 +280,7 @@ function AlbumView({ album, isAdmin, removals }) {
                 width={featuredPhoto.w}
                 height={featuredPhoto.h}
                 decoding="async"
+                fetchPriority="high"
                 className={`max-h-[72vh] w-full object-contain transition-transform duration-700 group-hover:scale-[1.02] ${
                   removals.effective.has(featuredPhoto.full) ? 'opacity-30 grayscale' : ''
                 }`}
@@ -479,11 +481,12 @@ function GalleryDisclaimer() {
 
 function Lightbox({ photos, index, onClose, onNext, onPrev }) {
   const photo = photos[index]
+  // Trap focus inside the lightbox and return it to the trigger on close.
+  const trapRef = useFocusTrap(true, onClose)
 
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'Escape') onClose()
-      else if (e.key === 'ArrowRight') onNext()
+      if (e.key === 'ArrowRight') onNext()
       else if (e.key === 'ArrowLeft') onPrev()
     }
     window.addEventListener('keydown', onKey)
@@ -509,6 +512,7 @@ function Lightbox({ photos, index, onClose, onNext, onPrev }) {
 
   return (
     <div
+      ref={trapRef}
       className="fixed inset-0 z-[100] flex items-center justify-center bg-forest-950/95 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
@@ -537,7 +541,7 @@ function Lightbox({ photos, index, onClose, onNext, onPrev }) {
           e.stopPropagation()
           onPrev()
         }}
-        className="absolute left-2 z-10 hidden h-12 w-12 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 sm:left-6 sm:grid"
+        className="absolute left-2 z-10 grid h-12 w-12 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 sm:left-6"
         aria-label="Previous photo"
       >
         <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2">
@@ -551,7 +555,7 @@ function Lightbox({ photos, index, onClose, onNext, onPrev }) {
           e.stopPropagation()
           onNext()
         }}
-        className="absolute right-2 z-10 hidden h-12 w-12 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 sm:right-6 sm:grid"
+        className="absolute right-2 z-10 grid h-12 w-12 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 sm:right-6"
         aria-label="Next photo"
       >
         <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2">

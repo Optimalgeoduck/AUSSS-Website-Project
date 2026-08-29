@@ -275,8 +275,9 @@ export default function CheckoutPage() {
                   htmlFor="isMember"
                   error={errors.isMember}
                   span={2}
+                  group
                 >
-                  <div className="flex gap-2" id="isMember">
+                  <div className="flex gap-2">
                     {['Yes', 'No'].map((opt) => (
                       <button
                         key={opt}
@@ -507,17 +508,41 @@ function inputClass(error) {
   }`
 }
 
-function Field({ label, htmlFor, error, span = 1, children }) {
+// `group` mode is for fields whose control isn't a single labelable element
+// (e.g. a row of toggle buttons): renders a role="group" labelled by the text
+// instead of a <label htmlFor> that browsers would silently ignore.
+function Field({ label, htmlFor, error, span = 1, group = false, children }) {
+  const errorId = error ? `${htmlFor}-error` : undefined
+  const cls = `flex flex-col gap-1.5 ${span === 2 ? 'sm:col-span-2' : ''}`
+  const labelText = (
+    <span className="text-xs font-semibold uppercase tracking-[0.14em] text-silver/70">
+      {label}
+    </span>
+  )
+  const errorNode = error && (
+    <span id={errorId} role="alert" className="text-xs text-red-300">
+      {error}
+    </span>
+  )
+  if (group) {
+    return (
+      <div
+        role="group"
+        aria-labelledby={`${htmlFor}-label`}
+        aria-describedby={errorId}
+        className={cls}
+      >
+        <span id={`${htmlFor}-label`}>{labelText}</span>
+        {children}
+        {errorNode}
+      </div>
+    )
+  }
   return (
-    <label
-      htmlFor={htmlFor}
-      className={`flex flex-col gap-1.5 ${span === 2 ? 'sm:col-span-2' : ''}`}
-    >
-      <span className="text-xs font-semibold uppercase tracking-[0.14em] text-silver/70">
-        {label}
-      </span>
+    <label htmlFor={htmlFor} className={cls}>
+      {labelText}
       {children}
-      {error && <span className="text-xs text-red-300">{error}</span>}
+      {errorNode}
     </label>
   )
 }

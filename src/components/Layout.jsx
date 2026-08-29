@@ -13,10 +13,13 @@ export default function Layout() {
   const cartOpen = useCartDrawerOpen()
   return (
     <div className="min-h-screen bg-cream dark:bg-forest-950">
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
       <ScrollManager />
       <Navbar />
       <BackButton />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <Outlet />
       </main>
       <Footer />

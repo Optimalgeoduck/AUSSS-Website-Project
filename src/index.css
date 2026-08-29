@@ -207,4 +207,24 @@
   .heba-photo:hover {
     transform: none;
   }
+  /* Neutralise the entrance/loop animations (hero, sorting reveal, etc.) so
+     they don't fire for users who asked for reduced motion. They animate from
+     opacity:0 / translated, so we also force the resting visible state. */
+  .animate-fade-up,
+  .animate-fade-in,
+  .animate-reveal,
+  .animate-float,
+  .animate-pulse-ring {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Skip-to-content link: visually hidden until focused, then pinned top-left. */
+.skip-link {
+  @apply sr-only;
+}
+.skip-link:focus {
+  @apply not-sr-only fixed left-4 top-4 z-[200] rounded-full bg-medical px-5 py-3 text-sm font-semibold text-forest-950 shadow-lg;
 }

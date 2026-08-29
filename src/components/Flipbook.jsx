@@ -8,6 +8,7 @@ import useMediaQuery from '../hooks/useMediaQuery.js'
 // _source/build-magazine.mjs), so there's no big download and no client pdf.js.
 export default function Flipbook({ pages, title }) {
   const [ratio, setRatio] = useState(null) // page height ÷ width
+  const [page, setPage] = useState(0)
   const isMobile = useMediaQuery('(max-width: 767px)')
   const bookRef = useRef(null)
 
@@ -39,10 +40,21 @@ export default function Flipbook({ pages, title }) {
     }
   }, [pages])
 
-  // Left/right arrow keys flip the book.
+  // Left/right arrow keys flip the book — but not while the user is typing in a
+  // field elsewhere on the page.
   useEffect(() => {
     if (!ratio) return
     const onKey = (e) => {
+      const t = e.target
+      if (
+        t &&
+        (t.tagName === 'INPUT' ||
+          t.tagName === 'TEXTAREA' ||
+          t.tagName === 'SELECT' ||
+          t.isContentEditable)
+      ) {
+        return
+      }
       if (e.key === 'ArrowLeft') bookRef.current?.pageFlip()?.flipPrev()
       else if (e.key === 'ArrowRight') bookRef.current?.pageFlip()?.flipNext()
     }
@@ -52,8 +64,14 @@ export default function Flipbook({ pages, title }) {
 
   if (!ratio) {
     return (
-      <div className="flex aspect-[4/3] w-full flex-col items-center justify-center rounded-2xl border border-white/10 bg-forest-800">
-        <span className="h-8 w-8 animate-spin rounded-full border-2 border-white/15 border-t-medical-light" />
+      <div
+        role="status"
+        className="flex aspect-[4/3] w-full flex-col items-center justify-center rounded-2xl border border-white/10 bg-forest-800"
+      >
+        <span
+          aria-hidden="true"
+          className="h-8 w-8 animate-spin rounded-full border-2 border-white/15 border-t-medical-light"
+        />
         <p className="mt-4 text-sm text-silver/60">Opening the magazine…</p>
       </div>
     )
@@ -83,6 +101,7 @@ export default function Flipbook({ pages, title }) {
           usePortrait={isMobile}
           drawShadow
           flippingTime={700}
+          onFlip={(e) => setPage(e.data)}
           className="mx-auto"
         >
           {pages.map((url, i) => {
@@ -125,8 +144,11 @@ export default function Flipbook({ pages, title }) {
           Next ›
         </button>
       </div>
-      <p className="mt-3 text-xs text-silver/50">
+      <p className="mt-3 text-xs text-silver/60">
         Drag a corner or use the arrows to flip.
+      </p>
+      <p className="sr-only" role="status" aria-live="polite">
+        Page {page + 1} of {pages.length}
       </p>
     </div>
   )

@@ -62,11 +62,14 @@ export default function ProductCard({ product, onOpenSizeChart }) {
         </div>
 
         {needsSize && (
-          <div className="mt-4 sm:mt-5">
+          <div className="mt-4 sm:mt-5" role="group" aria-labelledby={`size-label-${product.id}`}>
             <div className="flex items-center justify-between">
-              <label className="text-xs font-semibold uppercase tracking-[0.16em] text-silver/60">
+              <span
+                id={`size-label-${product.id}`}
+                className="text-xs font-semibold uppercase tracking-[0.16em] text-silver/60"
+              >
                 Size
-              </label>
+              </span>
               {product.sizeChart && (
                 <button
                   type="button"
@@ -98,10 +101,13 @@ export default function ProductCard({ product, onOpenSizeChart }) {
         )}
 
         {needsDesign && (
-          <div className="mt-4 sm:mt-5">
-            <label className="text-xs font-semibold uppercase tracking-[0.16em] text-silver/60">
+          <div className="mt-4 sm:mt-5" role="group" aria-labelledby={`design-label-${product.id}`}>
+            <span
+              id={`design-label-${product.id}`}
+              className="text-xs font-semibold uppercase tracking-[0.16em] text-silver/60"
+            >
               Design
-            </label>
+            </span>
             <div className="mt-2 grid grid-cols-2 gap-2">
               {product.designs.map((d) => (
                 <button
@@ -123,6 +129,10 @@ export default function ProductCard({ product, onOpenSizeChart }) {
             </div>
           </div>
         )}
+
+        <p className="sr-only" role="status" aria-live="polite">
+          {feedback}
+        </p>
 
         <div className="mt-auto pt-4 sm:pt-6">
           <button

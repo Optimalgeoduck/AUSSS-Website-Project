@@ -47,24 +47,39 @@ export default function LoginPage() {
           </p>
         ) : (
           <form onSubmit={submit} className="mt-6 space-y-3">
+            <label htmlFor="officer-email" className="sr-only">
+              Email
+            </label>
             <input
+              id="officer-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
               autoComplete="username"
               autoFocus
-              className="w-full rounded-xl border border-white/15 bg-forest-950 px-4 py-3 text-white placeholder:text-silver/40 focus:border-medical focus:outline-none"
+              aria-invalid={!!error}
+              className="w-full rounded-xl border border-white/15 bg-forest-950 px-4 py-3 text-white placeholder:text-silver/40 focus-visible:border-medical focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-medical/60"
             />
+            <label htmlFor="officer-password" className="sr-only">
+              Password
+            </label>
             <input
+              id="officer-password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               autoComplete="current-password"
-              className="w-full rounded-xl border border-white/15 bg-forest-950 px-4 py-3 text-white placeholder:text-silver/40 focus:border-medical focus:outline-none"
+              aria-invalid={!!error}
+              aria-describedby={error ? 'login-error' : undefined}
+              className="w-full rounded-xl border border-white/15 bg-forest-950 px-4 py-3 text-white placeholder:text-silver/40 focus-visible:border-medical focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-medical/60"
             />
-            {error && <p className="text-sm text-red-400">{error}</p>}
+            {error && (
+              <p id="login-error" role="alert" className="text-sm text-red-400">
+                {error}
+              </p>
+            )}
             <button
               type="submit"
               disabled={busy || !email.trim() || !password}

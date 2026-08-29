@@ -264,7 +264,11 @@ function Field({ label, htmlFor, error, span = 1, children }) {
         {label}
       </span>
       {children}
-      {error && <span className="text-xs text-red-300">{error}</span>}
+      {error && (
+        <span id={`${htmlFor}-error`} role="alert" className="text-xs text-red-300">
+          {error}
+        </span>
+      )}
     </label>
   )
 }

@@ -9,26 +9,24 @@ import {
   formatEGP,
 } from '../lib/cart.js'
 import { productById } from '../data/merchProducts.js'
+import useFocusTrap from '../hooks/useFocusTrap.js'
 
 export default function CartDrawer({ open, onClose }) {
   const cart = useCart()
   const count = cartCount(cart)
   const subtotal = cartSubtotal(cart)
+  const panelRef = useFocusTrap(open, onClose)
 
-  // Lock background scroll while the drawer is open.
+  // Lock background scroll while the drawer is open. (Escape + focus trapping
+  // are handled by useFocusTrap.)
   useEffect(() => {
     if (!open) return
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    const onKey = (e) => {
-      if (e.key === 'Escape') onClose()
-    }
-    window.addEventListener('keydown', onKey)
     return () => {
       document.body.style.overflow = prev
-      window.removeEventListener('keydown', onKey)
     }
-  }, [open, onClose])
+  }, [open])
 
   return (
     <div
@@ -45,14 +43,16 @@ export default function CartDrawer({ open, onClose }) {
 
       {/* Panel */}
       <aside
+        ref={panelRef}
         role="dialog"
-        aria-label="Shopping cart"
+        aria-modal="true"
+        aria-labelledby="cart-heading"
         className={`absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-cream text-forest-900 shadow-2xl transition-transform duration-300 dark:bg-forest-900 dark:text-silver ${
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <header className="flex items-center justify-between border-b border-forest-600/10 px-6 py-5 dark:border-white/10">
-          <h2 className="heading-serif text-xl text-forest dark:text-white">
+          <h2 id="cart-heading" className="heading-serif text-xl text-forest dark:text-white">
             Your cart
             {count > 0 && (
               <span className="ml-2 text-sm font-normal text-forest-900/60 dark:text-silver/60">
@@ -186,7 +186,7 @@ function QtyStepper({ qty, onDec, onInc, onRemove }) {
           type="button"
           onClick={qty <= 1 ? onRemove : onDec}
           aria-label={qty <= 1 ? 'Remove from cart' : 'Decrease quantity'}
-          className="grid h-7 w-7 place-items-center text-forest-900/70 transition-colors hover:text-forest dark:text-silver/70 dark:hover:text-white"
+          className="grid h-9 w-9 place-items-center text-forest-900/70 transition-colors hover:text-forest dark:text-silver/70 dark:hover:text-white"
         >
           <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2">
             {qty <= 1 ? (
@@ -203,7 +203,7 @@ function QtyStepper({ qty, onDec, onInc, onRemove }) {
           type="button"
           onClick={onInc}
           aria-label="Increase quantity"
-          className="grid h-7 w-7 place-items-center text-forest-900/70 transition-colors hover:text-forest dark:text-silver/70 dark:hover:text-white"
+          className="grid h-9 w-9 place-items-center text-forest-900/70 transition-colors hover:text-forest dark:text-silver/70 dark:hover:text-white"
         >
           <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M12 5v14M5 12h14" strokeLinecap="round" />

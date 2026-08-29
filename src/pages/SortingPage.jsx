@@ -144,7 +144,7 @@ function Intro({ saved, onBegin }) {
       <h1 className="heading-serif mt-8 text-4xl text-white sm:text-6xl">
         Where do you belong?
       </h1>
-      <p className="mx-auto mt-6 max-w-xl text-lg font-dark leading-relaxed text-silver/75">
+      <p className="mx-auto mt-6 max-w-xl text-lg font-light leading-relaxed text-silver/75">
         Six Standing Committees and Four Support Divisions <br></br>
         Find out which one you belong to
       </p>
@@ -185,8 +185,9 @@ function Question({ qIndex, answers, picked, onChoose, onBack }) {
   const progress = (qIndex / QUESTIONS.length) * 100
   return (
     <div key={qIndex} className="mx-auto max-w-2xl animate-fade-up">
-      <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.2em] text-silver/50">
+      <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.2em] text-silver/60">
         <button
+          type="button"
           onClick={onBack}
           className="inline-flex items-center gap-1.5 transition-colors hover:text-white"
         >
@@ -196,14 +197,24 @@ function Question({ qIndex, answers, picked, onChoose, onBack }) {
           Question {qIndex + 1} of {QUESTIONS.length}
         </span>
       </div>
-      <div className="mt-4 h-1 overflow-hidden rounded-full bg-white/10">
+      <div
+        className="mt-4 h-1 overflow-hidden rounded-full bg-white/10"
+        role="progressbar"
+        aria-valuenow={qIndex + 1}
+        aria-valuemin={1}
+        aria-valuemax={QUESTIONS.length}
+        aria-label={`Question ${qIndex + 1} of ${QUESTIONS.length}`}
+      >
         <div
           className="h-full rounded-full bg-medical transition-[width] duration-500"
           style={{ width: `${progress}%` }}
         />
       </div>
 
-      <h2 className="heading-serif mt-10 text-2xl leading-snug text-white sm:text-3xl">
+      <h2
+        aria-live="polite"
+        className="heading-serif mt-10 text-2xl leading-snug text-white sm:text-3xl"
+      >
         {q.question}
       </h2>
       {q.note && <p className="mt-3 text-sm italic text-medical-light/80">{q.note}</p>}
@@ -215,6 +226,7 @@ function Question({ qIndex, answers, picked, onChoose, onBack }) {
           return (
             <button
               key={i}
+              type="button"
               onClick={() => onChoose(i)}
               className={`rounded-2xl border p-5 text-left text-base leading-relaxed transition-all duration-200 ${
                 isPicked || wasChosen
